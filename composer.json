@@ -1,0 +1,28 @@
+{
+    "name": "1c-bitrix.bel",
+    "description": "Site from based on Slim Framework 3 use templater Twig.",
+    "license": "BSD-3-Clause",
+    "type": "project",
+    "keywords": ["slim-framework"],
+    "authors": [
+        {
+            "name": "Andrey Leo",
+            "email": "ba_ndrey@ukr.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app"
+        }
+    },
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.0",
+        "slim/flash": "^0.1.0",
+        "monolog/monolog": "^1.13",
+        "slim/http-cache": "^0.3.0",
+        "slim/csrf": "^0.6.0",
+        "illuminate/database": "^5.2",
+        "illuminate/pagination": "^5.2"
+    }
+}

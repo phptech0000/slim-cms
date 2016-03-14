@@ -1,0 +1,11 @@
+<html>
+    <head>
+	<title>{% block browserTitle %} {{name}} {% endblock %}</title>
+	<link rel="stylesheet"href="/css/bootstrap.min.css">
+	{% block additionalStyles %}{% endblock %}
+    </head>
+    <body>
+	{% block bodyContent %}{% endblock %}
+	{% block additionalScripts %}{% endblock %}
+    </body>
+</html>

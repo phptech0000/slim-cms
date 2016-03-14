@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Source;
+
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Illuminate\Support\Str;
+
+/**
+* 
+*/
+class ModelsFactory
+{
+	
+	protected static $namespaceModel = '\\App\\Models\\';
+
+	function __construct(){}
+
+	public static function getModelWithRequest(Request $req, $data = []){
+		$className = self::getClassName($req->getAttribute('route')->getName());
+
+		if( class_exists($className) )
+			return ( !empty($data) ) ? new $className($data): new $className();
+
+		return new \stdClass();
+	}
+
+	protected static function getClassName($routeName){
+		$className = Str::ucfirst(substr($routeName, strpos($routeName, '.')+1));
+		if( preg_match_all("/_\w/s", $className, $m) ){
+			foreach ($m[0] as $v) {
+				$className = str_replace($v, strtoupper($v[1]), $className);
+			}
+		}
+
+		return self::$namespaceModel.$className.'s';
+	}
+}
