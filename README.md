@@ -12,3 +12,14 @@ Project use additional library:
  - Slim CSRF protection;
  - Illuminate database v5.2;
  - Illuminate pagination v5.2;
+
+Installation: 
+ git clone 
+ php composer install
+
+After install create folder: cache, log. Set permittion from write this folders.
+
+Enter admin panel:
+ url: /auth/login
+ login: admin@admin.net
+ password: admin
