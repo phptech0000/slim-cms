@@ -20,6 +20,6 @@ Installation:
 After install create folder: cache, log. Set permittion from write this folders.
 
 Enter admin panel:
- url: /auth/login
- login: admin@admin.net
- password: admin
+ - url: /auth/login
+ - login: admin@admin.net
+ - password: admin
