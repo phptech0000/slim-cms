@@ -76,7 +76,7 @@ class BuildFields
 		return $this;
 	}
 
-	public function addField(IField $field){
+	public function addField(Interfaces\IField $field){
 		$this->lastItemNameAdd = null;
 
 		// move to this class method correct

@@ -2,7 +2,7 @@
 
 namespace App\Source\ModelFieldBuilder;
 
-class Field implements Interfaces\IField
+abstract class AField implements Interfaces\IField
 {
 	protected $correct = false;
 	protected $inputObject;
@@ -51,24 +51,13 @@ class Field implements Interfaces\IField
 		$this->value = $value;
 	}
 
-	public function __toString(){
-		if( !$this->visible || $this->name=='default' )
-			return '';
-
-		$str = sprintf('<input type="%s" name="%s" #>', $this->type, $this->name);
-		
-		if( $this->value!==null )
-			$str = str_replace("#", "# value=\"".$this->value."\"", $str);
-
+	protected function toString($str){
 		if($this->className)
 			$str = str_replace("#", "# class=\"".$this->className."\"", $str);
-		
+
 		if($this->idName)
 			$str = str_replace("#", "# id=\"".$this->idName."\"", $str);
 
-		if($this->placeholder)
-			$str = str_replace("#", "# placeholder=\"".$this->placeholder."\"", $str);
-		
 		return str_replace("#", "", $str);
 	}
 }

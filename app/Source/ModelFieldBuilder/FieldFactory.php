@@ -2,9 +2,9 @@
 
 namespace App\Source\ModelFieldBuilder;
 
-class FieldFactory
+class FieldFactory implements Interfaces\IFieldFactory
 {
 	public static function getField(\stdClass $obj){
-		return new Field($obj);
+		return new TextField($obj);
 	}
 }
