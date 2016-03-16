@@ -1,0 +1,23 @@
+[
+	{
+		"name": "email",
+		"type": "email",
+		"placeholder":"Enter you email"	
+	},
+	{
+		"name": "active",
+		"type": "checkbox",
+		"default": "1",
+		"values": {"0":"0", "1":"1"}
+	},
+	{
+		"name": "type",
+		"type": "select",
+		"values": {"text":"string", "checkbox":"yes/no"}
+	},
+	{
+		"name": "default",
+		"type": "text",
+		"placeholder": "Please set this field"
+	}
+]

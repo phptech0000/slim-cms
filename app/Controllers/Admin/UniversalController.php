@@ -6,6 +6,7 @@ use App\Helpers\SessionManager as Session;
 use \Illuminate\Database\Capsule\Manager as Schema;
 use \Psr\Http\Message\ServerRequestInterface as request;
 use App\Source\ModelsFactory;
+use App\Source\ModelFieldBuilder\BuildFields;
 
 class UniversalController extends BaseController
 {
@@ -26,6 +27,10 @@ class UniversalController extends BaseController
 
 		$model = ModelsFactory::getModelWithRequest($req);
 		$this->data['fields'] = $this->getFields($model->getColumnsNames());
+
+$builder = new BuildFields();
+$builder->setFields($model->getColumnsNames())->addJsonShema($model->getAnnotations());
+$this->data['ttt'] = $builder->getAll();
 
 		$this->view->render($res, 'admin\addTables.twig', $this->data);
 	}
