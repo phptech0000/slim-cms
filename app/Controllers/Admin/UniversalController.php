@@ -43,6 +43,17 @@ $this->data['ttt'] = $builder->getAll();
 		$this->data['fieldsValues'] = $model->find($args['id']);
 		$this->data['type_link'] = $this->data['save_link'];
 
+$builder = new BuildFields();
+$builder->setFields($model->getColumnsNames())->addJsonShema($model->getAnnotations());
+$builder->build();
+$builder->setType('id', 'hidden');
+
+foreach ($this->data['fields'] as $name) {
+	$builder->getField($name)->setValue($this->data['fieldsValues']->$name);
+}
+
+$this->data['ttt'] = $builder->getAll();
+
 		$this->view->render($res, 'admin\addTables.twig', $this->data);
 	}
 

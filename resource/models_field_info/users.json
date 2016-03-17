@@ -5,6 +5,11 @@
 		"placeholder":"Enter you email"	
 	},
 	{
+		"name": "password",
+		"type": "password",
+		"placeholder":"Enter password"	
+	},
+	{
 		"name": "active",
 		"type": "checkbox",
 		"default": "1",

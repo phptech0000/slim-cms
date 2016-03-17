@@ -10,7 +10,7 @@
         <input name="{{csrf.nameKey}}" type="hidden" value="{{csrf.name}}">
 
     {% set type = 'Add' %}
-    {% for field in fields %}
+    {#% for field in fields %}
         {% if field=='id' %}
             {% set type = 'Edit' %}
             <input name="{{field}}" value="{{ fieldsValues[field] }}" class="form-control" type="hidden">
@@ -19,6 +19,16 @@
                 <label>{{field}}</label>
                 <input name="{{field}}" {% if fieldsValues[field] is defined %} value="{{ fieldsValues[field] }}" {% endif %} class="form-control" placeholder="Text here">
             </div>
+        {% endif %}
+    {% endfor %#}
+    {% for item in ttt %}
+        {% if item.visible %}
+        <div class="form-group">
+            <label>{{item.name}}</label>
+            {{ item | raw }}
+        </div>
+        {% elseif item.type=='hidden' %}
+            {{ item | raw }}
         {% endif %}
     {% endfor %}
         <!--<div class="form-group">
@@ -36,7 +46,3 @@
 <!-- /.col-lg-6 -->
 </div>
 <!-- /.row -->
-
-{% for item in ttt %}
-    {{ item }}
-{% endfor %}

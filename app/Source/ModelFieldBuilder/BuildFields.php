@@ -44,8 +44,10 @@ class BuildFields
 		$this->setDefaultObject(current($neededObject));
 
 		while ($item = array_shift($jsonShema)) {
-			if( is_object($item) && $item->name )
+			if( is_object($item) && $item->name ){
+				$item = (object) array_merge((array) $this->defaultObject, (array) $item);
 				$this->add($item);
+			}
 		}
 
 		return $this;
@@ -91,6 +93,13 @@ class BuildFields
 
 	public function getAll(){
 		return $this->build()->arFields;
+	}
+
+	public function setType($name, $type){
+		$obj = $this->arFields[$name]->getInputParams();
+		$obj->type = $type;
+		$this->add($obj);
+		return $this;
 	}
 
 	public function getField($name){

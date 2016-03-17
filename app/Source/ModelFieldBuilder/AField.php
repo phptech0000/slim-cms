@@ -28,6 +28,10 @@ abstract class AField implements Interfaces\IField
 		return $this->correct;
 	}
 
+	public function getInputParams(){
+		return $this->inputObject;
+	}
+
 	protected function checkCorrectedFormat($obj){
 		if( isset($obj->name) && $obj->name )
 			$this->correct = true;
@@ -41,6 +45,9 @@ abstract class AField implements Interfaces\IField
 		}
 
 		$this->type = (in_array($obj->type, $this->allowTypes))?$obj->type:$this->defaultType;
+
+		if($this->name == 'default')
+			$this->visible = false;
 	}
 
 	public function noVisible($trig = true){
