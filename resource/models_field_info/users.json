@@ -21,8 +21,20 @@
 		"values": {"text":"string", "checkbox":"yes/no"}
 	},
 	{
+		"name": "Currency",
+		"type": "radio",
+		"value": "eur",
+		"values": {"usd":"USD", "eur":"EURO", "rub":"RUB", "uah":"UAH"}
+	},
+	{
+		"name": "description",
+		"type": "html",
+		"rows":10,
+		"values": {"text":"string", "checkbox":"yes/no"}
+	},
+	{
 		"name": "default",
-		"type": "text",
+		"type": "string",
 		"placeholder": "Please set this field"
 	}
 ]

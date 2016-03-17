@@ -32,6 +32,8 @@ class CheckboxField extends AField
 		if( $this->value===null && $this->default!==null )
 			$str = str_replace("#", "# checked=\"checked\"", $str);
 
+		$this->className = str_replace("form-control", "", $this->className);
+
 		return $str1.$this->toString($str);
 	}
 }

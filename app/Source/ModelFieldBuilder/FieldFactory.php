@@ -13,8 +13,16 @@ class FieldFactory implements Interfaces\IFieldFactory
 				return new HiddenField($obj);
 			case 'checkbox':
 				return new CheckboxField($obj);
-			default:
+			case 'radio':
+				return new RadioField($obj);
+			case 'select':
+			case 'multiselect':
+				return new SelectField($obj);
+			case 'text':
+			case 'html':
 				return new TextField($obj);
+			default:
+				return new StringField($obj);
 		}
 	}
 }
