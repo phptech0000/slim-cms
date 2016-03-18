@@ -24,7 +24,11 @@
     {% for item in ttt %}
         {% if item.visible %}
         <div class="form-group">
-            <label>{{item.name}}</label>
+            {% if item.label %}
+                <label>{{item.label | capitalize}}</label>
+            {% else %}
+                <label>{{item.name | capitalize}}</label>
+            {% endif %}
             {{ item | raw }}
         </div>
         {% elseif item.type=='hidden' %}

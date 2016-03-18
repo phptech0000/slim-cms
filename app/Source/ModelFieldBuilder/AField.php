@@ -6,8 +6,8 @@ abstract class AField implements Interfaces\IField
 {
 	protected $correct = false;
 	protected $inputObject;
-	protected $allowTypes = ['text', 'checkbox', 'hidden', 'select'];
-	protected $defaultType = 'text';
+	protected $allowTypes = ['string', 'checkbox', 'hidden', 'select'];
+	protected $defaultType = 'string';
 
 	public $visible = true;
 	public $sort = 100;

@@ -1,0 +1,23 @@
+[
+	{
+		"name": "options_group_id",
+		"label": "Group name"
+	},
+	{
+		"name": "values",
+		"label": "Values if use multiply field",
+		"type": "jsonMulti"
+	},
+	{
+		"name": "type",
+		"type": "select",
+		"values": {
+			"string":"String",
+			"text":"Textarea",
+			"html":"HTML editor",
+			"checkbox":"Yes/No",
+			"select":"DropDown list",
+			"multiselect":"Multiply select"
+		}
+	}
+]

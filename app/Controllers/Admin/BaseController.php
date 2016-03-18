@@ -71,10 +71,12 @@ class BaseController
     	$this->data['csrf']->value = $req->getAttribute('csrf_value');
 	}
 
-	protected function getFields(array $arFields, $arSave=array()){
+	protected function getFields(array $arFields, $arSave=array(), $arHide=array()){
+		$arHide = array_merge($arHide, array('id', 'created_at', 'updated_at'));
+
 		return array_diff(
 			$arFields, 
-			array_diff(array('id', 'created_at', 'updated_at'), $arSave)
+			array_diff($arHide, $arSave)
 		);
 	}
 }

@@ -10,7 +10,7 @@ if( Session::has('auth') && Session::get('auth') ){
     AdminRouteCollection::add(new AdminResource('pages'));
     AdminRouteCollection::add(new AdminResource('users'));
     AdminRouteCollection::add(new AdminResource('groups'));
-    AdminRouteCollection::add(new AdminResource('options'));
+    AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
     AdminRouteCollection::add(new AdminResource('group_options'));
 }
 

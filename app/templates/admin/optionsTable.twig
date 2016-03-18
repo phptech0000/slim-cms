@@ -1,0 +1,56 @@
+{% extends 'admin.twig' %}
+
+{% block body %}
+	{% include 'admin/layouts/header.twig' %}
+<div class="row">
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        {% for field in fields %}
+                            <th>{{field}}</th>
+                        {% endfor %}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            {% for field in fields %}
+                            	{% if field=='GroupName' %}
+                            		<td>{{item.getGroupOptions().name}}</td>
+                            	{% else %}
+                            		<td>{{item[field][:50]}}</td>
+                            	{% endif %}
+                            {% endfor %}
+                            <td>
+                                <a href="{{ path_for(edit_link, {'id': item.id}) }}" class="btn btn-xs btn-primary">edit</a>
+                                <form method="POST" action="{{ path_for(delete_link, {'id': item.id}) }}" style="display:inline;">
+                                    <input name="{{csrf.valueKey}}" type="hidden" value="{{csrf.value}}">
+                                    <input name="{{csrf.nameKey}}" type="hidden" value="{{csrf.name}}">
+
+                                    <button type="success" class="btn btn-xs btn-danger">delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+            {{ items.render()|raw }}
+            {#{ items.hasMorePages() }#}
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-6 -->
+</div>
+<!-- /.row -->
+	{% include 'admin/layouts/footer.twig' %}	
+{% endblock %}

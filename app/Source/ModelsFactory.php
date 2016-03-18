@@ -15,6 +15,15 @@ class ModelsFactory
 
 	function __construct(){}
 
+	public function getModel($modelName, $data = []){
+		$modelName = self::$namespaceModel.Str::ucfirst($modelName);
+
+		if( class_exists($modelName) )
+			return ( !empty($data) ) ? new $modelName($data): new $modelName();
+
+		return new \stdClass();
+	}
+
 	public static function getModelWithRequest(Request $req, $data = []){
 		$className = self::getClassName($req->getAttribute('route')->getName());
 

@@ -1,0 +1,7 @@
+[
+	{
+		"name": "active",
+		"type": "checkbox",
+		"default": "1"
+	}
+]

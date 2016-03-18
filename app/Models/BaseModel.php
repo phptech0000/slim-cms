@@ -7,19 +7,20 @@ use \Illuminate\Database\Capsule\Manager as DB;
 
 class BaseModel extends ModelEloquent
 {
-	public function getColumnsNames()
+	public function getColumnsNames(array $arAdditionalField=[])
 	{
 	    $connection = DB::connection();
 	    $connection->getSchemaBuilder();
 
 	    $results = $connection->select('PRAGMA table_info('.$this->table.')');
-
-	    return $connection->getPostProcessor()->processColumnListing($results);
+	    $results = $connection->getPostProcessor()->processColumnListing($results);
+	    return array_merge($results, $arAdditionalField);
 	}
 
 	public function getAnnotations()
 	{
 		$file = RESOURCE_PATH.'models_field_info/'.$this->get_class_name().'.json';
+	    
 	    if( !is_file($file) )
 	    	return false;
 

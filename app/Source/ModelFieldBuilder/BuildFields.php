@@ -16,7 +16,7 @@ class BuildFields
 	public function __construct($obj=''){
 		$default = new \stdClass();
 		$default->name = 'default';
-		$default->type = 'text';
+		$default->type = 'string';
 		$default->className = 'form-control';
 
 		$this->defaultObject = $default;
@@ -37,11 +37,14 @@ class BuildFields
 	}
 
 	public function addJsonShema($jsonShema=''){
-		if( !is_array($jsonShema) )
-			return;
 
-		$neededObject = array_filter($jsonShema, function ($e) {return $e->name == "default";});
-		$this->setDefaultObject(current($neededObject));
+		if( !is_array($jsonShema) )
+			return $this;
+
+		$neededObject = array_filter($jsonShema, function ($e) {return ($e->name == "default");});
+		
+		if( $neededObject )
+			$this->setDefaultObject(current($neededObject));
 
 		while ($item = array_shift($jsonShema)) {
 			if( is_object($item) && $item->name ){

@@ -1,0 +1,40 @@
+[
+	{
+		"name": "email",
+		"type": "email",
+		"placeholder":"Enter you email"	
+	},
+	{
+		"name": "password",
+		"type": "password",
+		"placeholder":"Enter password"	
+	},
+	{
+		"name": "active",
+		"type": "checkbox",
+		"default": "1",
+		"values": {"0":"0", "1":"1"}
+	},
+	{
+		"name": "type",
+		"type": "select",
+		"values": {"text":"string", "checkbox":"yes/no"}
+	},
+	{
+		"name": "Currency",
+		"type": "radio",
+		"value": "eur",
+		"values": {"usd":"USD", "eur":"EURO", "rub":"RUB", "uah":"UAH"}
+	},
+	{
+		"name": "description",
+		"type": "html",
+		"rows":10,
+		"values": {"text":"string", "checkbox":"yes/no"}
+	},
+	{
+		"name": "default",
+		"type": "string",
+		"placeholder": "Please set this field"
+	}
+]

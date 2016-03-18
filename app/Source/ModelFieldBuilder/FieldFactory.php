@@ -15,6 +15,8 @@ class FieldFactory implements Interfaces\IFieldFactory
 				return new CheckboxField($obj);
 			case 'radio':
 				return new RadioField($obj);
+			case 'jsonMulti':
+				return new JsonMultiField($obj);
 			case 'select':
 			case 'multiselect':
 				return new SelectField($obj);
