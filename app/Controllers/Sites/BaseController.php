@@ -37,7 +37,13 @@ class BaseController
 	}
 
 	public function addDataForView(){
-		$this->data['options'] = Options::all();
+		$this->data['options'] = Options::where('options_group_id', 2)->get()->toArray();
+		$options = [];
+		while($option = array_shift($this->data['options'])){
+			$options[$option['code']] = $option;
+		}
+		$this->data['options'] = $options;
+
 		$this->menu = Pages::whereRaw('show_in_menu = 1 and active = 1')->orderBy('sort', 'asc')->get()->toArray();
 		$this->data['pageData'] = new \stdClass();
 	}
