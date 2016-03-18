@@ -24,7 +24,8 @@ class AdminResource implements Interfaces\IRouteResource
 		$this->groupPath  = $groupPath;
 		$this->controller = $controller;
 
-		$this->groupName = ($groupName)?$groupName:substr(array_pop(explode('/', $groupPath)), 0, -1);
+		$a = explode('/', $groupPath);
+		$this->groupName = ($groupName)?$groupName:substr(array_pop($a), 0, -1);
 	}
 
 	public function getInfo(){

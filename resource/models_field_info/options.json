@@ -9,6 +9,11 @@
 		"type": "jsonMulti"
 	},
 	{
+		"name": "frozen",
+		"default": "0",
+		"type": "checkbox"
+	},
+	{
 		"name": "type",
 		"type": "select",
 		"values": {
@@ -16,6 +21,7 @@
 			"text":"Textarea",
 			"html":"HTML editor",
 			"checkbox":"Yes/No",
+			"radio":"Radio",
 			"select":"DropDown list",
 			"multiselect":"Multiply select"
 		}

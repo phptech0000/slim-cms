@@ -18,11 +18,11 @@ class AuthMiddleware
     public function __invoke($request, $response, $next)
     {
         global $container;
-
-        $container->flash->addMessage('errors', 'Please authorize');
         
-        if(!Session::has('auth') || !Session::get('auth') )
-    	   return $response->withStatus(302)->withHeader('Location','/auth/login');
+        if(!Session::has('auth') || !Session::get('auth') ){
+            $container->flash->addMessage('errors', 'Please authorize');
+    	    return $response->withStatus(302)->withHeader('Location','/auth/login');
+        }
 
         $response = $next($request, $response);
     	return $response;

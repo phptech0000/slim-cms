@@ -46,7 +46,20 @@ var Admin = {
                 reCalculateValue: function(){},
                 jsonParseFields: function(){}
             }
+        },
+        Elements: {
+            CountPage: {
+                init: function(){}
+            }
         }
+    }
+}
+
+Admin.Panel.Elements.CountPage = {
+    init: function(){
+        $('form.ajax-form').on('change', '.ajax-submit', function(){
+            $(this).closest('form').submit();
+        });
     }
 }
 
@@ -121,4 +134,5 @@ Admin.Panel.Fields.JsonMylti = {
 
 $(document).ready(function(){
     Admin.Panel.Fields.JsonMylti.init();
+    Admin.Panel.Elements.CountPage.init();
 });

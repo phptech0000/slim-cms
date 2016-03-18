@@ -3,10 +3,13 @@
 namespace App\Controllers\Admin;
 
 use Illuminate\Pagination\Paginator;
+use App\Helpers\SessionManager as Session;
 
 class BaseController
 {
 	protected $controllerName = '';
+	protected $containerSlim;
+
 
 	protected $data = array(
 			'title' => '',
@@ -14,15 +17,18 @@ class BaseController
 			'keywords' => '',
 			'h1' => '',
 			'flash' => array(),
+			'page_counts' => [5,10,15,25,50,100,150],
 		);
 
 	public function __construct($container){
+		$this->containerSlim = $container;
+
 		$this->view = $container->get('view');
 		$this->csrf = $container->get('csrf');
 		$this->flash = $container->get('flash');
 		$this->router = $container->get('router');
 
-		if( $messages = $this->flash->getMessages() ){
+		if( $messages = $this->containerSlim->get('flashMess') ){
 			foreach ($messages as $key => $value) {
 				$this->data[$key] = $value[0];
 			}
@@ -57,6 +63,13 @@ class BaseController
 	    Paginator::currentPageResolver(function() use ($current_page) {
 	        return $current_page;
 	    });
+
+	    if( $_REQUEST['count_page'] ){
+	    	Session::push('admin_panel.count_page', $_REQUEST['count_page']);
+	    }
+
+	    $this->pagecount = Session::get('admin_panel.count_page');
+	    $this->data['page_count'] = $this->pagecount; 
 
 		$this->controllerName = substr($s, strpos($s, '.')+1);
 		$this->init();

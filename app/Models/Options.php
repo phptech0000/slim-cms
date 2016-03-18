@@ -6,7 +6,7 @@ class Options extends BaseModel
 {
 	protected $table = 'options';
 
-	protected $fillable = ['options_group_id', 'name', 'description', 'value', 'values', 'type',  'code'];
+	protected $fillable = ['options_group_id', 'name', 'description', 'value', 'values', 'type',  'code', 'frozen'];
 
 	public function getGroupOptions()
     {

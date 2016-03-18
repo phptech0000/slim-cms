@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Helpers\SessionManager as Session;
 use \Illuminate\Database\Capsule\Manager as Schema;
 use \Psr\Http\Message\ServerRequestInterface as request;
-use App\Source\ModelsFactory;
+use App\Source\Factory\ModelsFactory;
 use App\Source\ModelFieldBuilder\BuildFields;
 
 class UniversalController extends BaseController
@@ -15,7 +15,7 @@ class UniversalController extends BaseController
 
 		$model = ModelsFactory::getModelWithRequest($req);
 
-		$this->data['items'] = $model->paginate(10);//$model->all();
+		$this->data['items'] = $model->paginate($this->pagecount);//$model->all();
 		$this->data['items']->setPath($this->router->pathFor($this->data['all_e_link']));
 		$this->data['fields'] = $this->getFields($model->getColumnsNames(), array('id'));
 

@@ -36,6 +36,10 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
+$container['systemOptions'] = function ($c) {
+    return new App\Source\Facade\OptionsFacade(App\Models\Options::where('options_group_id', 1)->get());
+};
+
 /*$container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
         return $c['view']->render($response, 'public/main/pages/404.twig')->withStatus(404);

@@ -10,7 +10,7 @@ class SessionManager
 
 	public static function push($name, $value){
 		$arVars = explode('.', $name);
-		
+
 		if( !is_array($_SESSION[$arVars[0]]) )
 			$_SESSION[$arVars[0]] = array();
 
@@ -18,7 +18,13 @@ class SessionManager
 	}
 
 	public static function get($name, $default=''){
-		return ( self::has($name) ) ? $_SESSION[$name] : $default ;
+		if( strpos($name, '.') ){
+			$arVars = explode('.', $name);
+
+			return ( self::has($arVars[0]) ) ? $_SESSION[$arVars[0]][$arVars[1]] : $default ;
+		} else {
+			return ( self::has($name) ) ? $_SESSION[$name] : $default ;
+		}
 	}
 
 	public static function pull($name, $default=''){

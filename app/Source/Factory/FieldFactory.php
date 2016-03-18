@@ -1,8 +1,18 @@
 <?php
 
-namespace App\Source\ModelFieldBuilder;
+namespace App\Source\Factory;
 
-class FieldFactory implements Interfaces\IFieldFactory
+use App\Source\ModelFieldBuilder\Interfaces\IFieldFactory;
+use App\Source\ModelFieldBuilder\HiddenField;
+use App\Source\ModelFieldBuilder\CheckboxField;
+use App\Source\ModelFieldBuilder\RadioField;
+use App\Source\ModelFieldBuilder\JsonMultiField;
+use App\Source\ModelFieldBuilder\SelectField;
+use App\Source\ModelFieldBuilder\TextField;
+use App\Source\ModelFieldBuilder\StringField;
+
+
+class FieldFactory implements IFieldFactory
 {
 	public static function getField(\stdClass $obj){
 		if( !$obj->type )

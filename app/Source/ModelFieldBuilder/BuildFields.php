@@ -2,6 +2,8 @@
 
 namespace App\Source\ModelFieldBuilder;
 
+use App\Source\Factory\FieldFactory;
+
 class BuildFields
 {
 	protected $arFields;
@@ -28,6 +30,11 @@ class BuildFields
 	public function add(\stdClass $item){
 		$this->addField(FieldFactory::getField($item));
 		
+		return $this;
+	}
+
+	public function remove($name){
+		unset($this->arFields[$name]);
 		return $this;
 	}
 

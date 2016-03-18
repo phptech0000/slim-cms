@@ -34,7 +34,21 @@
                 </table>
             </div>
             <!-- /.table-responsive -->
-            {{ items.render()|raw }}
+            <table class="table">
+                <tr>
+                <td>{{ items.render()|raw }}</td>
+                <td class="text-right">
+                    <form class="pagination ajax ajax-form">
+                        <b>Count: </b>
+                        <select class="ajax-submit" name="count_page">
+                            {% for p in page_counts %}
+                                <option value="{{p}}" {% if page_count==p %}selected=""{% endif %}>{{p}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
+                </tr>
+            </table>
             {#{ items.hasMorePages() }#}
         </div>
         <!-- /.panel-body -->

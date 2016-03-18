@@ -15,7 +15,7 @@ define('MODULE_PATH', APP_PATH .'modules/');
 require VENDOR_PATH.'autoload.php';
 require APP_PATH.'Helpers/functions.php';
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_STRICT );
 
 /**
  * Load the configuration

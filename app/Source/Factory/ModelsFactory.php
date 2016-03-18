@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Source;
+namespace App\Source\Factory;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Illuminate\Support\Str;
