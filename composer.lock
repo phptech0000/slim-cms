@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "083ae6903002012b9b8a5859b6b864a0",
-    "content-hash": "44c85a91dee0ac0d40e7cc3dff03bd88",
+    "hash": "908652f86b03f6f950d89f1ee211420f",
+    "content-hash": "6c3d67c575bc5272439c29fa97583aa9",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1139,6 +1139,50 @@
                 "templating"
             ],
             "time": "2016-01-25 21:22:18"
+        },
+        {
+            "name": "wazaari/monolog-mysql",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/waza-ari/monolog-mysql.git",
+                "reference": "540c7b92245db3e54d6493056ba3a84da2d49b24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/waza-ari/monolog-mysql/zipball/540c7b92245db3e54d6493056ba3a84da2d49b24",
+                "reference": "540c7b92245db3e54d6493056ba3a84da2d49b24",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": ">1.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MySQLHandler\\": "src/MySQLHandler"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Herrmann",
+                    "email": "daniel.herrmann1@gmail.com"
+                }
+            ],
+            "description": "A handler for Monolog that sends messages to MySQL",
+            "homepage": "https://github.com/waza-ari/monolog-mysql",
+            "keywords": [
+                "database",
+                "log",
+                "logging",
+                "monolog",
+                "mysql"
+            ],
+            "time": "2015-07-12 22:25:23"
         }
     ],
     "packages-dev": [],

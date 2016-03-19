@@ -1,11 +1,18 @@
 <?php
+use \Illuminate\Database\Capsule\Manager as DB;
 
 // Register service provider
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('slimcms_core');
-    $file_handler = new \Monolog\Handler\StreamHandler("../log/app.log");
-    //$db_handler = new \Monolog\Handler\LogHandler(new PDO("mysql:host=$host;dbname=$dbname", $user, $pass));
-    $logger->pushHandler($file_handler);
+
+    $handler = new \Monolog\Handler\StreamHandler("../log/app.log");
+    if( $c['settings']['log_system'] == 'db'){
+        $handler = new MySQLHandler\MySQLHandler(DB::connection()->getPdo(), "logging");
+        if( DB::connection()->getDriverName() == 'sqlite' )
+            $handler = new App\Helpers\SqliteMonologHandler(DB::connection()->getPdo(), "logging");
+    }
+
+    $logger->pushHandler($handler);
     return $logger;
 };
 
