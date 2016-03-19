@@ -1,6 +1,14 @@
 <?php
 
 // Register service provider
+$container['logger'] = function($c) {
+    $logger = new \Monolog\Logger('slimcms_core');
+    $file_handler = new \Monolog\Handler\StreamHandler("../log/app.log");
+    //$db_handler = new \Monolog\Handler\LogHandler(new PDO("mysql:host=$host;dbname=$dbname", $user, $pass));
+    $logger->pushHandler($file_handler);
+    return $logger;
+};
+
 $container['cache'] = function () {
     return new \Slim\HttpCache\CacheProvider();
 };

@@ -58,6 +58,9 @@ class BaseController
 	protected function initRoute($req){
 		$s = $req->getAttribute('route')->getName();
 
+		$this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
+		$this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
+
 		$current_page = $_REQUEST['page'];
 
 	    Paginator::currentPageResolver(function() use ($current_page) {
