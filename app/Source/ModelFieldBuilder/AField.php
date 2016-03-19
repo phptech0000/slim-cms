@@ -65,6 +65,9 @@ abstract class AField implements Interfaces\IField
 		if($this->idName)
 			$str = str_replace("#", "# id=\"".$this->idName."\"", $str);
 
+		if( $this->no_show_value )
+			$str = preg_replace("/value=\"(.*)\"/s", "", $str);
+
 		return str_replace("#", "", $str);
 	}
 }

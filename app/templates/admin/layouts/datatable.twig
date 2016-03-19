@@ -8,7 +8,7 @@
                     <thead>
                         <tr>
                         {% for field in fields %}
-                            <th>{{field}}</th>
+                            <th><a href="#">{{field | capitalize}} <i class="fa fa-sort"></i></a></th>
                         {% endfor %}
                             <th>Actions</th>
                         </tr>

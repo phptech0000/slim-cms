@@ -3,7 +3,7 @@
 namespace App\Controllers\Sites;
 
 use \Psr\Http\Message\ServerRequestInterface as request;
-use App\Source\PageFactory;
+use App\Source\Factory\PageFactory;
 
 class UniversalPageController extends BaseController
 {

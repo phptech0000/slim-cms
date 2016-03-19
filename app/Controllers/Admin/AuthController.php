@@ -34,13 +34,16 @@ class AuthController extends BaseController
 			$errors = true;
 		}
 
-		$user = Users::whereRaw('email = ? and password = ?', [$allPostPutVars['email'], $allPostPutVars['password']])->get();
+		$user = Users::where('email', $allPostPutVars['email'])->get();
 
 		if( !isset($user[0]) ){
 			$this->flash->addMessage('errors', 'User no find in db.');
 			$errors = true;
 		} elseif( !$user[0]->active ) {
 			$this->flash->addMessage('errors', 'User is no active. Please contact administrator system.');
+			$errors = true;
+		} elseif( !$user[0]->verifyPassword($allPostPutVars['password']) ){
+			$this->flash->addMessage('errors', 'User no find in system.');
 			$errors = true;
 		}
 
