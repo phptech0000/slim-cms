@@ -18,6 +18,8 @@ class RouteNameMiddleware
         $this->c['currentRoute'] = $request->getAttribute('route')->getName();
         $next($request, $response);
         $this->c['currentRoute'] = $request->getAttribute('route')->getName();
+        p($request->getAttribute('routeInfo'));
+        p($request->getAttribute('route')->getName());
         return $next($request, $response);
     }
 }

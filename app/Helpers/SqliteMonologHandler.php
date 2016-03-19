@@ -62,7 +62,7 @@ class SqliteMonologHandler extends AbstractProcessingHandler
     private function initialize() {
         $this->pdo->exec(
             'CREATE TABLE IF NOT EXISTS `'.$this->table.'` '
-            .'(channel VARCHAR(255), level INTEGER, message LONGTEXT, time INTEGER UNSIGNED)'
+            .'(id integer not null primary key autoincrement, channel VARCHAR(255), level INTEGER, message LONGTEXT, time INTEGER UNSIGNED)'
         );
 
         //Read out actual columns

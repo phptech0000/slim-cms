@@ -3,20 +3,8 @@ use \Illuminate\Database\Capsule\Manager as DB;
 use \Illuminate\Database\Capsule\Manager as Capsule;
 use App\Models\Users;
 $app->get('/test1', function(){
-    $p1 = '$2y$12$FlVLWMmAauklO5T4D4cFJetemyV8B2zUXCygEZ9hRskscveoCxRoC';
-    $rp = 'test';
-    $options = [
-        'cost' => 12,
-        'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-    ];
-    $t = Users::find(8);
-var_dump($t->verifyPassword($rp));
-    $p = password_hash($rp, PASSWORD_BCRYPT, $options);
-
-p([$rp, $p]);
-    var_dump(password_verify($rp, '$2y$12$ZG0BuFxl8Osg4c9UvxSHWO3uHpC4aIlUK6b88Q.QxfeZjA0.bcWiO'));
-    die;
-});
+    echo "string";
+})->setName('asdf');
 /*
 $app->get('/install/users', function($req, $res, $args){
     //DB::table('users')->get();
