@@ -11,6 +11,8 @@ class AuthController extends BaseController
 		$this->csrf($req);
 		if(Session::get('auth') && Session::get('user'))
 		    return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('dashboard'));
+		$this->data['auth_type'] = $this->containerSlim->get('systemOptions')->getValue('email_or_login');
+
 		$this->view->render($res, 'admin\login.twig', $this->data);
 	}
 
@@ -24,17 +26,19 @@ class AuthController extends BaseController
 	public function doLogin($req, $res){
 		$allPostPutVars = $req->getParsedBody();
 		
+		$auth_type = $this->containerSlim->get('systemOptions')->getValue('email_or_login') or 'email';
+
 		$errors = false;
 		if( !$allPostPutVars['password'] ){
 			$errors = true;
 			$this->flash->addMessage('errors', 'The password attribute is required. ');
 		}
-		if( !$allPostPutVars['email'] ){
+		if( !$allPostPutVars[$auth_type] ){
 			$this->flash->addMessage('errors', 'The login attribute is required. ');
 			$errors = true;
 		}
 
-		$user = Users::where('email', $allPostPutVars['email'])->get();
+		$user = Users::where($auth_type, $allPostPutVars[$auth_type])->get();
 
 		if( !isset($user[0]) ){
 			$this->flash->addMessage('errors', 'User no find in db.');

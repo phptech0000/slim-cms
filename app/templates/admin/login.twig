@@ -22,9 +22,16 @@
                         <input name="{{csrf.nameKey}}" type="hidden" value="{{csrf.name}}">
 
                         <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                            </div>
+                            {% if auth_type=='login' %}
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Login" name="login" type="text" autofocus>
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                </div>
+                            {% endif %}
+
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password" value="">
                             </div>

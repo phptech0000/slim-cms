@@ -81,6 +81,7 @@ class OptionsController extends UniversalController
 			$builder->getField('values')->noVisible();
 			$builder->getField('type')->noVisible();
 			$builder->getField('frozen')->noVisible();
+			$builder->getField('code')->noVisible();
 		}
 		if( $this->containerSlim->systemOptions->isDevMode() && 
 			!$this->data['fieldsValues']->frozen ){
