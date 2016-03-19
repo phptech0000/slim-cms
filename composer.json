@@ -20,6 +20,7 @@
         "slim/twig-view": "^2.0",
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
+	"wazaari/monolog-mysql": ">1.0.0",
         "slim/http-cache": "^0.3.0",
         "slim/csrf": "^0.6.0",
         "illuminate/database": "^5.2",
