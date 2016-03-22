@@ -51,7 +51,52 @@ var Admin = {
             CountPage: {
                 init: function(){}
             }
+        },
+        Configurator: {
+            init: function(){},
+            sortable: function(){},
         }
+    }
+}
+
+Admin.Panel.Configurator = {
+    init: function(){
+        this.sortable();
+        this.events();
+    },
+    sortable: function(){
+            $( "#sortable1, #sortable2" ).sortable({
+              connectWith: ".connectedSortable",
+              cancel: ".ui-state-disabled"
+            }).disableSelection();
+    },
+    events: function(){
+        var renameCounter = 0;
+        $(document).on('click', '.save-config', function(){
+            var show = $( "#sortable2" ).sortable( "serialize", { key: "show[]" } );
+            var hide = $( "#sortable1" ).sortable( "serialize", { key: "hide[]" } );
+            console.log([show, hide]);
+        });
+        $(document).on('click', '.move-to-show', function(){
+            $('#sortable1 p').not('.ui-state-disabled').each(function(index, element) {
+                $(element).appendTo($('#sortable2'));
+            });
+        });
+        $(document).on('click', '.move-to-hide', function(){
+            $('#sortable2 p').not('.ui-state-disabled').each(function(index, element) {
+                $(element).appendTo($('#sortable1'));
+            });
+        });
+        /*$(document).on('dblclick', '#sortable2 p', function(){
+            var text = $(this).text();
+            $(this).addClass('field-rename-'+renameCounter).hide();
+            var field = '<div>'+
+                '<input name="field-rename-'+renameCounter+'" type="text" value="'+text+'">'+
+                '<a href="javascript:void(0);">Y</a>'+
+                '<a href="javascript:void(0);">N</a>'+
+                '</div>';
+            $(this).after($(field));
+        });*/
     }
 }
 
@@ -135,4 +180,5 @@ Admin.Panel.Fields.JsonMylti = {
 $(document).ready(function(){
     Admin.Panel.Fields.JsonMylti.init();
     Admin.Panel.Elements.CountPage.init();
+    Admin.Panel.Configurator.init();
 });
