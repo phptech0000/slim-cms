@@ -53,6 +53,8 @@ class BaseController
 		$this->data['store_link']  = 'store.'.$this->controllerName;
 		$this->data['save_link']   = 'save.'.$this->controllerName;
 		$this->data['delete_link'] = 'delete.'.$this->controllerName;
+
+		$this->data['system_options'] = $this->containerSlim->systemOptions;
 	}
 
 	protected function initRoute($req){
