@@ -5,7 +5,7 @@ use \Illuminate\Database\Capsule\Manager as DB;
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('slimcms_core');
 
-    $handler = new \Monolog\Handler\StreamHandler("../log/app.log");
+    $handler = new \Monolog\Handler\StreamHandler(ROOT_PATH."../log/app.log");
     if( $c['settings']['log_system'] == 'db'){
         $handler = new MySQLHandler\MySQLHandler(DB::connection()->getPdo(), "logging");
         if( DB::connection()->getDriverName() == 'sqlite' )
