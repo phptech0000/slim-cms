@@ -7,14 +7,20 @@ use \Illuminate\Database\Capsule\Manager as DB;
 
 class BaseModel extends ModelEloquent
 {
+	protected $allFields;
+
 	public function getColumnsNames(array $arAdditionalField=[])
 	{
+		if( $this->allFields )
+			return $this->allFields;
+
 	    $connection = DB::connection();
 	    $connection->getSchemaBuilder();
 
 	    $results = $connection->select('PRAGMA table_info('.$this->table.')');
 	    $results = $connection->getPostProcessor()->processColumnListing($results);
-	    return array_merge($results, $arAdditionalField);
+	    $this->allFields = array_merge($results, $arAdditionalField);
+	    return $this->allFields;
 	}
 
 	public function getAnnotations()

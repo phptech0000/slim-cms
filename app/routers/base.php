@@ -5,6 +5,20 @@ use App\Models\Users;
 $app->get('/test1', function(){
     echo "string";
 })->setName('asdf');
+
+$app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('App\Middleware\CheckAjaxMiddleware')->setName('asdf1');
+/*
+$app->get('/install/user_views_settings', function($req, $res, $args){
+    Capsule::schema()->dropIfExists('user_views_settings');
+    Capsule::schema()->create('user_views_settings', function($table) {
+        $table->increments('id');
+        $table->integer('user_id');
+        $table->string('group');
+        $table->string('value');
+        $table->string('option_type');
+        $table->string('code');
+    });
+});
 /*
 $app->get('/install/users', function($req, $res, $args){
     //DB::table('users')->get();

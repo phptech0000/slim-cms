@@ -73,6 +73,25 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    {% if system_options.isDevMode() %}
+                    <li>
+                        <a href="#"><i class="fa fa-flash fa-fw"></i>Developer possibility<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/admin/generate_admin_section"><i class="fa fa-ban fa-fw"></i> Generator admin section</a>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="/admin/generate_model"><i class="fa fa-ban fa-fw"></i> Generator only model</a>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="/admin/modules"><i class="fa fa-ban fa-fw"></i> Modules system</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -87,6 +106,7 @@
                     {% block headerh %}{{ h1 }}{% endblock %}
                     <div style="display:inline-block;float: right;">
                         {% block header_button %}
+                        <a href="javascript:void(0);" data-target="#modal-config" data-toggle="modal" class="btn"><i class="fa fa-gears"></i></a>
                         <a href="{{ path_for(create_link) }}" class="btn btn-success">Create {{h1}}</a>
                         {% endblock %}
                     </div>

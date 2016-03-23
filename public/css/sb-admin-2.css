@@ -354,3 +354,6 @@ table.dataTable thead .sorting:after {
 }
 
 .navbar-to-site{margin: 14px;}
+
+.ui-sortable .ui-sortable-handle{cursor: pointer;}
+.ui-sortable .ui-state-default.ui-state-disabled{background-color: #cfcfcf;cursor: inherit;}
