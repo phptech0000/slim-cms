@@ -15,7 +15,7 @@ class ModelsFactory
 
 	function __construct(){}
 
-	public function getModel($modelName, $data = []){
+	public static function getModel($modelName, $data = []){
 		$modelName = self::$namespaceModel.Str::ucfirst($modelName);
 
 		if( class_exists($modelName) )

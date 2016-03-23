@@ -15,11 +15,7 @@ class RouteNameMiddleware
         // create a new property in the container to hold the route name
         // for later use in ANY controller constructor being 
         // instantiated by the router
-        $this->c['currentRoute'] = $request->getAttribute('route')->getName();
-        $next($request, $response);
-        $this->c['currentRoute'] = $request->getAttribute('route')->getName();
-        p($request->getAttribute('routeInfo'));
-        p($request->getAttribute('route')->getName());
+        $this->c['currentRouteName'] = $request->getAttribute('route')->getName();
         return $next($request, $response);
     }
 }

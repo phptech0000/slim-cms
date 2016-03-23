@@ -25,6 +25,17 @@ class OptionsController extends UniversalController
 		$t = $model->getColumnsNames(['GroupName']);
 		$this->data['fields'] = $this->getFields($t, ['id'], ['values', 'type', 'options_group_id', 'frozen']);
 
+				$userField = ModelsFactory::getModel('UserViewsSettings');
+		$userField = $userField->where('user_id', Session::get('user')['id'])->where('group', $this->data['all_e_link'])->where('code', 'show_fields_in_table')->first();
+
+		$this->data['showFields'] = array();
+		if( $userField ){
+			$this->data['showFields'] = (array)json_decode($userField->toArray()['value']);
+			$this->data['fields'] = $this->data['showFields'];
+		}
+
+		$this->data['allFields'] = array_diff($model->getColumnsNames(), $this->data['showFields']);
+
 		$this->view->render($res, 'admin\optionsTable.twig', $this->data);
 	}
 

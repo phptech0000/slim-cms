@@ -73,9 +73,17 @@ Admin.Panel.Configurator = {
     events: function(){
         var renameCounter = 0;
         $(document).on('click', '.save-config', function(){
-            var show = $( "#sortable2" ).sortable( "serialize", { key: "show[]" } );
-            var hide = $( "#sortable1" ).sortable( "serialize", { key: "hide[]" } );
-            console.log([show, hide]);
+            var show = $( "#sortable2" ).sortable( "serialize", { key: "show[]", expression: new RegExp(/field-(.+)/) } );
+                //hide = $( "#sortable1" ).sortable( "serialize", { key: "hide[]" } );
+            $.ajax({
+                method: 'OPTIONS',
+                url: '/ajax?'+show+'&'+$(this).closest('form').serialize(),
+                dataType: "json",
+                cache: false
+            }).success(function(data){
+                if( data.success )
+                    location.reload();
+            });
         });
         $(document).on('click', '.move-to-show', function(){
             $('#sortable1 p').not('.ui-state-disabled').each(function(index, element) {
