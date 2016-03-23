@@ -1,13 +1,15 @@
 {
     "name": "1c-bitrix.bel",
     "description": "Site from based on Slim Framework 3 use templater Twig.",
-    "license": "BSD-3-Clause",
+    "version": "0.0.3-alpha",
+    "license": "MIT",
     "type": "project",
-    "keywords": ["slim-framework"],
+    "keywords": ["slim-framework", "slim 3", "cms", "blog", "bootstrap cms", "bootstrap"],
     "authors": [
         {
             "name": "Andrey Leo",
-            "email": "ba_ndrey@ukr.net"
+            "email": "ba_ndrey@ukr.net",
+	    "role": "Lead developer"
         }
     ],
     "autoload": {
