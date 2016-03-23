@@ -9,6 +9,7 @@ class BaseController
 {
 	protected $controllerName = '';
 	protected $containerSlim;
+	protected $resourse = true;
 
 
 	protected $data = array(
@@ -47,13 +48,14 @@ class BaseController
 			$this->data[$name] = $this->controllerName;
 		}
 
-		$this->data['create_link'] = 'add.'.$this->controllerName;
 		$this->data['all_e_link']  = 'list.'.$this->controllerName;
-		$this->data['edit_link']   = 'edit.'.$this->controllerName;
-		$this->data['store_link']  = 'store.'.$this->controllerName;
-		$this->data['save_link']   = 'save.'.$this->controllerName;
-		$this->data['delete_link'] = 'delete.'.$this->controllerName;
-
+		if( $this->resourse ){
+			$this->data['create_link'] = 'add.'.$this->controllerName;
+			$this->data['edit_link']   = 'edit.'.$this->controllerName;
+			$this->data['store_link']  = 'store.'.$this->controllerName;
+			$this->data['save_link']   = 'save.'.$this->controllerName;
+			$this->data['delete_link'] = 'delete.'.$this->controllerName;
+		}
 		$this->data['system_options'] = $this->containerSlim->systemOptions;
 	}
 
@@ -76,7 +78,9 @@ class BaseController
 	    $this->pagecount = Session::get('admin_panel.count_page');
 	    $this->data['page_count'] = $this->pagecount; 
 
-		$this->controllerName = substr($s, strpos($s, '.')+1);
+	    if( !$this->controllerName )
+			$this->controllerName = substr($s, strpos($s, '.')+1);
+		
 		$this->init();
 		$this->csrf($req);
 	}
