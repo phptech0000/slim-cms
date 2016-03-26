@@ -1,6 +1,8 @@
 <?php
 use \Illuminate\Database\Capsule\Manager as DB;
 use \Illuminate\Database\Capsule\Manager as Capsule;
+use Symfony\Component\EventDispatcher\Event;
+
 use App\Models\Users;
 $app->get('/test1', function(){
     if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done']))
@@ -15,6 +17,10 @@ $app->get('/test1', function(){
         echo "Ooophs, we got an error: " . $e->getMessage();
     }
 })->setName('asdf');
+
+$app->get('/d', function($t){
+    $this->dispatcher->dispatch('acme.action');
+});
 
 $app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('App\Middleware\CheckAjaxMiddleware')->setName('asdf1');
 /*

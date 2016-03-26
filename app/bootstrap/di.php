@@ -1,5 +1,6 @@
 <?php
 use \Illuminate\Database\Capsule\Manager as DB;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 // Register service provider
 $container['logger'] = function($c) {
@@ -53,6 +54,10 @@ $container['notFoundHandler'] = function ($c) {
 
 $container['systemOptions'] = function ($c) {
     return new App\Source\Facade\OptionsFacade(App\Models\Options::where('options_group_id', 1)->get());
+};
+
+$container['dispatcher'] = function ($c) {
+    return new EventDispatcher();
 };
 
 /*$container['notFoundHandler'] = function ($c) {

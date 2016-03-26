@@ -15,8 +15,6 @@ define('MODULE_PATH', APP_PATH .'modules/');
 require VENDOR_PATH.'autoload.php';
 require APP_PATH.'Helpers/functions.php';
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_STRICT );
-
 /**
  * Load the configuration
  */
@@ -33,6 +31,9 @@ $config = array(
 foreach (glob(APP_PATH.'config/*.php') as $configFile) {
     $config += require_once $configFile;
 }
+
+if( $config['slim']['settings']['debug'] )
+	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_STRICT | E_RECOVERABLE_ERROR );
 
 $container = new \Slim\Container($config['slim']);
 
@@ -71,5 +72,19 @@ require APP_PATH.'bootstrap/di.php';
 foreach (glob(APP_PATH.'routers/*.php') as $routeFile) {
     require_once $routeFile;
 }
+
+
+
+$app->getContainer()->dispatcher->addListener('acme.action', function($event){
+        echo "action 1";
+    });
+
+$app->getContainer()->dispatcher->addListener('acme.action', function($event){
+        echo "action 2";
+    });
+
+$app->getContainer()->dispatcher->addListener('acme.action', function($event){
+        echo "action 3";
+    });
 
 return $app;
