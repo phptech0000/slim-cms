@@ -2,6 +2,10 @@
 My cms by based slim 3 framework
 #
 Admin panel based on template: SB-admin v2;
+# Screenshots
+![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png)
+![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png)
+![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989510.png)
 
 Project use additional library:
  - Slim v3;
