@@ -32,57 +32,46 @@ foreach (glob(APP_PATH . 'config/*.php') as $configFile) {
     $config += require_once $configFile;
 }
 
-if ($config['slim']['settings']['debug']) {
-    error_reporting(E_ERROR | E_WARNING | E_PARSE | E_STRICT | E_RECOVERABLE_ERROR);
+foreach (glob(APP_PATH . 'Modules/*.php') as $module) {
+    $t = 'App\\Modules\\' . basename($module, '.php');
+    if (method_exists($t, 'registerModule')) {
+        //::registerModule();
+    }
+
 }
 
-$container = new \Slim\Container($config['slim']);
+if ($config['slim']['settings']['debug']) {
+    error_reporting(E_ALL ^ E_NOTICE);
+}
+
+$container = new \Slim\Container( /*$config['slim']*/);
 
 $app = new \Slim\App($container);
+
+$modules = new App\Modules\ModuleManager($container, $app);
+$modules->registerModule(new App\Modules\LoggerModule());
+$modules->registerModule(new App\Modules\CoreModule());
+$modules->coreInit()->boot();
+
+$logger = $container->logger;
+$container->dispatcher->addListener('middleware.core.after', function ($event) use ($logger) {
+    $logger->addInfo("Info - Core middleware after");
+});
+
+$container->dispatcher->addListener('middleware.core.before', function ($event) use ($logger) {
+    $logger->addInfo("Info - Core middleware before");
+});
+
 /*
-// Bootstrap Eloquent ORM
-$dbcontainer = new Illuminate\Container\Container;
-$connFactory = new \Illuminate\Database\Connectors\ConnectionFactory($dbcontainer);
-$conn = $connFactory->make($config['db'][$config['slim']['db_driver']]);
-$resolver = new \Illuminate\Database\ConnectionResolver();
-$resolver->addConnection('default', $conn);
-$resolver->setDefaultConnection('default');
-\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
-// End Bootstrap Eloquent ORM
- */
-use \Illuminate\Database\Capsule\Manager as Capsule;
-
-/**
- * Configure the database and boot Eloquent
- */
-$capsule = new Capsule;
-
-$capsule->addConnection($config['db'][$config['slim']['db_driver']]);
-
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
-
-/** Initialize up Slim hooks and middleware */
-require APP_PATH . 'bootstrap/middleware.php';
-
-/** Initialize up Slim DependencyInjection */
-require APP_PATH . 'bootstrap/di.php';
-
-/** Initialize routes for application */
-foreach (glob(APP_PATH . 'routers/*.php') as $routeFile) {
-    require_once $routeFile;
+foreach( $app->getContainer()->get('installedModules') as $module){
+    $modules->registerModule(new App\Modules\$module->className());
 }
-
-$app->getContainer()->dispatcher->addListener('acme.action', function ($event) {
-    echo "action 1";
-});
-
-$app->getContainer()->dispatcher->addListener('acme.action', function ($event) {
-    echo "action 2";
-});
-
-$app->getContainer()->dispatcher->addListener('acme.action', function ($event) {
-    echo "action 3";
-});
-
+$modules->boot();
+*/
+/*
+$module = new App\Modules\LoggerModule($container, $app);
+$module->registerDi();
+$module->registerRoute();
+$container = $module->getContainer();
+*/
 return $app;
