@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * В ядровый модуль войдет
- *  логгер, опции, админка, авторизация, события, пользователи
+ *  опции, админка, авторизация, события(+), пользователи, модули
  *
  */
 
@@ -60,8 +60,8 @@ class CoreModule implements IModule
             return new \Slim\Flash\Messages();
         };
 
-        $this->container['view'] = function ($c) use ($config) {
-            $view = new \Slim\Views\Twig($config['view']['template_path'], $config['view']['twig']);
+        $this->container['view'] = function ($c) {
+            $view = new \Slim\Views\Twig($c->config['view']['template_path'], $c->config['view']['twig']);
 
             // Instantiate and add Slim specific extension
             $view->addExtension(new \Slim\Views\TwigExtension(
@@ -75,9 +75,8 @@ class CoreModule implements IModule
 
     public function registerMiddleware()
     {
-        $app = $this->app;
-        $this->container->dispatcher->addListener('app.beforeRun', function ($event) use ($app) {
-            $app->add('App\Middleware\CoreFirstLastMiddleware:core');
+        $this->container->dispatcher->addListener('app.beforeRun', function ($event){
+            $event->getApp()->add('App\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
     }
 
