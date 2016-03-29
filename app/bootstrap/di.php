@@ -1,11 +1,12 @@
 <?php
 use \Illuminate\Database\Capsule\Manager as DB;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 // Register service provider
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('slimcms_core');
 
-    $handler = new \Monolog\Handler\StreamHandler("../log/app.log");
+    $handler = new \Monolog\Handler\StreamHandler(ROOT_PATH."../log/app.log");
     if( $c['settings']['log_system'] == 'db'){
         $handler = new MySQLHandler\MySQLHandler(DB::connection()->getPdo(), "logging");
         if( DB::connection()->getDriverName() == 'sqlite' )
@@ -53,6 +54,10 @@ $container['notFoundHandler'] = function ($c) {
 
 $container['systemOptions'] = function ($c) {
     return new App\Source\Facade\OptionsFacade(App\Models\Options::where('options_group_id', 1)->get());
+};
+
+$container['dispatcher'] = function ($c) {
+    return new EventDispatcher();
 };
 
 /*$container['notFoundHandler'] = function ($c) {

@@ -25,7 +25,9 @@
 	"wazaari/monolog-mysql": ">1.0.0",
         "slim/http-cache": "^0.3.0",
         "slim/csrf": "^0.6.0",
+	"hybridauth/hybridauth": "^2.3.0",
         "illuminate/database": "^5.2",
-        "illuminate/pagination": "^5.2"
+        "illuminate/pagination": "^5.2",
+        "symfony/event-dispatcher": "^3.0"
     }
 }

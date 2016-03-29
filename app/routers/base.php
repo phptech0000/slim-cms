@@ -1,10 +1,26 @@
 <?php
 use \Illuminate\Database\Capsule\Manager as DB;
 use \Illuminate\Database\Capsule\Manager as Capsule;
+use Symfony\Component\EventDispatcher\Event;
+
 use App\Models\Users;
 $app->get('/test1', function(){
-    echo "string";
+    if (isset($_REQUEST['hauth_start']) || isset($_REQUEST['hauth_done']))
+{
+    Hybrid_Endpoint::process();
+}try {
+        $hybridauth = new Hybrid_Auth( APP_PATH.'config/socialAuth.php' );
+        $adapter = $hybridauth->authenticate( "Vkontakte" );
+    $user_profile = $adapter->getUserProfile();
+    p($user_profile);
+    } catch( Exception $e ){
+        echo "Ooophs, we got an error: " . $e->getMessage();
+    }
 })->setName('asdf');
+
+$app->get('/d', function($t){
+    $this->dispatcher->dispatch('acme.action');
+});
 
 $app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('App\Middleware\CheckAjaxMiddleware')->setName('asdf1');
 /*
