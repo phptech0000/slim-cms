@@ -7,13 +7,12 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use MySQLHandler\MySQLHandler;
 use Slim\Container;
+use Slim\App;
 
-class LoggerModule implements IModule
+class LoggerModule extends AModule
 {
-    protected $container;
-    protected $app;
+    const MODULE_NAME = 'logger';
 
-    protected static $loaded = false;
     protected $registerDi = false;
 
     public function checkRequireModule(array $arr = [])
@@ -30,10 +29,9 @@ class LoggerModule implements IModule
     public function uninstallModule()
     {}
 
-    public function initialization($app)
+    public function initialization(App $app)
     {
-        $this->container = $app->getContainer();
-        $this->app = $app;
+        parent::initialization($app);
 
         $this->registerDi();
 
@@ -106,7 +104,9 @@ class LoggerModule implements IModule
 
             }
 
-            $logger->pushHandler($handler);
+            if( $c['settings']['use_log'] )
+                $logger->pushHandler($handler);
+            
             return $logger;
         };
 
@@ -115,20 +115,5 @@ class LoggerModule implements IModule
 
     public function registerMiddleware()
     {
-    }
-
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    public static function isInitModule()
-    {
-        return (bool) self::$loaded;
-    }
-
-    public static function getName()
-    {
-        return "logger";
     }
 }

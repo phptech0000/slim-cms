@@ -2,8 +2,9 @@
 
 namespace App\Modules;
 
-use App\Modules\IModule;
+use App\Modules\AModule;
 use Slim\Container;
+use Slim\App;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -12,17 +13,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  */
 
-class CoreModule implements IModule
+class CoreModule extends AModule
 {
-    protected $container;
-    protected $app;
-
-    protected static $loaded = false;
-
-    /*public function __construct(Container $container, $app)
-    {
-    $this->container = $container;
-    }*/
+    const MODULE_NAME = 'core';
 
     public function checkRequireModule(array $t = [])
     {}
@@ -33,20 +26,15 @@ class CoreModule implements IModule
     public function uninstallModule()
     {}
 
-    public function initialization($app)
+    public function initialization(App $app)
     {
-        $this->container = $app->getContainer();
-        $this->app = $app;
+        parent::initialization($app);
         
         $this->container['dispatcher'] = function ($c) {
             return new EventDispatcher();
         };
 
         $this->container->dispatcher->dispatch('module.core.beforeInitialization');
-    }
-
-    public function afterInitialization(){
-        self::$loaded = true;
     }
 
     public function registerRoute()
@@ -78,15 +66,5 @@ class CoreModule implements IModule
         $this->container->dispatcher->addListener('app.beforeRun', function ($event){
             $event->getApp()->add('App\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
-    }
-
-    public static function isInitModule()
-    {
-        return (bool)self::$loaded;
-    }
-
-    public static function getName()
-    {
-        return "core";
     }
 }

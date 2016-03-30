@@ -2,13 +2,15 @@
 
 namespace App\Modules;
 
+use Slim\App;
+
 interface IModule
 {
     public function checkRequireModule(array $arModulesName = ['core']);
     public function installModule();
     public function uninstallModule();
 
-    public function initialization($app);
+    public function initialization(App $app);
     public function registerRoute();
     public function registerDi();
     public function registerMiddleware();
