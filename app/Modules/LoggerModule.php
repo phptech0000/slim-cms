@@ -41,9 +41,9 @@ class LoggerModule implements IModule
 
         foreach ($this->container->modules as $name) {
             $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) {
-                echo "action beforeInitialization";
+                $event->getLogger()->addInfo("action beforeInitialization", [$event->getParam()->getName()]);
             });
-
+/*
             $this->container->dispatcher->addListener('module.' . $name . '.beforeRegister.route', function ($event) {
                 echo "action beforeRegister route";
             });
@@ -67,16 +67,15 @@ class LoggerModule implements IModule
             $this->container->dispatcher->addListener('module.' . $name . '.afterRegister.middleware', function ($event) {
                 echo "action afterRegister middleware";
             });
-
+*/
             $this->container->dispatcher->addListener('module.' . $name . '.afterInitialization', function ($event) {
-                echo "action afterInitialization logger";
+                $event->getLogger()->addInfo("action afterInitialization", [$event->getParam()->getName()]);
             });
         }
 
-        $logger = $this->container->get('logger');
-        $this->container->dispatcher->addListener('app.afterRun', function ($event) use ($logger) {
-
+        $this->container->dispatcher->addListener('app.afterRun', function ($event){
             $workTime = round((microtime(true) - $GLOBALS['startTime']), 3);
+            $logger = $event->getLogger();
             $logger->addInfo("Statistic - work time: ", [$workTime . 's']);
             $logger->addInfo("Statistic - memory usage: ", [memoryFormat(memory_get_usage())]);
             $logger->addInfo("Statistic - max memory usage: ", [memoryFormat(memory_get_peak_usage())]);

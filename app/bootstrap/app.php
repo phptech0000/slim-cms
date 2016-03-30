@@ -32,19 +32,12 @@ foreach (glob(APP_PATH . 'config/*.php') as $configFile) {
     $config += require_once $configFile;
 }
 
-foreach (glob(APP_PATH . 'Modules/*.php') as $module) {
-    $t = 'App\\Modules\\' . basename($module, '.php');
-    if (method_exists($t, 'registerModule')) {
-        //::registerModule();
-    }
-
-}
-
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
 }
 
-$container = new \Slim\Container( /*$config['slim']*/);
+$container = new \Slim\Container($config['slim']);
+$container->config = $config;
 
 $app = new \Slim\App($container);
 
@@ -53,25 +46,24 @@ $modules->registerModule(new App\Modules\LoggerModule());
 $modules->registerModule(new App\Modules\CoreModule());
 $modules->coreInit()->boot();
 
-$logger = $container->logger;
 $container->dispatcher->addListener('middleware.core.after', function ($event) use ($logger) {
-    $logger->addInfo("Info - Core middleware after");
+    $event->getLogger()->addInfo("Info - Core middleware after");
 });
 
-$container->dispatcher->addListener('middleware.core.before', function ($event) use ($logger) {
-    $logger->addInfo("Info - Core middleware before");
+$container->dispatcher->addListener('middleware.core.before', function ($event) {
+    $event->getLogger()->addInfo("Info - Core middleware before");
 });
 
 /*
 foreach( $app->getContainer()->get('installedModules') as $module){
-    $modules->registerModule(new App\Modules\$module->className());
+$modules->registerModule(new App\Modules\$module->className());
 }
 $modules->boot();
-*/
+ */
 /*
 $module = new App\Modules\LoggerModule($container, $app);
 $module->registerDi();
 $module->registerRoute();
 $container = $module->getContainer();
-*/
+ */
 return $app;

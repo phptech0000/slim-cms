@@ -2,6 +2,9 @@
 
 namespace App\Modules;
 
+use App\Source\Events\BaseAppEvent;
+use App\Source\Events\BaseLoggerEvent;
+
 class ModuleManager implements IModulesManager
 {
     /**
@@ -65,17 +68,19 @@ class ModuleManager implements IModulesManager
 
         $module->initialization($this->app);
 
-        $this->container->dispatcher->dispatch('module.core.beforeRegister.route');
+        $event = new BaseAppEvent($this->app);
+
+        //$this->container->dispatcher->dispatch('module.core.beforeRegister.route', $event);
         $module->registerRoute();
-        $this->container->dispatcher->dispatch('module.core.afterRegister.route');
-        $this->container->dispatcher->dispatch('module.core.beforeRegister.di');
+        //$this->container->dispatcher->dispatch('module.core.afterRegister.route', $event);
+        //$this->container->dispatcher->dispatch('module.core.beforeRegister.di', $event);
         $module->registerDi();
-        $this->container->dispatcher->dispatch('module.core.afterRegister.di');
-        $this->container->dispatcher->dispatch('module.core.beforeRegister.middleware');
+        //$this->container->dispatcher->dispatch('module.core.afterRegister.di', $event);
+        //$this->container->dispatcher->dispatch('module.core.beforeRegister.middleware', $event);
         $module->registerMiddleware();
-        $this->container->dispatcher->dispatch('module.core.afterRegister.middleware');
+        //$this->container->dispatcher->dispatch('module.core.afterRegister.middleware', $event);
         $module->afterInitialization();
-        $this->container->dispatcher->dispatch('module.core.afterInitialization');
+        $this->container->dispatcher->dispatch('module.core.afterInitialization', $event);
 
         return $this;
     }
@@ -88,19 +93,22 @@ class ModuleManager implements IModulesManager
             }
             $name = $module->getName();
 
-            $this->container->dispatcher->dispatch('module.'.$name.'.beforeInitialization');
+            $event = new BaseAppEvent($this->app, $module);
+
+            $this->container->dispatcher->dispatch('module.'.$name.'.beforeInitialization', $event);
             $module->initialization($this->app);
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route');
+            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
             $module->registerRoute();
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route');
-            $this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.di');
+            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
+            //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.di', $event);
             $module->registerDi();
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.di');
-            $this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.middleware');
+            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.di', $event);
+            //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.middleware', $event);
             $module->registerMiddleware();
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware');
+            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware', $event);
             $module->afterInitialization();
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterInitialization');
+            $event = new BaseLoggerEvent($this->container->logger, $module);
+            $this->container->dispatcher->dispatch('module.'.$name.'.afterInitialization', $event, $module);
         }
 
         $this->container->dispatcher->dispatch('module.allModuleLoaded');
