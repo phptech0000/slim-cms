@@ -46,6 +46,7 @@ $modules->registerModule(new App\Modules\LoggerModule());
 $modules->registerModule(new App\Modules\CoreModule());
 
 $modules->registerModule(new App\Modules\CSRFModule());
+$modules->registerModule(new App\Modules\FlashModule());
 
 $modules->coreInit()->boot();
 

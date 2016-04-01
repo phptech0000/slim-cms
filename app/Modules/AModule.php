@@ -40,4 +40,22 @@ abstract class AModule implements IModule
     {
         return static::MODULE_NAME;
     }
+
+    public function checkRequireModule(array $arr = [])
+    {}
+
+    public function installModule()
+    {}
+
+    public function uninstallModule()
+    {}
+
+    public function registerRoute()
+    {}
+
+    public function registerMiddleware()
+    {}
+
+    public function registerDi()
+    {}
 }

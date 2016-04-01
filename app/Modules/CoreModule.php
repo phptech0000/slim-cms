@@ -17,15 +17,6 @@ class CoreModule extends AModule
 {
     const MODULE_NAME = 'core';
 
-    public function checkRequireModule(array $t = [])
-    {}
-
-    public function installModule()
-    {}
-
-    public function uninstallModule()
-    {}
-
     public function initialization(App $app)
     {
         parent::initialization($app);

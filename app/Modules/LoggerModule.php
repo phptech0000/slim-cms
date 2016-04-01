@@ -15,15 +15,6 @@ class LoggerModule extends AModule
 
     protected $registerDi = false;
 
-    public function checkRequireModule(array $arr = [])
-    {}
-
-    public function installModule()
-    {}
-
-    public function uninstallModule()
-    {}
-
     public function initialization(App $app)
     {
         parent::initialization($app);
@@ -76,10 +67,6 @@ class LoggerModule extends AModule
         });
     }
 
-    public function registerRoute()
-    {
-    }
-
     public function registerDi()
     {
         if ($this->registerDi) {
@@ -108,7 +95,4 @@ class LoggerModule extends AModule
         $this->registerDi = true;
     }
 
-    public function registerMiddleware()
-    {
-    }
 }
