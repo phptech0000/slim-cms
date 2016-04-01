@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * В ядровый модуль войдет
- *  опции, админка, авторизация, события(+), пользователи, модули
+ *  опции(+), логгер(+), csrf(+), флеш сообщения(+), админка()+авторизация(), события(+), пользователи(), модули()
  *
  */
 
@@ -30,7 +30,7 @@ class CoreModule extends AModule
 
     public function registerRoute()
     {
-        $this->app->get('/', function(){});
+        $this->app->get('/', function($req, $res){$res->getBody()->write("end app");});
     }
 
     public function registerDi()
@@ -57,5 +57,16 @@ class CoreModule extends AModule
         $this->container->dispatcher->addListener('app.beforeRun', function ($event){
             $event->getApp()->add('App\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
+    }
+
+    public function afterInitialization()
+    {
+        //parent::afterInitialization();
+
+        //$modules = \App\Modules\ModuleManager::getInstance();
+        
+        //$modules->registerModule(new \App\Modules\CSRFModule());
+        //$modules->registerModule(new \App\Modules\FlashModule());
+        //$modules->registerModule(new \App\Modules\SystemOptionsModule());
     }
 }

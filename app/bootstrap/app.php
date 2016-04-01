@@ -41,16 +41,11 @@ $container->config = $config;
 
 $app = new \Slim\App($container);
 
-$modules = new App\Modules\ModuleManager($container, $app);
-$modules->registerModule(new App\Modules\LoggerModule());
+$modules = App\Modules\ModuleManager::getInstance($container, $app);
+$modules->registerModule(new \App\Modules\LoggerModule());
 $modules->registerModule(new App\Modules\CoreModule());
 
-$modules->registerModule(new App\Modules\CSRFModule());
-$modules->registerModule(new App\Modules\FlashModule());
-$modules->registerModule(new App\Modules\SystemOptionsModule());
-
-
-$modules->coreInit()->boot();
+$modules->coreInit();//->boot();
 
 $container->dispatcher->addListener('middleware.core.after', function ($event) use ($logger) {
     $event->getLogger()->addInfo("Info - Core middleware after");

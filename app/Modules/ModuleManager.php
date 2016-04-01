@@ -22,14 +22,25 @@ class ModuleManager implements IModulesManager
      */
     protected $container;
 
+    private static $instance = null;
+
     /**
      * @param $container
      * @param $app
      */
-    public function __construct($container, $app)
+    protected function __construct($container, $app)
     {
         $this->app = $app;
         $this->container = $container;
+    }
+
+    public static function getInstance($container='', $app='')
+    {
+        if (!self::$instance) {
+            self::$instance = new self($container, $app);
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -57,7 +68,7 @@ class ModuleManager implements IModulesManager
         $module = $this->getModule('core');
 
         if (!$module) {
-            throw new RuntimeException('Core module not found.');
+            throw new \RuntimeException('Core module not found.');
         }
 
         if ($module->isInitModule()) {
@@ -96,7 +107,7 @@ class ModuleManager implements IModulesManager
 
             $event = new BaseAppEvent($this->app, $module);
 
-            $this->container->dispatcher->dispatch('module.'.$name.'.beforeInitialization', $event);
+            $this->container->dispatcher->dispatch('module.' . $name . '.beforeInitialization', $event);
             $module->initialization($this->app);
             //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
             $module->registerRoute();
@@ -109,9 +120,9 @@ class ModuleManager implements IModulesManager
             //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware', $event);
             $module->afterInitialization();
             $event = new BaseLoggerEvent($this->container->logger, $module);
-            $this->container->dispatcher->dispatch('module.'.$name.'.afterInitialization', $event, $module);
+            $this->container->dispatcher->dispatch('module.' . $name . '.afterInitialization', $event, $module);
         }
-
+die;
         $this->container->dispatcher->dispatch('module.allModuleLoaded');
     }
 
