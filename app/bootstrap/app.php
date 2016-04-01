@@ -44,6 +44,9 @@ $app = new \Slim\App($container);
 $modules = new App\Modules\ModuleManager($container, $app);
 $modules->registerModule(new App\Modules\LoggerModule());
 $modules->registerModule(new App\Modules\CoreModule());
+
+$modules->registerModule(new App\Modules\CSRFModule());
+
 $modules->coreInit()->boot();
 
 $container->dispatcher->addListener('middleware.core.after', function ($event) use ($logger) {
