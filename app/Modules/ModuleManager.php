@@ -88,6 +88,7 @@ class ModuleManager implements IModulesManager
     public function boot()
     {
         foreach ($this->getModules() as $module) {
+
             if ($module->isInitModule()) {
                 continue;
             }

@@ -21,11 +21,6 @@ class LoggerModule extends AModule
     public function installModule()
     {}
 
-    public function afterInitialization()
-    {
-        self::$loaded = true;
-    }
-
     public function uninstallModule()
     {}
 

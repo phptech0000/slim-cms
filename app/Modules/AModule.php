@@ -10,7 +10,7 @@ abstract class AModule implements IModule
 	protected $container;
     protected $app;
 
-    protected static $loaded = false;
+    protected $loaded = false;
 
     public function __construct() {
     	$c = get_called_class();
@@ -28,12 +28,12 @@ abstract class AModule implements IModule
 
     public function afterInitialization()
     {
-        self::$loaded = true;
+        $this->loaded = true;
     }
 
-    public static function isInitModule()
+    public function isInitModule()
     {
-        return (bool) self::$loaded;
+        return (bool) $this->loaded;
     }
 
     public static function getName()

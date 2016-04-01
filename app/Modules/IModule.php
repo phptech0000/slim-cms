@@ -16,6 +16,6 @@ interface IModule
     public function registerMiddleware();
     public function afterInitialization();
 
-    public static function isInitModule();
+    public function isInitModule();
     public static function getName();
 }
