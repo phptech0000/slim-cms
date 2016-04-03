@@ -3,10 +3,10 @@
 namespace App\Modules;
 
 use App\Modules\AModule;
-use Slim\Container;
-use Slim\App;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Slim\App;
+use Slim\Container;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * В ядровый модуль войдет
@@ -21,7 +21,7 @@ class CoreModule extends AModule
     public function initialization(App $app)
     {
         parent::initialization($app);
-        
+
         $this->registerDB();
 
         $this->container['dispatcher'] = function ($c) {
@@ -37,7 +37,7 @@ class CoreModule extends AModule
 
     public function registerRoute()
     {
-        $this->app->get('/', function($req, $res){$res->getBody()->write("end app");});
+        $this->app->get('/', function ($req, $res) {$res->getBody()->write("end app");})->setName('home');
     }
 
     public function registerDi()
@@ -58,12 +58,11 @@ class CoreModule extends AModule
             return $view;
         };
 
-
     }
 
     public function registerMiddleware()
     {
-        $this->container->dispatcher->addListener('app.beforeRun', function ($event){
+        $this->container->dispatcher->addListener('app.beforeRun', function ($event) {
             $event->getApp()->add('App\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
     }
@@ -80,28 +79,38 @@ class CoreModule extends AModule
         $modules->registerModule(new \App\Modules\FlashModule());
         $modules->registerModule(new \App\Modules\AuthModule());
         $modules->registerModule(new \App\Modules\AdminPanelModule());
+        $modules->registerModule(new \App\Modules\PublicModule());
 
-        $this->routerControlSystem();
+        if (isset($this->container['settings']['protectDoubleRouteRegister']) &&
+            $this->container['settings']['protectDoubleRouteRegister']
+        ) {
+            $this->routerControlSystem();
+        }
     }
 
-    protected function registerDB(){
-        $capsule = new Capsule;
+    protected function registerDB()
+    {
+        $capsule = new Capsule();
 
         $capsule->addConnection($this->container->config['db'][$this->container->config['slim']['db_driver']]);
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
+
+        $this->container['db'] = function ($c) {
+            return new Capsule();
+        };
     }
 
     protected function routerControlSystem()
     {
-        $this->container->dispatcher->addListener('app.beforeRun', function ($event){
-            \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $r) use ($event) {
+        $this->container->dispatcher->addListener('app.beforeRun', function ($event) {
+            \FastRoute\simpleDispatcher(function (\FastRoute\RouteCollector $r) use ($event) {
                 foreach ($event->getContainer()->get('router')->getRoutes() as $route) {
                     try {
                         $r->addRoute($route->getMethods(), $route->getPattern(), $route->getIdentifier());
                     } catch (\FastRoute\BadRouteException $e) {
-                        $event->getLogger()->addWarning('Register router: '.$e->getMessage());
+                        $event->getLogger()->addWarning('Register router: ' . $e->getMessage());
                         $event->getContainer()->get('router')->removeRoute($route->getIdentifier());
                         continue;
                     }

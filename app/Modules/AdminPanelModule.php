@@ -43,9 +43,17 @@ class AdminPanelModule extends AModule
                 return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('dashboard'));
                 });
             }
-
-            AdminRouteCollection::register($this);
         })->add( new AuthMiddleware() );
+    }
+
+    public function afterInitialization(){
+        parent::afterInitialization();
+
+        $this->container->dispatcher->addListener('app.beforeRun', function ($event){
+            $event->getApp()->group('/admin', function () {
+                AdminRouteCollection::register($this);
+            })->add( new AuthMiddleware() );
+        }, -980);
     }
 
     protected function adminPanelRouteRegister(){
@@ -53,8 +61,6 @@ class AdminPanelModule extends AModule
             AdminRouteCollection::add(new AdminResource('pages'));
             AdminRouteCollection::add(new AdminResource('users'));
             AdminRouteCollection::add(new AdminResource('groups'));
-            AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
-            AdminRouteCollection::add(new AdminResource('group_options'));
         }
     }
 }

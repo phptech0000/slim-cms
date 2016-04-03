@@ -29,12 +29,14 @@
                             {% endfor %}
                             <td>
                                 <a href="{{ path_for(edit_link, {'id': item.id}) }}" class="btn btn-xs btn-primary">edit</a>
+                                {% if developMode %}
                                 <form method="POST" action="{{ path_for(delete_link, {'id': item.id}) }}" style="display:inline;">
                                     <input name="{{csrf.valueKey}}" type="hidden" value="{{csrf.value}}">
                                     <input name="{{csrf.nameKey}}" type="hidden" value="{{csrf.name}}">
 
                                     <button type="success" class="btn btn-xs btn-danger">delete</button>
                                 </form>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

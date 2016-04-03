@@ -22,6 +22,8 @@ class LoggerModule extends AModule
         $this->registerDi();
 
         $this->container->get('logger')->addInfo("Info - Logger initialization", []);
+        $this->container->get('logger')->addInfo("Info - Request Url", [$_SERVER['REQUEST_URI']]);
+        $this->container->get('logger')->addInfo("Info - Request Method", [$_SERVER['REQUEST_METHOD']]);
 
         foreach ($this->container->modules as $name) {
             if( $name == 'core' ){

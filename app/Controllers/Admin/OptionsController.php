@@ -41,6 +41,8 @@ class OptionsController extends UniversalController
 
         $this->data['allFields'] = array_diff($model->getColumnsNames(), $this->data['showFields']);
 
+        $this->data['developMode'] = $this->containerSlim->systemOptions->isDevMode();
+
         $this->view->render($res, 'admin\optionsTable.twig', $this->data);
     }
 
