@@ -17,7 +17,7 @@ class CSRFModule extends AModule
 
     public function registerDi()
     {
-    	$container['csrf'] = function ($c) {
+    	$this->container['csrf'] = function ($c) {
 		    return new Guard;
 		};
     }

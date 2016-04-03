@@ -8,12 +8,6 @@ use Symfony\Component\EventDispatcher\Event;
 
 class BaseMiddlewareEvent extends Event
 {
-
-    /**
-     * @var Slim\App
-     */
-    protected $app;
-
     /**
      * @var Slim\Container
      */

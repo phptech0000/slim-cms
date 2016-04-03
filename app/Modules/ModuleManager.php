@@ -99,7 +99,6 @@ class ModuleManager implements IModulesManager
     public function boot()
     {
         foreach ($this->getModules() as $module) {
-
             if ($module->isInitModule()) {
                 continue;
             }
@@ -122,7 +121,7 @@ class ModuleManager implements IModulesManager
             $event = new BaseLoggerEvent($this->container->logger, $module);
             $this->container->dispatcher->dispatch('module.' . $name . '.afterInitialization', $event, $module);
         }
-die;
+
         $this->container->dispatcher->dispatch('module.allModuleLoaded');
     }
 

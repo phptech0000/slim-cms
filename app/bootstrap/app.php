@@ -42,12 +42,11 @@ $container->config = $config;
 $app = new \Slim\App($container);
 
 $modules = App\Modules\ModuleManager::getInstance($container, $app);
-$modules->registerModule(new \App\Modules\LoggerModule());
 $modules->registerModule(new App\Modules\CoreModule());
 
-$modules->coreInit();//->boot();
+$modules->coreInit()->boot();
 
-$container->dispatcher->addListener('middleware.core.after', function ($event) use ($logger) {
+$container->dispatcher->addListener('middleware.core.after', function ($event) {
     $event->getLogger()->addInfo("Info - Core middleware after");
 });
 
@@ -61,10 +60,5 @@ $modules->registerModule(new App\Modules\$module->className());
 }
 $modules->boot();
  */
-/*
-$module = new App\Modules\LoggerModule($container, $app);
-$module->registerDi();
-$module->registerRoute();
-$container = $module->getContainer();
- */
+
 return $app;

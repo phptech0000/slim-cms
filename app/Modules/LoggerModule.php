@@ -24,6 +24,10 @@ class LoggerModule extends AModule
         $this->container->get('logger')->addInfo("Info - Logger initialization", []);
 
         foreach ($this->container->modules as $name) {
+            if( $name == 'core' ){
+                continue;
+            }
+            
             $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) {
                 $event->getLogger()->addInfo("action beforeInitialization", [$event->getParam()->getName()]);
             });

@@ -17,7 +17,7 @@ class SystemOptionsModule extends AModule
 
     public function registerDi()
     {
-        $container['systemOptions'] = function ($c) {
+        $this->container['systemOptions'] = function ($c) {
             return new OptionsFacade(Options::where('options_group_id', 1)->get());
         };
     }
