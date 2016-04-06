@@ -46,6 +46,12 @@ $modules->registerModule(new App\Modules\CoreModule());
 
 $modules->coreInit()->boot();
 
+//--- Register manual module ---//
+$modules->registerModule(new App\Modules\ShowFieldAdminPanelModule());
+//$modules->registerModule(new App\Modules\PageCountAdminPanelModule());
+
+$modules->boot();
+
 $container->dispatcher->addListener('middleware.core.after', function ($event) {
     $event->getLogger()->addInfo("Info - Core middleware after");
 });

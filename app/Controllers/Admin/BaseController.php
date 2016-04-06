@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use Illuminate\Pagination\Paginator;
 use App\Helpers\SessionManager as Session;
+use App\Source\Factory\ModelsFactory;
 
 class BaseController
 {
@@ -65,15 +66,19 @@ class BaseController
 		$this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
 		$this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
 
-		$current_page = $_REQUEST['page'];
+		$model = ModelsFactory::getModel('UserViewsSettings');
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.'.basename($req->getUri()->getPath()))->where('code', 'num_page')->first();
+        
+        if( $result )
+        	$current_page = $result->value;
 
 	    Paginator::currentPageResolver(function() use ($current_page) {
 	        return $current_page;
 	    });
 
-	    if( $_REQUEST['count_page'] ){
+	    /*if( $_REQUEST['count_page'] ){
 	    	Session::push('admin_panel.count_page', $_REQUEST['count_page']);
-	    }
+	    }*/
 
 	    $this->pagecount = Session::get('admin_panel.count_page');
 	    $this->data['page_count'] = $this->pagecount; 
