@@ -8,7 +8,7 @@ use App\Helpers\RequestParams;
 class ItemPerPageMiddleware
 {
     protected $variableName = 'count_page';
-    protected $groupName = 'items.perpage';
+    protected $groupName = 'items.perpage.';
 
     public function __invoke($request, $response, $next)
     {
@@ -19,12 +19,14 @@ class ItemPerPageMiddleware
             Session::get('auth') &&
             $allParams->all($this->variableName)
         ) {
+            $this->groupName = $this->groupName . basename($allParams->getUri()->getPath());
+
             $u_id = Session::get('user')['id'];
         	$model = ModelsFactory::getModel('UserViewsSettings');
-            $result = $model->where('user_id', $u_id)->where('group', $this->groupName)->where('code', 'pages')->first();
+            $result = $model->where('user_id', $u_id)->where('group', $this->groupName)->where('code', $this->variableName)->first();
 
             if (!$result) {
-                $result = ModelsFactory::getModel('UserViewsSettings', ['user_id' => $u_id, 'group' => $this->groupName, 'code' => 'pages']);
+                $result = ModelsFactory::getModel('UserViewsSettings', ['user_id' => $u_id, 'group' => $this->groupName, 'code' => $this->variableName]);
                 $result->user_id = $u_id;
             }
 

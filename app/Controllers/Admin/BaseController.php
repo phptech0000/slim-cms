@@ -80,7 +80,12 @@ class BaseController
 	    	Session::push('admin_panel.count_page', $_REQUEST['count_page']);
 	    }*/
 
-	    $this->pagecount = Session::get('admin_panel.count_page');
+	    $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'items.perpage.'.basename($req->getUri()->getPath()))->where('code', 'count_page')->first();
+
+	    if( $result )
+        	$this->pagecount = $result->value;
+	    
+	    //$this->pagecount = Session::get('admin_panel.count_page');
 	    $this->data['page_count'] = $this->pagecount; 
 
 	    if( !$this->controllerName )

@@ -32,8 +32,6 @@ class LastPagePaginatorMiddleware
 
             $result->value = $allParams->all($this->variableName);
             $result->save();
-
-            Session::push('admin_panel.count_page', $allParams->all($this->variableName));
         }
 
         return $next($request, $response);
