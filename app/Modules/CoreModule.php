@@ -116,6 +116,6 @@ class CoreModule extends AModule
                     }
                 }
             });
-        }, -990);
+        }, 1000);
     }
 }

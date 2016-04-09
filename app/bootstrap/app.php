@@ -48,7 +48,7 @@ $modules->coreInit()->boot();
 
 //--- Register manual module ---//
 $modules->registerModule(new App\Modules\ShowFieldAdminPanelModule());
-//$modules->registerModule(new App\Modules\PageCountAdminPanelModule());
+$modules->registerModule(new App\Modules\SectionsModule());
 
 $modules->boot();
 

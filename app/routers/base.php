@@ -85,6 +85,7 @@ Capsule::schema()->create('pages', function($table) {
 $table->increments('id');
 $table->string('name');
 $table->string('code');
+$table->string('sort');
 $table->string('url_prefix');
 $table->integer('category_id');
 $table->text('preview_text');
@@ -96,4 +97,23 @@ $table->integer('name_for_menu');
 $table->integer('active');
 $table->timestamps();
 });
-});*/
+});
+
+$app->get('/install/sections', function($req, $res, $args){
+Capsule::schema()->dropIfExists('sections');
+Capsule::schema()->create('sections', function($table) {
+$table->increments('id');
+$table->string('name');
+$table->string('code');
+$table->string('sort');
+$table->string('parent_id');
+$table->text('detail_text');
+$table->string('detail_picture');
+$table->integer('show_in_menu');
+$table->integer('name_for_menu');
+$table->integer('active');
+$table->timestamps();
+});
+});
+
+*/
