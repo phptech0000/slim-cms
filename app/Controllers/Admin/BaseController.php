@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use Illuminate\Pagination\Paginator;
 use App\Helpers\SessionManager as Session;
 use App\Source\Factory\ModelsFactory;
+use App\Source\Events\BaseContainerEvent;
 
 class BaseController
 {
@@ -60,7 +61,10 @@ class BaseController
 		$this->data['system_options'] = $this->containerSlim->systemOptions;
 	}
 
-	protected function initRoute($req){
+	protected function initRoute($req, $res){
+		$this->request = $res;
+		$this->response = $res;
+
 		$s = $req->getAttribute('route')->getName();
 
 		$this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
@@ -110,5 +114,28 @@ class BaseController
 			$arFields, 
 			array_diff($arHide, $arSave)
 		);
+	}
+
+	protected function render($templateName)
+	{
+		$this->beforeRender();
+
+		$res = $this->view->render($this->response, $templateName, $this->data);
+	
+		$this->afterRender();
+
+		return $res;
+	}
+
+	protected function beforeRender()
+	{
+		$event = new BaseContainerEvent($this->containerSlim, $this->data);
+        $event = $this->containerSlim->dispatcher->dispatch('basecontroller.render.before', $event);
+        $this->data = $event->getParams();
+	}
+
+	protected function afterRender()
+	{
+
 	}
 }

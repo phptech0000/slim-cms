@@ -15,7 +15,7 @@ class OptionsController extends UniversalController
      */
     public function index(request $req, $res)
     {
-        $this->initRoute($req);
+        $this->initRoute($req, $res);
 
         $model = ModelsFactory::getModelWithRequest($req);
 
@@ -43,7 +43,7 @@ class OptionsController extends UniversalController
 
         $this->data['developMode'] = $this->containerSlim->systemOptions->isDevMode();
 
-        $this->view->render($res, 'admin\optionsTable.twig', $this->data);
+        $this->render('admin\optionsTable.twig');
     }
 
     /**
@@ -52,7 +52,7 @@ class OptionsController extends UniversalController
      */
     public function add(request $req, $res)
     {
-        $this->initRoute($req);
+        $this->initRoute($req, $res);
 
         $model = ModelsFactory::getModelWithRequest($req);
         $builder = new BuildFields();
@@ -66,7 +66,7 @@ class OptionsController extends UniversalController
 
         $this->data['ttt'] = $builder->getAll();
 
-        $this->view->render($res, 'admin\addTables.twig', $this->data);
+        $this->render('admin\addTables.twig');
     }
 
     /**
@@ -77,7 +77,7 @@ class OptionsController extends UniversalController
      */
     public function edit(request $req, $res, $args)
     {
-        $this->initRoute($req);
+        $this->initRoute($req, $res);
 
         $model = ModelsFactory::getModelWithRequest($req);
         $this->data['fields'] = $this->getFields($model->getColumnsNames(), ['id']);
@@ -123,6 +123,6 @@ class OptionsController extends UniversalController
 
         $this->data['ttt'] = $builder->getAll();
 
-        $this->view->render($res, 'admin\addTables.twig', $this->data);
+        $this->render('admin\addTables.twig');
     }
 }
