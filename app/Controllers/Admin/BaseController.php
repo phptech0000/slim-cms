@@ -67,7 +67,7 @@ class BaseController
 		$this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
 
 		$model = ModelsFactory::getModel('UserViewsSettings');
-        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.'.basename($req->getUri()->getPath()))->where('code', 'num_page')->first();
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.'.basename($req->getUri()->getPath()))->where('code', 'page')->first();
         
         if( $result )
         	$current_page = $result->value;

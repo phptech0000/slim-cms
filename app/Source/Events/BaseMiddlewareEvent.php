@@ -13,11 +13,14 @@ class BaseMiddlewareEvent extends Event
      */
     protected $container;
 
-    public function __construct(Container $container, ServerRequestInterface $request, ResponseInterface $response)
+    protected $params;
+
+    public function __construct(Container $container, ServerRequestInterface $request, ResponseInterface $response, $params = [])
     {
         $this->container = $container;
         $this->setRequest($request);
         $this->setResponse($response);
+        $this->params = $params;
     }
 
     /**
@@ -51,6 +54,16 @@ class BaseMiddlewareEvent extends Event
     public function setResponse(ResponseInterface $response)
     {
         $this->response = $response;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    public function setParams($params)
+    {
+        $this->params = $params;
     }
 
 }

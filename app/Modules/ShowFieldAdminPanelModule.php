@@ -22,8 +22,17 @@ class ShowFieldAdminPanelModule extends AModule
 
     public function registerMiddleware()
     {
-    	$this->app->add(new ItemPerPageMiddleware());
-        $this->app->add(new LastPagePaginatorMiddleware());
-        
+        $this->app->add(new LastPagePaginatorMiddleware($this->container));
+    	$this->app->add(new ItemPerPageMiddleware($this->container));
+    }
+
+    public function afterInitialization()
+    {
+        parent::afterInitialization();
+
+        $this->container->dispatcher->addListener('middleware.itemparpage.after', function ($event) {
+            $page = new \App\Middleware\LastPagePaginatorMiddleware($event->getContainer());
+            $page->setOption(1, $event->getParams()['allParams']);
+        });
     }
 }

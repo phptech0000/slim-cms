@@ -1,17 +1,11 @@
 <?php
 namespace App\Source\Events;
 
-use Slim\App;
+use \Slim\Container;
 use Symfony\Component\EventDispatcher\Event;
 
-class BaseAppEvent extends Event
+class BaseContainerEvent extends Event
 {
-
-    /**
-     * @var Slim\App
-     */
-    protected $app;
-
     /**
      * @var Slim\Container
      */
@@ -19,10 +13,9 @@ class BaseAppEvent extends Event
 
     protected $undefinedObject;
 
-    public function __construct(App $app = null, $param = null)
+    public function __construct(Container $container = null, $param = null)
     {
-        $this->app = $app;
-        $this->container = $app->getContainer();
+        $this->container = $container;
         $this->undefinedObject = $param;
     }
 
@@ -32,14 +25,6 @@ class BaseAppEvent extends Event
     public function getContainer()
     {
         return $this->container;
-    }
-
-    /**
-     * @return Slim\App
-     */
-    public function getApp()
-    {
-        return $this->app;
     }
 
     public function getLogger()

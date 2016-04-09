@@ -53,4 +53,9 @@ class RequestParams
 	public function __call($name, $arguments) {
         return call_user_func(array($this->request, $name), $arguments);
     }
+
+    public function getRequest()
+    {
+    	return $this->request;
+    }
 }
