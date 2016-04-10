@@ -1,19 +1,12 @@
 <?php
-$startTime = microtime(true);
+$GLOBALS['startTime'] = microtime(true);
 
-$app = require_once('../app/bootstrap/app.php');
+$app = require_once '../app/bootstrap/app.php';
 
-$app->getContainer()->get('logger')->addInfo("Info - start application: ", []);
+$event = new App\Source\Events\BaseAppEvent($app);
+$app->getContainer()->dispatcher->dispatch('app.beforeRun', $event);
 
 $app->run();
 
-$workTime = round((microtime(true) - $startTime), 3);
-
-$app->getContainer()->get('logger')->addInfo("Statistic - work time: ", [$workTime.'s']);
-
-$app->getContainer()->get('logger')->addInfo("Statistic - memory usage: ", [memoryFormat(memory_get_usage())]);
-
-$app->getContainer()->get('logger')->addInfo("Statistic - max memory usage: ", [memoryFormat(memory_get_peak_usage())]);
-
-$app->getContainer()->get('logger')->addInfo("Info - end application: ", []);
-$app->getContainer()->get('logger')->addInfo("", []);
+$event = new App\Source\Events\BaseLoggerEvent($app->getContainer()->logger);
+$app->getContainer()->dispatcher->dispatch('app.afterRun', $event);

@@ -11,11 +11,12 @@ use App\Source\ModelFieldBuilder\BuildFields;
 class UniversalController extends BaseController
 {
 	public function index(request $req, $res){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 
 		$model = ModelsFactory::getModelWithRequest($req);
 
 		$this->data['items'] = $model->paginate($this->pagecount);
+
 		$this->data['items']->setPath($this->router->pathFor($this->data['all_e_link']));
 		$this->data['fields'] = $this->getFields($model->getColumnsNames(), array('id'));
 
@@ -30,11 +31,11 @@ class UniversalController extends BaseController
 
 		$this->data['allFields'] = array_diff($model->getColumnsNames(), $this->data['showFields']);
 
-		$this->view->render($res, 'admin\dataTables.twig', $this->data);
+		$this->render('admin\dataTables.twig');
 	}
 
 	public function add(request $req, $res){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 
 		$model = ModelsFactory::getModelWithRequest($req);
 		$this->data['fields'] = $this->getFields($model->getColumnsNames());
@@ -43,11 +44,11 @@ $builder = new BuildFields();
 $builder->setFields($model->getColumnsNames())->addJsonShema($model->getAnnotations());
 $this->data['ttt'] = $builder->getAll();
 
-		$this->view->render($res, 'admin\addTables.twig', $this->data);
+		$this->render('admin\addTables.twig');
 	}
 
 	public function edit(request $req, $res, $args){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 
 		$model = ModelsFactory::getModelWithRequest($req);
 		$this->data['fields'] = $this->getFields($model->getColumnsNames(), ['id']);
@@ -65,11 +66,11 @@ foreach ($this->data['fields'] as $name) {
 
 $this->data['ttt'] = $builder->getAll();
 
-		$this->view->render($res, 'admin\addTables.twig', $this->data);
+		$this->render('admin\addTables.twig');
 	}
 
 	public function doAdd(request $req, $res, $args){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 		$model = ModelsFactory::getModelWithRequest($req, $req->getParsedBody());
 		$model->save();
 		
@@ -79,7 +80,7 @@ $this->data['ttt'] = $builder->getAll();
 	}
 
 	public function doEdit(request $req, $res, $args){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 		$reqData = $req->getParsedBody();
 		$model = ModelsFactory::getModelWithRequest($req);
 		$model = $model->find($reqData['id']);
@@ -91,7 +92,7 @@ $this->data['ttt'] = $builder->getAll();
 	}
 
 	public function doDelete(request $req, $res, $args){
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 		$model = ModelsFactory::getModelWithRequest($req);
 		$model = $model->find($args['id']);
 		$model->delete();

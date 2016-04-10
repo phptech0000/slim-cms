@@ -41,6 +41,7 @@ class UniversalAjaxController extends BaseController
 		$this->data['data']['success'] = true;
 		
 		$this->view->render($response, 'json.twig', $this->data);
+		
 		return $response->withStatus(200)->withHeader('Content-type', 'application/json');
 	}
 	/*public function index(request $req, $res){

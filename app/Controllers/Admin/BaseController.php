@@ -4,6 +4,8 @@ namespace App\Controllers\Admin;
 
 use Illuminate\Pagination\Paginator;
 use App\Helpers\SessionManager as Session;
+use App\Source\Factory\ModelsFactory;
+use App\Source\Events\BaseContainerEvent;
 
 class BaseController
 {
@@ -59,23 +61,35 @@ class BaseController
 		$this->data['system_options'] = $this->containerSlim->systemOptions;
 	}
 
-	protected function initRoute($req){
+	protected function initRoute($req, $res){
+		$this->request = $res;
+		$this->response = $res;
+
 		$s = $req->getAttribute('route')->getName();
 
 		$this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
 		$this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
 
-		$current_page = $_REQUEST['page'];
+		$model = ModelsFactory::getModel('UserViewsSettings');
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.'.basename($req->getUri()->getPath()))->where('code', 'page')->first();
+        
+        if( $result )
+        	$current_page = $result->value;
 
 	    Paginator::currentPageResolver(function() use ($current_page) {
 	        return $current_page;
 	    });
 
-	    if( $_REQUEST['count_page'] ){
+	    /*if( $_REQUEST['count_page'] ){
 	    	Session::push('admin_panel.count_page', $_REQUEST['count_page']);
-	    }
+	    }*/
 
-	    $this->pagecount = Session::get('admin_panel.count_page');
+	    $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'items.perpage.'.basename($req->getUri()->getPath()))->where('code', 'count_page')->first();
+
+	    if( $result )
+        	$this->pagecount = $result->value;
+	    
+	    //$this->pagecount = Session::get('admin_panel.count_page');
 	    $this->data['page_count'] = $this->pagecount; 
 
 	    if( !$this->controllerName )
@@ -100,5 +114,28 @@ class BaseController
 			$arFields, 
 			array_diff($arHide, $arSave)
 		);
+	}
+
+	protected function render($templateName)
+	{
+		$this->beforeRender();
+
+		$res = $this->view->render($this->response, $templateName, $this->data);
+	
+		$this->afterRender();
+
+		return $res;
+	}
+
+	protected function beforeRender()
+	{
+		$event = new BaseContainerEvent($this->containerSlim, $this->data);
+        $event = $this->containerSlim->dispatcher->dispatch('basecontroller.render.before', $event);
+        $this->data = $event->getParams();
+	}
+
+	protected function afterRender()
+	{
+
 	}
 }
