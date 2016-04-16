@@ -7,6 +7,8 @@ class Sections extends BaseModel
     protected $table = 'sections';
 
     protected static $reCount = true;
+    protected static $pathOldValue;
+    protected static $pathNewValue;
 
     const PATH_DELIMITER = '/';
 
@@ -14,19 +16,21 @@ class Sections extends BaseModel
 
     public function save(array $options = array())
     {
-        if ($this->parent_id) {
+        if ($this->parent_id && !self::$pathNewValue) {
         	$item = $this->find($this->parent_id);
-        	$path = explode(self::PATH_DELIMITER, $item->path);
-        	
-        	if( isset($this->id) && in_array($this->id, $path) ){
+
+            self::$pathOldValue = $this->pathAddItem($this->path, $this->id);
+
+            $this->path = $this->pathAddItem($item->path, $this->parent_id);
+
+        	if( isset($this->id) && in_array($this->id, explode(self::PATH_DELIMITER, $this->path)) ){
         		$GLOBALS['app']->getContainer()->flash->addMessage('errors', 'Create recursion section');
         		return;
         	}
-        	array_pop($path);
-        	$path[] = $this->parent_id;
-        	$path[] = '';
-        	$this->path = implode(self::PATH_DELIMITER, $path);
+        } elseif(self::$pathNewValue) {
+            $this->path = str_replace(self::$pathOldValue, self::$pathNewValue, $this->path);
         } else {
+            self::$pathOldValue = $this->pathAddItem($this->path, $this->id);
         	$this->path = self::PATH_DELIMITER.'0'.self::PATH_DELIMITER;
         }
 
@@ -35,12 +39,23 @@ class Sections extends BaseModel
 	    if( self::$reCount ){
             $items = $this->where('path', 'LIKE', '%/'.$this->id.'/%')->orderBy('path', 'ASC')->get();
             self::$reCount = false;
+            self::$pathNewValue = $this->pathAddItem($this->path, $this->id);
             if($items){
             	foreach ($items as $item) {
             		$item->save();
             	}
             }
+            self::$pathNewValue = null;
             self::$reCount = true;
         }
+    }
+
+    protected function pathAddItem($dbPath, $item)
+    {
+        $path = explode(self::PATH_DELIMITER, $dbPath);
+        array_pop($path);
+        $path[] = $item;
+        $path[] = '';
+        return implode(self::PATH_DELIMITER, $path);
     }
 }
