@@ -107,6 +107,7 @@ $table->string('name');
 $table->string('code');
 $table->string('sort');
 $table->string('parent_id');
+$table->string('path');
 $table->text('detail_text');
 $table->string('detail_picture');
 $table->integer('show_in_menu');

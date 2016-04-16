@@ -27,11 +27,15 @@ class SectionsModule extends AModule
 
             $data = [];
             foreach ($arRes as $item) {
-                $data[$item->id] = $item->name;
+                if( $arItems['parent_id'] && 
+                      $item->id != $event->getParams()['fieldsValues']->id
+                ){
+                    $data[$item->id] = $item->name;
+                }
             }
 
             foreach($arItems as $name=>$values){
-                $event->getParams()['ttt'][$name]->values = array_merge($values, $data);
+                $event->getParams()['ttt'][$name]->values = $values + $data;
             }
         });
     }
