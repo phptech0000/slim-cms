@@ -6,10 +6,38 @@ use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
 use App\Helpers\SessionManager as Session;
 use App\Source\Factory\ModelsFactory;
+use App\Models\Sections;
+use App\Source\RouteSystem\PageResource;
+use App\Source\RouteSystem\PageRouteCollection;
 
 class SectionsModule extends AModule
 {
     const MODULE_NAME = 'sections';
+
+    public function registerRoute()
+    {
+        $sections = Sections::getAllGlobalActive()->keyBy('id')->toArray();
+
+        if( empty($sections) )
+            return;
+
+        foreach ($sections as $section) {
+            $url = array_filter(explode('/', $section['path']));
+
+            foreach ($url as &$id) {
+                $id = $sections[$id]['code'];
+            }
+
+            $url[-1] = '';
+            $url[] = $section['code'];
+            ksort($url);
+
+            $url = implode('/', $url);
+
+            PageRouteCollection::add(new PageResource($url.'/', 'sectionAction', 's'.$section['id']));
+            PageRouteCollection::add(new PageResource($url.'/{pageCode}', 'detailAction', 'sp'.$section['id']));
+        }
+    }
 
     public function afterInitialization(){
         parent::afterInitialization();
@@ -26,8 +54,9 @@ class SectionsModule extends AModule
             $arRes = $model->where('active', 1)->get();
 
             $data = [];
+
             foreach ($arRes as $item) {
-                if( $arItems['parent_id'] && 
+                if( ($arItems['parent_id'] || null === $arItems['parent_id']) && 
                       $item->id != $event->getParams()['fieldsValues']->id
                 ){
                     $data[$item->id] = $item->name;

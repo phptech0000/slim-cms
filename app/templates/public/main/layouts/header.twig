@@ -15,8 +15,12 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         {% for item in menu %}
-	    <li {% if item.current %}class="active"{% endif %}><a href="{{ path_for(item.url) }}">{{item.name}}</a></li>
-	{% endfor %}
+            {% if item.section %}
+              <li {% if item.current %}class="active"{% endif %}><a href="{{ path_for(item.url, {'pageCode':item.code}) }}">{{item.name}}</a></li>
+            {% else %}
+              <li {% if item.current %}class="active"{% endif %}><a href="{{ path_for(item.url) }}">{{item.name}}</a></li>
+            {% endif %}
+      	{% endfor %}
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

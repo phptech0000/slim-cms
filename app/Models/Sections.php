@@ -58,4 +58,17 @@ class Sections extends BaseModel
         $path[] = '';
         return implode(self::PATH_DELIMITER, $path);
     }
+
+    public static function getAllGlobalActive($id = 0){
+        $noActive = self::where('active', 0)->where('path', 'LIKE', '%/'.$id.'/%')->get()->keyBy('id')->toArray();
+        $noActive = array_keys($noActive);
+        
+        $data = self::where('active', 1)->where('path', 'LIKE', '%/'.$id.'/%');
+
+        foreach ($noActive as $id) {
+            $data->where('path', 'NOT LIKE', '%/'.$id.'/%');
+        }
+
+        return $data->get();
+    }
 }
