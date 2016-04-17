@@ -44,7 +44,7 @@ class BaseController
 		}
 		$this->data['options'] = $options;
 
-		$this->menu = Pages::whereRaw('show_in_menu = 1 and active = 1')->orderBy('sort', 'asc')->get()->toArray();
+		$this->menu = Pages::where('show_in_menu', 1)->where('active', 1)->orderBy('sort', 'asc')->get()->toArray();
 		$this->data['pageData'] = new \stdClass();
 	}
 
@@ -68,7 +68,10 @@ class BaseController
 			$menu[] = [
 				'name' => $item['name_for_menu'],
 				'current' => (bool)($name=='page.'.$item['id'] || $this->data['pageData']->category_id == $item['id']),
-				'url' => 'page.'.$item['id'],
+				'section' => $item['category_id'],
+				'code' => $item['code'],
+				'id' => $item['id'],
+				'url' => ($item['category_id'])?'page.sp'.$item['category_id']:'page.'.$item['id'],
 			];
 		}
 

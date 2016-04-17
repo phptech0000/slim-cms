@@ -16,27 +16,26 @@ class SectionsModule extends AModule
 
     public function registerRoute()
     {
-        $sections = Sections::where('active', 1)->orderBy('sort', 'asc')->orderBy('name', 'asc')->get()->toArray();
+        $sections = Sections::getAllGlobalActive()->keyBy('id')->toArray();
 
         if( empty($sections) )
             return;
 
-        
         foreach ($sections as $section) {
             $url = array_filter(explode('/', $section['path']));
-            
+
             foreach ($url as &$id) {
                 $id = $sections[$id]['code'];
             }
-            unset($id);
 
             $url[-1] = '';
             $url[] = $section['code'];
             ksort($url);
 
-            $controller = 'sectionAction';
+            $url = implode('/', $url);
 
-            PageRouteCollection::add(new PageResource(implode('/', $url), $controller, 's'.$section['id']));
+            PageRouteCollection::add(new PageResource($url.'/', 'sectionAction', 's'.$section['id']));
+            PageRouteCollection::add(new PageResource($url.'/{pageCode}', 'detailAction', 'sp'.$section['id']));
         }
     }
 

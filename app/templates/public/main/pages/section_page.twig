@@ -25,7 +25,7 @@
 		{% if pagesLinks %}
 		<ul>
 			{% for item in pagesLinks %}
-			<li><a href="{{ path_for('page.'~item.id) }}">{{ item.name }}</a></li>
+			<li><a href="{{ path_for('page.sp'~pageData.id, { 'pageCode': item.code }) }}">{{ item.name }}</a></li>
 			{% endfor %}
 		</ul>
 		{% endif %}
