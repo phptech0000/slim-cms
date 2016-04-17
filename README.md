@@ -1,7 +1,38 @@
 # SlimCMS
-My cms by based slim 3 framework
+My cms based on php framework: slim 3
 #
 Admin panel based on template: SB-admin v2;
+#
+Implemented modules:
+ - Options
+ - Group Options
+ - Auth system
+ - Create visual page, and create route
+ - Create sections(categories) and hierarchical sections(categories)
+ - Frendly admin panel
+ - User customize show field and sortable fields from tables(your settings for every page type)
+ - Admin panel table pagination(your settings for every page type)
+ - Admin panel count show items in table(your settings for every page type)
+ - Many types show field from admin panel(hidden, checkbox, select, wysiwyg html, text)
+ - Logging system
+ - Developer admin panel mode
+ 
+If you are interested in this system, **place a star** )))
+ 
+Installation:
+
+      git clone https://github.com/andrey900/SlimCMS.git
+      php composer install
+ 
+ After install create folder: cache, log. Set permittion from write this folders.
+
+Enter admin panel:
+ - url: /auth/login
+ - login*: admin
+ - password: admin
+
+*if use email for login: admin@admin.net
+ 
 # Screenshots
 ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png)
 ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png)
@@ -17,19 +48,6 @@ Project use additional library:
  - Portable DB sqlite;
  - Illuminate database v5.2;
  - Illuminate pagination v5.2;
-
-Installation: 
- git clone 
- php composer install
-
-After install create folder: cache, log. Set permittion from write this folders.
-
-Enter admin panel:
- - url: /auth/login
- - login*: admin
- - password: admin
-
-*if use email for login: admin@admin.net
 
 # License
 
