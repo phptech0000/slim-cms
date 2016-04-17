@@ -17,8 +17,12 @@ class UniversalPageController extends BaseController
 		$this->render('public\main\pages\home.twig');
 	}
 
-	public function detailAction(request $req, $res){
-		$this->data['pageData'] = PageFactory::getPageWithRequest($req);
+	public function detailAction(request $req, $res, $args){
+		if($args['pageCode']){
+			$this->data['pageData'] = PageFactory::getPageByCode($args['pageCode']);
+		} else {
+			$this->data['pageData'] = PageFactory::getPageWithRequest($req);
+		}
 		$this->setRequestResult($req, $res);
 
 		$this->render('public\main\pages\detail_page.twig');

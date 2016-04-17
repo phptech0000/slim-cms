@@ -22,6 +22,12 @@ class PageFactory
 		return new \stdClass();
 	}
 
+	public static function getPageByCode($code){
+		return Pages::where('code', $code)->where('active', 1)->first();
+
+		return new \stdClass();
+	}
+
 	protected static function getPageId($routeName){
 		return (int)substr($routeName, strpos($routeName, '.')+1);
 	}
