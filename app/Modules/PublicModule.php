@@ -35,7 +35,13 @@ class PublicModule extends AModule
 
             PageRouteCollection::add(new PageResource($url, $controller, $page['id']));
         }
+    }
 
-        PageRouteCollection::register($this->app);
+    public function afterInitialization(){
+        parent::afterInitialization();
+
+        $this->container->dispatcher->addListener('app.beforeRun', function ($event){
+            PageRouteCollection::register($event->getApp());
+        }, -980);
     }
 }
