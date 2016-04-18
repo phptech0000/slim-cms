@@ -60,6 +60,10 @@ class Sections extends BaseModel
     }
 
     public static function getAllGlobalActive($id = 0){
+        return self::getAllGlobalActiveRaw($id)->get();
+    }
+
+    public static function getAllGlobalActiveRaw($id = 0){
         $noActive = self::where('active', 0)->where('path', 'LIKE', '%/'.$id.'/%')->get()->keyBy('id')->toArray();
         $noActive = array_keys($noActive);
         
@@ -69,6 +73,6 @@ class Sections extends BaseModel
             $data->where('path', 'NOT LIKE', '%/'.$id.'/%');
         }
 
-        return $data->get();
+        return $data;
     }
 }

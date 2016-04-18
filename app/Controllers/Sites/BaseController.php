@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Controllers\Sites;
+
 use App\Models\Options;
 use App\Models\Pages;
+use App\Source\Events\BaseContainerEvent;
 
 /**
 * 
 */
 class BaseController
 {
+	protected $c;
+
 	protected $data = array(
 			'title' => '',
 			'description' => '',
@@ -25,6 +29,8 @@ class BaseController
 		$this->flash = $container->get('flash');
 		$this->router = $container->get('router');
 		
+		$this->c = $container;
+
 		$this->addDataForView();
 	}
 
@@ -54,28 +60,16 @@ class BaseController
 	}
 
 	protected function menuCreator(){
-		$name = '';
-		if($route = $this->request->getAttribute('route'))
-			$name = $route->getName();
-		
-		$this->data['menu'] = array();
-		
-		if( !$this->menu )
-			return;
+		$obj = new \stdClass();
 
-		$menu = [];
-		foreach ($this->menu as $item) {
-			$menu[] = [
-				'name' => $item['name_for_menu'],
-				'current' => (bool)($name=='page.'.$item['id'] || $this->data['pageData']->category_id == $item['id']),
-				'section' => $item['category_id'],
-				'code' => $item['code'],
-				'id' => $item['id'],
-				'url' => ($item['category_id'])?'page.sp'.$item['category_id']:'page.'.$item['id'],
-			];
-		}
+		$obj->request = $this->request;
+		$obj->response = $this->result;
+		$obj->menu = [];
 
-		$this->data['menu'] = $menu;
+		$event = new BaseContainerEvent($this->c, $obj);
+        $event = $this->c->dispatcher->dispatch('basecontroller.menu.logic', $event);
+
+		$this->data['menu'] = $event->getParams()->menu;
 	}
 
 	protected function setMetaData(){
@@ -90,8 +84,11 @@ class BaseController
 	}
 
 	protected function beforeRender(){
+
 		$this->menuCreator();
+		
 		$this->setMetaData();
+		
 		$this->csrf();
 	}
 
