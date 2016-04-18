@@ -44,6 +44,8 @@ class SectionsModule extends AModule
 
         $this->adminPanelRouteRegister();
 
+        $this->menuCreator();
+
         $this->container->dispatcher->addListener('basecontroller.render.before', function ($event) {
             
             $arItems = $this->findFieldValues($event);
@@ -87,5 +89,40 @@ class SectionsModule extends AModule
         }
 
         return $arNames;
+    }
+
+    protected function menuCreator(){
+        $this->container->dispatcher->addListener('basecontroller.menu.logic', function ($event) {
+            $items = Sections::getAllGlobalActiveRaw()->where('show_in_menu', 1)->orderBy('sort', 'asc')->get();
+            
+            $name = '';
+            if($route = $event->getParams()->request->getAttribute('route'))
+                $name = $route->getName();
+
+            $args = $route->getArguments();
+
+            $menu = $event->getParams()->menu;
+            $sections = array_filter($menu, function($e){
+                return (bool)$e['section'];
+            });
+            
+            foreach($sections as $k=>$item){
+                $menu[$k]['current'] = (bool)($name=='page.sp'.$item['section'] && $args['pageCode'] == $item['code']);
+                $menu[$k]['url'] = 'page.sp'.$item['section'];
+            }
+
+            foreach ($items as $item) {
+                $menu[] = [
+                    'name' => $item->name_for_menu,
+                    'current' => (bool)($name=='page.s'.$item->id),
+                    'section' => $item->parent_id,
+                    'code' => $item->code,
+                    'id' => $item->id,
+                    'url' => 'page.s'.$item->id,
+                ];
+            }
+
+            $event->getParams()->menu = $menu;
+        });
     }
 }
