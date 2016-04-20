@@ -32,7 +32,7 @@ class UniversalPageController extends BaseController
 		$this->data['pageData'] = SectionFactory::getSectionWithRequest($req);
 		$this->setRequestResult($req, $res);
 
-		$this->data['subSections'] = Sections::getAllGlobalActive($this->data['pageData']->id);
+		$this->data['subSections'] = Sections::getSubSections($this->data['pageData']->id);
 		$this->data['pagesLinks'] = Pages::where('category_id', $this->data['pageData']->id)->get();
 
 		$this->render('public\main\pages\section_page.twig');

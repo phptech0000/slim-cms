@@ -22,7 +22,7 @@ class SectionsModule extends AModule
             return;
 
         foreach ($sections as $section) {
-            $url = array_filter(explode('/', $section['path']));
+            $url = array_filter(explode(\App\Models\Sections::PATH_DELIMITER, $section['path']));
 
             foreach ($url as &$id) {
                 $id = $sections[$id]['code'];
@@ -32,7 +32,7 @@ class SectionsModule extends AModule
             $url[] = $section['code'];
             ksort($url);
 
-            $url = implode('/', $url);
+            $url = implode(\App\Models\Sections::PATH_DELIMITER, $url);
 
             PageRouteCollection::add(new PageResource($url.'/', 'sectionAction', 's'.$section['id']));
             PageRouteCollection::add(new PageResource($url.'/{pageCode}', 'detailAction', 'sp'.$section['id']));
@@ -92,7 +92,7 @@ class SectionsModule extends AModule
     }
 
     protected function menuCreator(){
-        $this->container->dispatcher->addListener('basecontroller.menu.logic', function ($event) {
+        $this->container->dispatcher->addListener('publiccontroller.menu.logic', function ($event) {
             $items = Sections::getAllGlobalActiveRaw()->where('show_in_menu', 1)->orderBy('sort', 'asc')->get();
             
             $name = '';

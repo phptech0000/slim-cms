@@ -49,6 +49,7 @@ $modules->coreInit()->boot();
 //--- Register manual module ---//
 $modules->registerModule(new App\Modules\ShowFieldAdminPanelModule());
 $modules->registerModule(new App\Modules\SectionsModule());
+$modules->registerModule(new App\Modules\BreadcrumbModule());
 
 $modules->boot();
 

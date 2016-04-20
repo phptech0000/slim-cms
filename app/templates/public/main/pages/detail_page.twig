@@ -6,6 +6,11 @@
     {% include '/public/main/layouts/header.twig' %}
     <div class="container">
 	<h1>{{ pageData.name }}</h1>
+
+    {% if breadcrumbs %}
+        {{ breadcrumbs | raw }}
+    {% endif %}
+    
 	<div class="description">
 	    {{ pageData.detail_text | raw }}
 	</div>
