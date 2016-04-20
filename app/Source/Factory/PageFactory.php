@@ -17,7 +17,7 @@ class PageFactory
 		$pageId = self::getPageId($req->getAttribute('route')->getName());
 
 		if( $pageId > 0 )
-			return Pages::find($pageId);
+			return ModelsFactory::getModel('pages')->find($pageId);
 
 		return new \stdClass();
 	}

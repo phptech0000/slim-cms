@@ -75,4 +75,9 @@ class Sections extends BaseModel
 
         return $data;
     }
+
+    public static function getSubSections($id = 0)
+    {
+        return self::where('active', 1)->where('parent_id', $id)->get()->keyBy('id')->toArray();
+    }
 }

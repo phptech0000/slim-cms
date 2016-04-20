@@ -49,7 +49,7 @@ class PublicModule extends AModule
     }
 
     protected function menuCreator(){
-        $this->container->dispatcher->addListener('basecontroller.menu.logic', function ($event) {
+        $this->container->dispatcher->addListener('publiccontroller.menu.logic', function ($event) {
             $items = Pages::where('show_in_menu', 1)->where('active', 1)->orderBy('sort', 'asc')->get();
 
             $name = '';

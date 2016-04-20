@@ -67,7 +67,7 @@ class BaseController
 		$obj->menu = [];
 
 		$event = new BaseContainerEvent($this->c, $obj);
-        $event = $this->c->dispatcher->dispatch('basecontroller.menu.logic', $event);
+        $event = $this->c->dispatcher->dispatch('publiccontroller.menu.logic', $event);
 
 		$this->data['menu'] = $event->getParams()->menu;
 	}
@@ -98,6 +98,15 @@ class BaseController
 
 	public function render($template){
 		$this->beforeRender();
+
+		$obj = new \stdClass();
+		$obj->request = $this->request;
+		$obj->response = $this->result;
+		$obj->pageData = $this->data;
+
+		$event = new BaseContainerEvent($this->c, $obj);
+        $event = $this->c->dispatcher->dispatch('publiccontroller.render.before', $event);
+        $this->data = $event->getParams()->pageData;
 
 		$this->view->render($this->result, $template, $this->data);
 
