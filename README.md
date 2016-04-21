@@ -1,5 +1,6 @@
 # SlimCMS
-My cms based on php framework: slim 3
+Lightweight CMS based on: php framework slim 3, laravel eloquent, symfony event dispatcher, Twig templater and other libraries
+The rapid creation of a new website.
 #
 Admin panel based on template: SB-admin v2;
 #
@@ -48,6 +49,10 @@ Project use additional library:
  - Portable DB sqlite;
  - Illuminate database v5.2;
  - Illuminate pagination v5.2;
+
+Supported versions of php:
+ - php: ^5.5
+ - php: ^7.0
 
 # License
 
