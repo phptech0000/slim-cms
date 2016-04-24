@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Helpers\SessionManager as Session;
+use App\Source\Factory\ModelsFactory;
 
 class DashboardController extends BaseController
 {
@@ -11,6 +12,13 @@ class DashboardController extends BaseController
 		$this->resourse = false;
 		$this->initRoute($req);
 		$this->data['h1'] = 'Dashboard';
+
+		$this->data['cnt'] = new \stdClass();
+		$this->data['cnt']->sections = ModelsFactory::getModel('sections')->count();
+		$this->data['cnt']->pages = ModelsFactory::getModel('pages')->count();
+		$this->data['cnt']->users = ModelsFactory::getModel('users')->count();
+		$this->data['cnt']->options = ModelsFactory::getModel('options')->count();
+
 		$this->view->render($res, 'admin\dashboard.twig', $this->data);
 	}
 }
