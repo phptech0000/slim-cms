@@ -89,13 +89,12 @@ class LoggerModule extends AModule
                 if (DB::connection()->getDriverName() == 'sqlite') {
                     $handler = new SqliteMonologHandler(DB::connection()->getPdo(), "logging");
                 }
-
             }
 
-            if( $c['settings']['use_log'] )
+            if( $c['settings']['use_log'] ){
                 $logger->pushHandler($handler);
-            
-            return $logger;
+            }
+	    return $logger;
         };
 
         $this->registerDi = true;
