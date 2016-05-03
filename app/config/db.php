@@ -5,9 +5,10 @@ return [
 		'mysql' => [
 		    'driver' => 'mysql',
 		    'host' => '127.0.0.1',
-		    'database' => '',
-		    'username' => '',
-		    'password' => '',
+		    'database' => 'slimcms',
+		    'username' => 'u_slim',
+		    'password' => 'slimslim',
+		    'charset'  => 'utf8',
 		    'collation' => 'utf8_general_ci',
 		    'prefix' => ''
 		],

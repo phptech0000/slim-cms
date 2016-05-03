@@ -26,7 +26,7 @@ class SystemOptionsModule extends AModule
     
     public function registerRoute()
     {
-        AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
-        AdminRouteCollection::add(new AdminResource('group_options'));
+            AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
+            AdminRouteCollection::add(new AdminResource('group_options'));
     }
 }

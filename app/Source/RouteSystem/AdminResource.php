@@ -2,6 +2,7 @@
 
 namespace App\Source\RouteSystem;
 
+use App\Source\Composite\Menu;
 use \Slim\App as Slim;
 
 /**
@@ -47,5 +48,12 @@ class AdminResource implements Interfaces\IRouteResource
 	    	$this->map(['PUT', 'POST'], '/edit', $data['handle'].':doEdit')->setName('save.'.$data['name']);
 	    	$this->map(['DELETE', 'POST'], '/delete/{id:\d+}', $data['handle'].':doDelete')->setName('delete.'.$data['name']);
 	    });
+
+		$this->registerMenu($app->getContainer(), $data['name'], $data['path']);
+	}
+
+	public function registerMenu($container, $name, $url)
+	{
+		$container->get('adminMenu')->add(new Menu($name, $url));
 	}
 }

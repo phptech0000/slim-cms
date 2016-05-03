@@ -2,6 +2,7 @@
 
 namespace App\Modules;
 
+use App\Source\Composite\Menu;
 use Slim\App;
 use App\Middleware\AuthMiddleware;
 use App\Source\RouteSystem\AdminResource;
@@ -20,7 +21,7 @@ class AdminPanelModule extends AModule
     public function registerDi()
     {
     	$this->container['adminMenu'] = function ($c) {
-		    return null;
+		    return new Menu('adminMenu');
 		};
     }
 
@@ -49,6 +50,10 @@ class AdminPanelModule extends AModule
     public function afterInitialization(){
         parent::afterInitialization();
 
+        $this->container->get('adminMenu')->add(new Menu('Dashboard', 'about'));
+
+        //p($this->container->get('adminMenu'));
+
         $this->container->dispatcher->addListener('app.beforeRun', function ($event){
             $event->getApp()->group('/admin', function () {
                 AdminRouteCollection::register($this);
@@ -57,10 +62,8 @@ class AdminPanelModule extends AModule
     }
 
     protected function adminPanelRouteRegister(){
-        if( Session::has('auth') && Session::get('auth') ){
-            AdminRouteCollection::add(new AdminResource('pages'));
-            AdminRouteCollection::add(new AdminResource('users'));
-            AdminRouteCollection::add(new AdminResource('groups'));
-        }
+        AdminRouteCollection::add(new AdminResource('pages'));
+        AdminRouteCollection::add(new AdminResource('users'));
+        AdminRouteCollection::add(new AdminResource('groups'));
     }
 }
