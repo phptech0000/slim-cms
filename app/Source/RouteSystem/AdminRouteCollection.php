@@ -5,7 +5,6 @@ namespace App\Source\RouteSystem;
 /**
  *
  */
-//use Illuminate\Support\Facades\Session as Session;
 use App\Helpers\SessionManager as Session;
 
 class AdminRouteCollection implements Interfaces\IRouteCollection
