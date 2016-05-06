@@ -63,6 +63,7 @@ abstract class AMenu implements IMenuComposite
 
         $this->name       = strtolower(preg_replace('/[^\w\d\-\_]/s', "", $name));
         $this->attributes = ( is_array($options) ) ? $this->extractAttr($options) : array();
+
         if($_name)
             $this->name = $_name;
 

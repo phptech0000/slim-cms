@@ -72,6 +72,5 @@ class AdminPanelModule extends AModule
         $this->container->get('adminMenu')->add($pages);
 
         //p($this->container->get('adminMenu'));
-
     }
 }
