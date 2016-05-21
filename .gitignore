@@ -1,4 +1,6 @@
+.idea/
 vendor/
 log/*
 cache/*
+.idea/*
 composer.lock
