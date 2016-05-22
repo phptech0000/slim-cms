@@ -37,7 +37,7 @@ class CoreModule extends AModule
 
     public function registerRoute()
     {
-        $this->app->get('/', function ($req, $res) {$res->getBody()->write("end app");})->setName('home');
+        $this->app->get('/', function ($req, $res) {$res->getBody()->write("Core module load");})->setName('home');
     }
 
     public function registerDi()
@@ -54,6 +54,8 @@ class CoreModule extends AModule
                 $c['router'],
                 $c['request']->getUri()
             ));
+
+            $view->addExtension(new \Twig_Extension_Debug());
 
             return $view;
         };

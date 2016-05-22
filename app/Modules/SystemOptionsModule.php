@@ -7,6 +7,7 @@ use App\Source\Facade\OptionsFacade;
 use App\Models\Options;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
+use App\Source\Composite\Menu;
 
 class SystemOptionsModule extends AModule
 {
@@ -26,7 +27,7 @@ class SystemOptionsModule extends AModule
     
     public function registerRoute()
     {
-            AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
-            AdminRouteCollection::add(new AdminResource('group_options'));
+        AdminRouteCollection::add(new AdminResource('options', 'App\Controllers\Admin\OptionsController'));
+        AdminRouteCollection::add(new AdminResource('group_options'));
     }
 }

@@ -8,8 +8,13 @@ use App\Source\Composite\Interfaces\IMenuComposite;
  * Class AMenu
  * @package App\Source\Composite
  */
-abstract class AMenu implements IMenuComposite
+abstract class AMenu implements IMenuComposite, \ArrayAccess
 {
+    public function offsetExists ( $id ){ return (isset($this->menu[$id])||$id == $this->getId()); }
+    public function offsetGet ( $id ){ return ($id == $this->getId())?$this->menu:$this->menu[$id]; }
+    public function offsetSet ( $id, $value ){ $this->add($value); }
+    public function offsetUnset ( $id ){ $this->remove($id); }
+
     /**
      * @var int
      */
@@ -30,7 +35,7 @@ abstract class AMenu implements IMenuComposite
      *
      * @var array
      */
-    protected $reserved = ['url', 'link_attr', 'meta_attr'];
+    protected $reserved = ['url', 'link_attr', 'meta_attr', 'sub_menu', 'menu_name'];
 
     /**
      * Item's meta data
@@ -64,14 +69,18 @@ abstract class AMenu implements IMenuComposite
         $this->name       = strtolower(preg_replace('/[^\w\d\-\_]/s', "", $name));
         $this->attributes = ( is_array($options) ) ? $this->extractAttr($options) : array();
 
-        if($_name)
+        if($_name || (is_array($options) && $options['menu_name']))
             $this->name = $_name;
 
-        if( is_array($options) )
+        if( is_array($options) ){
             $linkAttr = $options['link_attr'];
-
-        if( is_array($options) )
             $this->meta = $options['meta_attr'];
+            if($options['sub_menu'] && is_array($options['sub_menu'])){
+                while ($item = array_shift($options['sub_menu'])) {
+                    $this->add($item);
+                }
+            }
+        }
 
         // Create an object of type Link
         $this->link       = new MenuLink($name, $url, $linkAttr);

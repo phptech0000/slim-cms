@@ -9,6 +9,7 @@ use App\Source\Factory\ModelsFactory;
 use App\Models\Sections;
 use App\Source\RouteSystem\PageResource;
 use App\Source\RouteSystem\PageRouteCollection;
+use App\Source\Composite\Menu;
 
 class SectionsModule extends AModule
 {
@@ -44,6 +45,8 @@ class SectionsModule extends AModule
 
         $this->adminPanelRouteRegister();
 
+        $this->adminPanelMenuRegister();
+
         $this->menuCreator();
 
         $this->container->dispatcher->addListener('basecontroller.render.before', function ($event) {
@@ -75,6 +78,44 @@ class SectionsModule extends AModule
         if( Session::has('auth') && Session::get('auth') ){
             AdminRouteCollection::add(new AdminResource('sections'));
         }
+    }
+
+    protected function adminPanelMenuRegister(){
+        $item = new Menu('Categories',[
+            'menu_name' => 'section.categories',
+            'url' => '#',
+            'link_attr' => [
+                'icon' => 'fa fa-list-alt fa-fw'
+            ],
+            'meta_attr' => [
+                'onlyDevelopersMode' => false,
+                'sort' => 180
+            ],
+            'sub_menu' => [
+                new Menu('Show all categories', [
+                    'menu_name' => 'categories.list',
+                    'url' => '/admin/sections',
+                    'link_attr' => [
+                        'icon' => 'fa fa-file-o fa-fw'
+                    ],
+                    'meta_attr' => [
+                        'onlyDevelopersMode' => false,
+                    ],
+                ]),
+                new Menu('Add new page', [
+                    'menu_name' => 'categories.add',
+                    'url' => '/admin/sections/add',
+                    'link_attr' => [
+                        'icon' => 'fa fa-pencil-square-o fa-fw'
+                    ],
+                    'meta_attr' => [
+                        'onlyDevelopersMode' => false,
+                    ],
+                ])
+            ]
+        ]);
+        
+        $this->container->get('adminMenuLeft')->add($item);
     }
 
     protected function findFieldValues($event){

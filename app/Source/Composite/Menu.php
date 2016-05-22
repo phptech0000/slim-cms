@@ -34,8 +34,11 @@ class Menu extends AMenu
      * @param int $id
      * @return $this
      */
-    public function getChild($id = 0)
+    public function getChild($id = false)
     {
+        if( $id === false )
+            return $this->menu;
+
         if( $id == $this->getId() )
             return $this;
 
@@ -167,6 +170,18 @@ class Menu extends AMenu
         }
 
         return $this->menuFiltered;
+    }
+
+    public function sortByMeta($metaName)
+    {
+        usort($this->menu, function($a, $b) use ($metaName){
+            if ($a->meta($metaName) == $b->meta($metaName)) {
+                return 0;
+            }
+            return ($a->meta($metaName) < $b->meta($metaName)) ? -1 : 1;
+        });
+
+        return $this;
     }
 
     public function clearFilter()

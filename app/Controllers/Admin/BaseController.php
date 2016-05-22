@@ -59,6 +59,9 @@ class BaseController
 			$this->data['delete_link'] = 'delete.'.$this->controllerName;
 		}
 		$this->data['system_options'] = $this->containerSlim->systemOptions;
+
+		$this->data['menu_left'] = $this->containerSlim->get('adminMenuLeft');
+		$this->data['menu_top'] = $this->containerSlim->get('adminMenuTop');
 	}
 
 	protected function initRoute($req, $res){

@@ -51,9 +51,9 @@ $modules->registerModule(new App\Modules\ShowFieldAdminPanelModule());
 $modules->registerModule(new App\Modules\SectionsModule());
 $modules->registerModule(new App\Modules\BreadcrumbModule());
 
-foreach (glob(APP_PATH . 'routers/base.php') as $configFile) {
+/*foreach (glob(APP_PATH . 'routers/base.php') as $configFile) {
     require_once $configFile;
-}
+}*/
 
 $modules->boot();
 
