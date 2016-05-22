@@ -7,6 +7,7 @@ use App\Source\Facade\OptionsFacade;
 use App\Models\Options;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
+use App\Source\Composite\Menu;
 
 class SystemOptionsModule extends AModule
 {

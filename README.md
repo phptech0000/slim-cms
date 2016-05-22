@@ -55,6 +55,11 @@ Supported versions of php:
  - php: ^5.5
  - php: ^7.0
 
-# License
+## If You Need Help
+Please submit all issues and questions using GitHub issues and I will try to help you :)
 
-The SlimCMS platform is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+## License
+The SlimCMS platform is free software distributed under the terms of the [MIT license](http://opensource.org/licenses/MIT).
+
+## Donations
+Bitcoin address for donation: 17qXDeunJDgc2gVTmyRJEgkGSwyhNqaCok

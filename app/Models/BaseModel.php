@@ -14,11 +14,13 @@ class BaseModel extends ModelEloquent
 		if( $this->allFields )
 			return $this->allFields;
 
-	    $connection = DB::connection();
+/*	    $connection = DB::connection();
 	    $connection->getSchemaBuilder();
 
 	    $results = $connection->select('PRAGMA table_info('.$this->table.')');
 	    $results = $connection->getPostProcessor()->processColumnListing($results);
+*/
+	    $results = DB::connection()->getSchemaBuilder()->getColumnListing($this->table);
 	    $this->allFields = array_merge($results, $arAdditionalField);
 	    return $this->allFields;
 	}

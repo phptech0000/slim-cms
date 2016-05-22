@@ -12,9 +12,53 @@ $app->get('/test1', function () {
     }
 })->setName('asdf');
 
+use App\Source\Composite\Menu;
+
 $app->get('/d', function ($t) {
-    $this->dispatcher->dispatch('acme.action');
+    /*$admin = new Menu('AdminLeftMenu');
+    $admin->add(new Menu('Home', '/'));
+    $admin->add(new Menu('Sections', array(
+        'data-name'=>"section",
+        'data-price' => "100",
+        'url' => 'test',
+        "class"=>"nav",
+        "id"=>"sf-344",
+        "link_attr" => array(
+            "class"=>"link-class active",
+            "id"=>"rrer",
+            "superAttr"=>"attr"
+        ),
+        "meta_attr" => array(
+            "display" => false,
+            "depth_level" => 3,
+        )
+    )));
+
+    $admin->add(new Menu('Pages', '/'));
+    $baseMenu = new Menu('Options', '/');
+    $baseMenu->add(new Menu('Group options', '/'));
+    $subMenu = new Menu('Users', '/');
+    $subMenu->add(new Menu('New user', '/'));
+    $subMenu->add(new Menu('All users', '/'));
+    $subMenu->add(new Menu('Users permittions', '/'));
+    $baseMenu->add($subMenu);
+    $admin->add($baseMenu);
+
+
+    $admin->getChild(8)->attributes('teste', 'test')->meta(["display"=>false, "asfd"=>"asddddd"]);
+    //p($admin->getChild(3));
+    //$admin->remove(7);
+    //p($admin->getChild(7));
+    $r = $admin->filter(function($item){
+        return ( $item->meta()['display'] === false )?false:true;
+    });
+p($r);*/
+    //p($admin);
 });
+
+
+
+
 
 $app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('App\Middleware\CheckAjaxMiddleware')->setName('asdf1');
 /*

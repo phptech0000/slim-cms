@@ -40,9 +40,9 @@ class UniversalController extends BaseController
 		$model = ModelsFactory::getModelWithRequest($req);
 		$this->data['fields'] = $this->getFields($model->getColumnsNames());
 
-$builder = new BuildFields();
-$builder->setFields($model->getColumnsNames())->addJsonShema($model->getAnnotations());
-$this->data['ttt'] = $builder->getAll();
+		$builder = new BuildFields();
+		$builder->setFields($model->getColumnsNames())->addJsonShema($model->getAnnotations());
+		$this->data['ttt'] = $builder->getAll();
 
 		$this->render('admin\addTables.twig');
 	}

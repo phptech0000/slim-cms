@@ -10,7 +10,7 @@ class DashboardController extends BaseController
 	public function index($req, $res){
 		$this->controllerName = $req->getAttribute('route')->getName();
 		$this->resourse = false;
-		$this->initRoute($req);
+		$this->initRoute($req, $res);
 		$this->data['h1'] = 'Dashboard';
 
 		$this->data['cnt'] = new \stdClass();
