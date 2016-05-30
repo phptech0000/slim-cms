@@ -3,13 +3,15 @@
 return [
     'slim' => [
         'settings' => [
+            'db_driver' => 'sqlite', // (use config section DB) @require: sqlite | mysql
             'displayErrorDetails' => true, // @require: true | false
             'debug' => true, // @require: true | false
+            'use_log' => true, // @require: true | false
             'log_system' => 'file', // @require: file | db
-            'use_log' => true,
+            'log_filename' => 'app.log',
+            'register_log' => ['info', 'statistic'], // @require: info, statistic, error
             'determineRouteBeforeAppMiddleware' => true,
-            'protectDoubleRouteRegister' => true,
+            'protect_double_route_register' => true,
         ],
-        'db_driver' => 'sqlite', // (use config section DB) @require: sqlite | mysql
     ],
 ];

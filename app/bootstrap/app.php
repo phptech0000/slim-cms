@@ -1,6 +1,13 @@
 <?php
 
+use Slim\App;
+use Slim\Container;
 use App\Helpers\ConfigWorker;
+use App\Modules\BreadcrumbModule;
+use Modules\Core\CoreModule;
+use App\Source\ModuleManager;
+use App\Modules\SectionsModule;
+use App\Modules\ShowFieldAdminPanelModule;
 
 session_start();
 
@@ -12,7 +19,7 @@ define('VENDOR_PATH', ROOT_PATH . 'vendor/');
 define('PUBLIC_PATH', ROOT_PATH . 'public/');
 define('RESOURCE_PATH', ROOT_PATH . 'resource/');
 
-define('MODULE_PATH', APP_PATH . 'modules/');
+define('MODULE_PATH', ROOT_PATH . 'modules/');
 
 require VENDOR_PATH . 'autoload.php';
 require APP_PATH . 'Helpers/functions.php';
@@ -30,39 +37,39 @@ $config = array(
 );
 
 /** include Config files */
-$config = ConfigWorker::init();
+$config += ConfigWorker::init()->all();
 
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
 }
 
-$container = new \Slim\Container($config['slim']);
+$container = new Container($config['slim']);
 $container->config = ConfigWorker::getConfig();
 
-$app = new \Slim\App($container);
+$app = new App($container);
 
-$modules = App\Modules\ModuleManager::getInstance($container, $app);
-$modules->registerModule(new App\Modules\CoreModule());
+$modules = ModuleManager::getInstance($container, $app);
+$modules->registerModule(new CoreModule());
 
 $modules->coreInit()->boot();
-
+/*
 //--- Register manual module ---//
-$modules->registerModule(new App\Modules\ShowFieldAdminPanelModule());
-$modules->registerModule(new App\Modules\SectionsModule());
-$modules->registerModule(new App\Modules\BreadcrumbModule());
+$modules->registerModule(new ShowFieldAdminPanelModule());
+$modules->registerModule(new SectionsModule());
+$modules->registerModule(new BreadcrumbModule());
 
 /*foreach (glob(APP_PATH . 'routers/base.php') as $configFile) {
     require_once $configFile;
 }*/
 
-$modules->boot();
+//$modules->boot();
 
 $container->dispatcher->addListener('middleware.core.after', function ($event) {
-    $event->getLogger()->addInfo("Info - Core middleware after");
+    $event->getLogger()->info("Core middleware after");
 });
 
 $container->dispatcher->addListener('middleware.core.before', function ($event) {
-    $event->getLogger()->addInfo("Info - Core middleware before");
+    $event->getLogger()->info("Core middleware before");
 });
 
 /*

@@ -1,19 +1,20 @@
 <?php
 namespace App\Source\Events;
 
-use Monolog\Logger;
+use Modules\Core\Source\Libs\Logger\LoggerSystem;
 use Symfony\Component\EventDispatcher\Event;
 
 class BaseLoggerEvent extends Event
 {
+
     /**
-     * @var Monolog\Logger
+     * @var Modules\Core\Source\Libs\Logger\LoggerSystem
      */
     protected $logger;
 
     protected $undefinedObject;
 
-    public function __construct(Logger $logger, $param = null)
+    public function __construct(LoggerSystem $logger, $param = null)
     {
         $this->logger = $logger;
         $this->undefinedObject = $param;

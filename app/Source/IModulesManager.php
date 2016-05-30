@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules;
+namespace App\Source;
 
 interface IModulesManager
 {

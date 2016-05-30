@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules;
+namespace App\Source;
 
 use Slim\App;
-use App\Helpers\Enforcer;
 
 abstract class AModule implements IModule
 {
@@ -11,6 +10,8 @@ abstract class AModule implements IModule
     protected $app;
 
     protected $loaded = false;
+
+    public $requireModules = ['core'];
 
     public function __construct() {
     	$c = get_called_class();
@@ -20,11 +21,14 @@ abstract class AModule implements IModule
         }
     }
 
-    public function initialization(App $app)
+    public function beforeInitialization(App $app)
     {
         $this->container = $app->getContainer();
         $this->app = $app;
     }
+
+    public function initialization()
+    {}
 
     public function afterInitialization()
     {

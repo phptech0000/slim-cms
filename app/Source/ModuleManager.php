@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules;
+namespace App\Source;
 
 use App\Source\Events\BaseAppEvent;
 use App\Source\Events\BaseLoggerEvent;
@@ -77,7 +77,8 @@ class ModuleManager implements IModulesManager
 
         $this->container['modules'] = $this->getModulesName();
 
-        $module->initialization($this->app);
+        $module->beforeInitialization($this->app);
+        $module->initialization();
 
         $event = new BaseAppEvent($this->app);
 
@@ -107,7 +108,8 @@ class ModuleManager implements IModulesManager
             $event = new BaseAppEvent($this->app, $module);
 
             $this->container->dispatcher->dispatch('module.' . $name . '.beforeInitialization', $event);
-            $module->initialization($this->app);
+            $module->beforeInitialization($this->app);
+            $module->initialization();
             //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
             $module->registerRoute();
             //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
