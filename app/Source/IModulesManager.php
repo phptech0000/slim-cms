@@ -14,4 +14,10 @@ interface IModulesManager
 
     public function getModules();
     public function getModule($name);
+    /**
+     * Method check loaded module
+     * @param array $arModulesName
+     * @return void
+     */
+    public function checkRequireModule(array $arModulesName = []);
 }

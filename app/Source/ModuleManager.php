@@ -97,6 +97,25 @@ class ModuleManager implements IModulesManager
         return $this;
     }
 
+    public function checkRequireModule(array $arModulesName = [])
+    {
+        $arAllInitModules = $this->getModulesName();
+        foreach($arModulesName as $moduleName){
+            if( !in_array($moduleName, $arAllInitModules) ){
+                $this->container->get('logger')->error("Module $module from required - not found.");
+                return false;
+            }
+
+            $module = $this->getModule($moduleName);
+
+            if( !$module->isInitModule() ){
+                $this->initializationProcess($module);
+            }
+        }
+
+        return true;
+    }
+
     public function boot()
     {
         foreach ($this->getModules() as $module) {
@@ -105,21 +124,19 @@ class ModuleManager implements IModulesManager
             }
             $name = $module->getName();
 
+            if( !$this->checkRequireModule($module->requireModules) ){
+                if( ($logger = $this->container->get('logger')) )
+                    $logger->error("Module $name no loaded require module not found.");
+
+                continue;
+            }
+
             $event = new BaseAppEvent($this->app, $module);
 
             $this->container->dispatcher->dispatch('module.' . $name . '.beforeInitialization', $event);
-            $module->beforeInitialization($this->app);
-            $module->initialization();
-            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
-            $module->registerRoute();
-            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
-            //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.di', $event);
-            $module->registerDi();
-            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.di', $event);
-            //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.middleware', $event);
-            $module->registerMiddleware();
-            //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware', $event);
-            $module->afterInitialization();
+
+            $this->initializationProcess($module);
+
             $event = new BaseLoggerEvent($this->container->logger, $module);
             $this->container->dispatcher->dispatch('module.' . $name . '.afterInitialization', $event, $module);
         }
@@ -131,6 +148,8 @@ class ModuleManager implements IModulesManager
     {
         return self::$moduleContainer;
     }
+
+
 
     protected function getModulesName()
     {
@@ -147,5 +166,21 @@ class ModuleManager implements IModulesManager
     public function getModule($name)
     {
         return self::$moduleContainer[$name];
+    }
+
+    protected function initializationProcess($module)
+    {
+        $module->beforeInitialization($this->app);
+        $module->initialization();
+        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
+        $module->registerRoute();
+        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
+        //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.di', $event);
+        $module->registerDi();
+        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.di', $event);
+        //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.middleware', $event);
+        $module->registerMiddleware();
+        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware', $event);
+        $module->afterInitialization();
     }
 }

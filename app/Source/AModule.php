@@ -11,7 +11,7 @@ abstract class AModule implements IModule
 
     protected $loaded = false;
 
-    public $requireModules = ['core'];
+    public $requireModules = ['core', 'logger'];
 
     public function __construct() {
     	$c = get_called_class();
@@ -44,9 +44,6 @@ abstract class AModule implements IModule
     {
         return static::MODULE_NAME;
     }
-
-    public function checkRequireModule(array $arr = [])
-    {}
 
     public function installModule()
     {}

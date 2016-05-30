@@ -12,13 +12,6 @@ use Slim\App;
 interface IModule
 {
     /**
-     * Method check loaded module
-     * @param array $arModulesName
-     * @return void
-     */
-    public function checkRequireModule(array $arModulesName = []);
-
-    /**
      * Run if module no install
      * @return void
      */
