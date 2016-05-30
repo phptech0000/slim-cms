@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\ConfigWorker;
+
 session_start();
 
 define('ROOT_PATH', __DIR__ . '/../../');
@@ -28,16 +30,14 @@ $config = array(
 );
 
 /** include Config files */
-foreach (glob(APP_PATH . 'config/*.php') as $configFile) {
-    $config += require_once $configFile;
-}
+$config = ConfigWorker::init();
 
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
 }
 
 $container = new \Slim\Container($config['slim']);
-$container->config = $config;
+$container->config = ConfigWorker::getConfig();
 
 $app = new \Slim\App($container);
 
