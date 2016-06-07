@@ -1,7 +1,7 @@
 <?php
 namespace App\Source\Events;
 
-use Modules\Core\Source\Libs\Logger\LoggerSystem;
+use Core\Source\Libs\Logger\LoggerSystem;
 use Symfony\Component\EventDispatcher\Event;
 
 class BaseLoggerEvent extends Event

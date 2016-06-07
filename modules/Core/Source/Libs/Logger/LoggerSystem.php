@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Source\Libs\Logger;
+namespace Core\Source\Libs\Logger;
 
 class LoggerSystem
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core;
+namespace Core;
 
 use Slim\Flash\Messages;
 use Slim\Router;
@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Source\AModule;
 use App\Source\ModuleManager;
-use Modules\Core\Source\MicroModules\LoggerModule;
+use Core\Source\MicroModules\LoggerModule;
 
 /**
  * Base module from use SlimCMS
@@ -148,7 +148,7 @@ class CoreModule extends AModule
                         $r->addRoute($route->getMethods(), $route->getPattern(), $route->getIdentifier());
                     } catch (\FastRoute\BadRouteException $e) {
                         $event->getLogger()->error('Register router: ' . $e->getMessage());
-                        $event->getContainer()->get('router')->removeRoute($route->getIdentifier());
+                        $event->getContainer()->get('router')->removeNamedRoute($route->getIdentifier());
                         continue;
                     }
                 }

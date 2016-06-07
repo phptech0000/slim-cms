@@ -4,14 +4,14 @@ use Slim\App;
 use Slim\Container;
 use App\Helpers\ConfigWorker;
 use App\Modules\BreadcrumbModule;
-use Modules\Core\CoreModule;
+//use Modules\Core\CoreModule;
 use App\Source\ModuleManager;
 use App\Modules\SectionsModule;
 use App\Modules\ShowFieldAdminPanelModule;
 
 session_start();
 
-define('ROOT_PATH', __DIR__ . '/../../');
+define('ROOT_PATH', realpath(__DIR__ . '/../../').'/');
 
 define('APP_PATH', ROOT_PATH . 'app/');
 define('CACHE_PATH', ROOT_PATH . 'cache/');
@@ -21,7 +21,8 @@ define('RESOURCE_PATH', ROOT_PATH . 'resource/');
 
 define('MODULE_PATH', ROOT_PATH . 'modules/');
 
-require VENDOR_PATH . 'autoload.php';
+$classLoader = require VENDOR_PATH . 'autoload.php';
+
 require APP_PATH . 'Helpers/functions.php';
 
 /**
@@ -48,8 +49,14 @@ $container->config = ConfigWorker::getConfig();
 
 $app = new App($container);
 
+//$classLoader->add('Test\\Test', CACHE_PATH);
+$classLoader->addPsr4('Test\\Test\\', realpath(CACHE_PATH.'Test').'/', 1);
+$classLoader->add('Core\\', MODULE_PATH);
+//dd($classLoader);
+//Test\Test\M::init();
+
 $modules = ModuleManager::getInstance($container, $app);
-$modules->registerModule(new CoreModule());
+$modules->registerModule(new Core\CoreModule());
 
 $modules->coreInit()->boot();
 /*
