@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Modules;
+namespace CustomizeradminpanelModule;
 
-use Slim\App;
 use App\Middleware\ItemPerPageMiddleware;
 use App\Middleware\LastPagePaginatorMiddleware;
+use App\Source\AModule;
 
-class ShowFieldAdminPanelModule extends AModule
+class Module extends AModule
 {
     const MODULE_NAME = 'customizer_admin_panel';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerRoute()
     {

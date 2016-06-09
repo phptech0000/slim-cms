@@ -1,23 +1,30 @@
 <?php
 
-namespace Core;
+namespace CoreModule;
 
+use CoreModule\Source\MicroModules\AdminPanelModule;
+use CoreModule\Source\MicroModules\PublicModule;
 use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
+
+use App\Source\ModuleInitializer;
 use App\Source\AModule;
-use App\Source\ModuleManager;
-use Core\Source\MicroModules\LoggerModule;
+use CoreModule\Source\MicroModules\AuthModule;
+use CoreModule\Source\MicroModules\CSRFModule;
+use CoreModule\Source\MicroModules\FlashModule;
+use CoreModule\Source\MicroModules\LoggerModule;
+use CoreModule\Source\MicroModules\SystemOptionsModule;
 
 /**
  * Base module from use SlimCMS
  * Class CoreModule
  * @package Modules\Core
  */
-class CoreModule extends AModule
+class Module extends AModule
 {
     /**
      * Module name
@@ -101,16 +108,16 @@ class CoreModule extends AModule
     {
         parent::afterInitialization();
 
-        $modules = ModuleManager::getInstance();
+        //$modules = ModuleManager::getInstance();
+        $modules = ModuleInitializer::getInstance();
 
-        $modules->registerModule(new LoggerModule());
-        /*$modules->registerModule(new \App\Modules\LoggerModule());
-        $modules->registerModule(new \App\Modules\SystemOptionsModule());
-        $modules->registerModule(new \App\Modules\CSRFModule());
-        $modules->registerModule(new \App\Modules\FlashModule());
-        $modules->registerModule(new \App\Modules\AuthModule());
-        $modules->registerModule(new \App\Modules\AdminPanelModule());
-        $modules->registerModule(new \App\Modules\PublicModule());*/
+        $modules->initializationProcess(new LoggerModule());
+        $modules->initializationProcess(new SystemOptionsModule());
+        $modules->initializationProcess(new CSRFModule());
+        $modules->initializationProcess(new FlashModule());
+        $modules->initializationProcess(new AuthModule());
+        $modules->initializationProcess(new AdminPanelModule());
+        $modules->initializationProcess(new PublicModule());
 
         if (isset($this->container['settings']['protect_double_route_register']) &&
             $this->container['settings']['protect_double_route_register']

@@ -11,7 +11,7 @@ abstract class AModule implements IModule
 
     protected $loaded = false;
 
-    public $requireModules = ['core', 'logger'];
+    public $requireModules = ['core'];
 
     public function __construct() {
     	$c = get_called_class();

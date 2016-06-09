@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Modules;
+namespace CoreModule\Source\MicroModules;
 
-use Slim\App;
-use \Slim\Flash\Messages;
+use Slim\Flash\Messages;
+use App\Source\AModule;
 
 class FlashModule extends AModule
 {
     const MODULE_NAME = 'session_flash';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerDi()
     {

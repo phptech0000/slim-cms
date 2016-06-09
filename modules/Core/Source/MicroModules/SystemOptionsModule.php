@@ -1,22 +1,16 @@
 <?php
 
-namespace App\Modules;
+namespace CoreModule\Source\MicroModules;
 
-use Slim\App;
+use App\Source\AModule;
 use App\Source\Facade\OptionsFacade;
 use App\Models\Options;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
-use App\Source\Composite\Menu;
 
 class SystemOptionsModule extends AModule
 {
     const MODULE_NAME = 'system_options';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerDi()
     {

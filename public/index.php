@@ -8,5 +8,5 @@ $app->getContainer()->dispatcher->dispatch('app.beforeRun', $event);
 
 $app->run();
 
-$event = new App\Source\Events\BaseLoggerEvent($app->getContainer()->logger);
+$event = new App\Source\Events\BaseLoggerEvent($app->getContainer()->get('logger'));
 $app->getContainer()->dispatcher->dispatch('app.afterRun', $event);

@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Modules;
+namespace CoreModule\Source\MicroModules;
 
-use Slim\App;
+use App\Source\AModule;
 
 class AuthModule extends AModule
 {
     const MODULE_NAME = 'auth';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerDi()
     {

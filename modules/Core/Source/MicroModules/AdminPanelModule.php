@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules;
+namespace CoreModule\Source\MicroModules;
 
+use App\Source\AModule;
 use App\Source\Composite\Menu;
-use Slim\App;
 use App\Middleware\AuthMiddleware;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
@@ -12,11 +12,6 @@ use App\Helpers\SessionManager as Session;
 class AdminPanelModule extends AModule
 {
     const MODULE_NAME = 'admin_panel';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerDi()
     {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Modules;
+namespace SectionsModule;
 
+use App\Source\AModule;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
 use App\Helpers\SessionManager as Session;
@@ -11,7 +12,7 @@ use App\Source\RouteSystem\PageResource;
 use App\Source\RouteSystem\PageRouteCollection;
 use App\Source\Composite\Menu;
 
-class SectionsModule extends AModule
+class Module extends AModule
 {
     const MODULE_NAME = 'sections';
 

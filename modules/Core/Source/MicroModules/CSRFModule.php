@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Modules;
+namespace CoreModule\Source\MicroModules;
 
+use App\Source\AModule;
 use Slim\Csrf\Guard;
-use Slim\App;
 use App\Middleware\CSRFMiddleware;
 
 class CSRFModule extends AModule
 {
     const MODULE_NAME = 'csrf';
-
-    public function initialization(App $app)
-    {
-        parent::initialization($app);
-    }
 
     public function registerDi()
     {

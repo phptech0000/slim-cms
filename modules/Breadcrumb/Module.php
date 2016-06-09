@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Modules;
+namespace BreadcrumbModule;
 
+use App\Source\AModule;
 use App\Source\Factory\ModelsFactory;
 use App\Source\Builders\BreadcrumbsBuilder;
 
-class BreadcrumbModule extends AModule
+class Module extends AModule
 {
     const MODULE_NAME = 'breadcrumb';
+
+    public $requireModules = ['core', 'sections'];
 
     public function afterInitialization(){
         parent::afterInitialization();

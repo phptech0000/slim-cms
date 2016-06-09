@@ -1,11 +1,11 @@
 <?php
 
-namespace Core\Source\MicroModules;
+namespace CoreModule\Source\MicroModules;
 
 use App\Source\AModule;
 use Illuminate\Support\Facades\DB;
-use Core\Source\Libs\Logger\LoggerSystem;
-use Core\Source\Libs\Logger\SqliteMonologHandler;
+use CoreModule\Source\Libs\Logger\LoggerSystem;
+use CoreModule\Source\Libs\Logger\SqliteMonologHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use MySQLHandler\MySQLHandler;

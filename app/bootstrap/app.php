@@ -1,13 +1,9 @@
 <?php
 
+use App\Source\ModuleInitializer;
 use Slim\App;
 use Slim\Container;
 use App\Helpers\ConfigWorker;
-use App\Modules\BreadcrumbModule;
-//use Modules\Core\CoreModule;
-use App\Source\ModuleManager;
-use App\Modules\SectionsModule;
-use App\Modules\ShowFieldAdminPanelModule;
 
 session_start();
 
@@ -38,7 +34,7 @@ $config = array(
 );
 
 /** include Config files */
-$config += ConfigWorker::init()->all();
+$config += ConfigWorker::init([], true)->all();
 
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
@@ -49,16 +45,20 @@ $container->config = ConfigWorker::getConfig();
 
 $app = new App($container);
 
-//$classLoader->add('Test\\Test', CACHE_PATH);
-$classLoader->addPsr4('Test\\Test\\', realpath(CACHE_PATH.'Test').'/', 1);
-$classLoader->add('Core\\', MODULE_PATH);
-//dd($classLoader);
-//Test\Test\M::init();
+$mm = ModuleInitializer::getInstance($app, $classLoader);
+$mm->registerModuleNames(['core', 'sections', 'breadcrumb', 'customizeradminpanel']);
+$mm->initModules();
+$mm->bootCore();
+$mm->boot();
+//p($mm->getAllLoadedModuleClassName());
+//$mm->registerModuleNames([]);
+//$mm->initModules();
 
-$modules = ModuleManager::getInstance($container, $app);
+
+/*$modules = ModuleManager::getInstance($container, $app);
 $modules->registerModule(new Core\CoreModule());
 
-$modules->coreInit()->boot();
+$modules->coreInit()->boot();*/
 /*
 //--- Register manual module ---//
 $modules->registerModule(new ShowFieldAdminPanelModule());
