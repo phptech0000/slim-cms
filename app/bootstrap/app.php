@@ -1,6 +1,7 @@
 <?php
 
-use App\Source\ModuleInitializer;
+use App\Source\Factory\AppFactory;
+use App\Source\ModuleLoader;
 use Slim\App;
 use Slim\Container;
 use App\Helpers\ConfigWorker;
@@ -43,33 +44,15 @@ if ($config['slim']['settings']['debug']) {
 $container = new Container($config['slim']);
 $container->config = ConfigWorker::getConfig();
 
-$app = new App($container);
+$app = AppFactory::setInstance(new App($container));
+ModuleLoader::bootCore(new \Modules\Core\Module());
 
-$mm = ModuleInitializer::getInstance($app, $classLoader);
-$mm->registerModuleNames(['core', 'sections', 'breadcrumb', 'customizeradminpanel']);
-$mm->initModules();
-$mm->bootCore();
-$mm->boot();
-//p($mm->getAllLoadedModuleClassName());
-//$mm->registerModuleNames([]);
-//$mm->initModules();
+$moduleLoader = new \App\Source\ModuleManager(MODULE_PATH);
+$moduleLoader->init()->registerModules();
 
+ModuleLoader::bootLoadModules($moduleLoader->getModules());
 
-/*$modules = ModuleManager::getInstance($container, $app);
-$modules->registerModule(new Core\CoreModule());
-
-$modules->coreInit()->boot();*/
-/*
-//--- Register manual module ---//
-$modules->registerModule(new ShowFieldAdminPanelModule());
-$modules->registerModule(new SectionsModule());
-$modules->registerModule(new BreadcrumbModule());
-
-/*foreach (glob(APP_PATH . 'routers/base.php') as $configFile) {
-    require_once $configFile;
-}*/
-
-//$modules->boot();
+unset($moduleLoader);
 
 $container->dispatcher->addListener('middleware.core.after', function ($event) {
     $event->getLogger()->info("Core middleware after");
@@ -78,12 +61,5 @@ $container->dispatcher->addListener('middleware.core.after', function ($event) {
 $container->dispatcher->addListener('middleware.core.before', function ($event) {
     $event->getLogger()->info("Core middleware before");
 });
-
-/*
-foreach( $app->getContainer()->get('installedModules') as $module){
-$modules->registerModule(new App\Modules\$module->className());
-}
-$modules->boot();
- */
 
 return $app;

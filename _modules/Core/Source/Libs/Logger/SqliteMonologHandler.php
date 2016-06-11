@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Source\Libs\Logger;
+namespace CoreModule\Source\Libs\Logger;
 
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;

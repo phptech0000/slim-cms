@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Source\MicroModules;
+namespace CoreModule\Source\MicroModules;
 
 use Slim\Flash\Messages;
 use App\Source\AModule;

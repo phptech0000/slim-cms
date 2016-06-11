@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\Source\MicroModules;
+namespace CoreModule\Source\MicroModules;
 
 use App\Source\AModule;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Source\Libs\Logger\LoggerSystem;
-use Modules\Core\Source\Libs\Logger\SqliteMonologHandler;
+use CoreModule\Source\Libs\Logger\LoggerSystem;
+use CoreModule\Source\Libs\Logger\SqliteMonologHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use MySQLHandler\MySQLHandler;
@@ -24,18 +24,19 @@ class LoggerModule extends AModule
         $this->container->get('logger')->info("Request Url", [$_SERVER['REQUEST_URI']]);
         $this->container->get('logger')->info("Request Method", [$_SERVER['REQUEST_METHOD']]);
 
-        $this->container->dispatcher->addListener('module.modules.beforeAllInitialization', function ($event){
-            $arModules = $this->container->modules->keys();
-            foreach ($arModules as $name) {
-                $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) {
-                    $event->getLogger()->addInfo("action beforeInitialization", [$event->getParam()->getName()]);
-                });
-
-                $this->container->dispatcher->addListener('module.' . $name . '.afterInitialization', function ($event) {
-                    $event->getLogger()->addInfo("action afterInitialization", [$event->getParam()->getName()]);
-                });
+        foreach ($this->container->modules as $name) {
+            if( $name == 'core' ){
+                continue;
             }
-        });
+
+            $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) {
+                $event->getLogger()->addInfo("action beforeInitialization", [$event->getParam()->getName()]);
+            });
+
+            $this->container->dispatcher->addListener('module.' . $name . '.afterInitialization', function ($event) {
+                $event->getLogger()->addInfo("action afterInitialization", [$event->getParam()->getName()]);
+            });
+        }
 
         $this->container->dispatcher->addListener('app.afterRun', function ($event){
             $workTime = round((microtime(true) - $GLOBALS['startTime']), 3);

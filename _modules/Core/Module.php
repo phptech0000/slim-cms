@@ -1,9 +1,7 @@
 <?php
 
-namespace Modules\Core;
+namespace CoreModule;
 
-use App\Source\ModuleLoader;
-use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
 use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
@@ -11,14 +9,15 @@ use Slim\Views\TwigExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+use App\Source\ModuleInitializer;
 use App\Source\AModule;
-use Modules\Core\Source\MicroModules\AuthModule;
-use Modules\Core\Source\MicroModules\CSRFModule;
-use Modules\Core\Source\MicroModules\FlashModule;
-use Modules\Core\Source\MicroModules\LoggerModule;
-use Modules\Core\Source\MicroModules\PublicModule;
-use Modules\Core\Source\MicroModules\AdminPanelModule;
-use Modules\Core\Source\MicroModules\SystemOptionsModule;
+use CoreModule\Source\MicroModules\AuthModule;
+use CoreModule\Source\MicroModules\CSRFModule;
+use CoreModule\Source\MicroModules\FlashModule;
+use CoreModule\Source\MicroModules\LoggerModule;
+use CoreModule\Source\MicroModules\PublicModule;
+use CoreModule\Source\MicroModules\AdminPanelModule;
+use CoreModule\Source\MicroModules\SystemOptionsModule;
 
 /**
  * Base module from use SlimCMS
@@ -30,7 +29,7 @@ class Module extends AModule
     /**
      * Module name
      */
-    const MODULE_NAME = 'Core';
+    const MODULE_NAME = 'core';
 
     /**
      * Require module loaded
@@ -51,6 +50,7 @@ class Module extends AModule
 
         $this->container['router'] = function () {
             return new Router();
+            //return new \App\Source\Decorators\RouteDecorator;
         };
 
         $this->container->dispatcher->dispatch('module.core.beforeInitialization');
@@ -108,14 +108,16 @@ class Module extends AModule
     {
         parent::afterInitialization();
 
-        ModuleLoader::bootEasyModule(new LoggerModule());
-        ModuleLoader::bootEasyModule(new SystemOptionsModule());
-        ModuleLoader::bootEasyModule(new CSRFModule());
-        ModuleLoader::bootEasyModule(new FlashModule());
-        ModuleLoader::bootEasyModule(new AuthModule());
-        ModuleLoader::bootEasyModule(new AdminPanelModule());
-        ModuleLoader::bootEasyModule(new CustomizerAdminPanelModule());
-        ModuleLoader::bootEasyModule(new PublicModule());
+        //$modules = ModuleManager::getInstance();
+        $modules = ModuleInitializer::getInstance();
+
+        $modules->initializationProcess(new LoggerModule());
+        $modules->initializationProcess(new SystemOptionsModule());
+        $modules->initializationProcess(new CSRFModule());
+        $modules->initializationProcess(new FlashModule());
+        $modules->initializationProcess(new AuthModule());
+        $modules->initializationProcess(new AdminPanelModule());
+        $modules->initializationProcess(new PublicModule());
 
         if (isset($this->container['settings']['protect_double_route_register']) &&
             $this->container['settings']['protect_double_route_register']

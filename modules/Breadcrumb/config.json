@@ -1,0 +1,11 @@
+{
+  "installed" : true,
+  "active" : true,
+  "load" : "Modules\\Breadcrumb\\Module",
+  "dependeny" : ["Sections"],
+  "decorators" : [
+    "Modules\\Breadcrumb\\ExtModule",
+    "Modules\\Breadcrumb\\Ext1Module",
+    "Modules\\Breadcrumb\\Ext2Module"
+  ]
+}

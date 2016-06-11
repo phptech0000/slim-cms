@@ -2,7 +2,8 @@
 
 namespace App\Source;
 
-use Slim\App;
+use App\Source\Factory\AppFactory;
+use App\Source\Interfaces\IModule;
 
 abstract class AModule implements IModule
 {
@@ -11,7 +12,7 @@ abstract class AModule implements IModule
 
     protected $loaded = false;
 
-    public $requireModules = ['core'];
+    public $requireModules = ['Core'];
 
     public function __construct() {
     	$c = get_called_class();
@@ -21,10 +22,10 @@ abstract class AModule implements IModule
         }
     }
 
-    public function beforeInitialization(App $app)
+    public function beforeInitialization()
     {
-        $this->container = $app->getContainer();
-        $this->app = $app;
+        $this->app = AppFactory::getInstance();
+        $this->container = $this->app->getContainer();
     }
 
     public function initialization()

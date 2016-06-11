@@ -1,147 +1,98 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: andrey
+ * Date: 6/11/16
+ * Time: 12:31 PM
+ */
 
 namespace App\Source;
 
-use App\Source\Events\BaseAppEvent;
-use App\Source\Events\BaseLoggerEvent;
 
-class ModuleManager implements IModulesManager
+use App\Source\Factory\AppFactory;
+use App\Source\Interfaces\IModuleManager;
+use Pimple\Container;
+
+class ModuleManager implements IModuleManager
 {
-    /**
-     * @var array
-     */
-    protected static $moduleContainer = [];
+    protected static $moduleContainer;
+    protected $modules;
+    protected $modulesDir;
 
     /**
-     * @var mixed
+     * ModuleLoader constructor.
+     * @param $modulesDir
      */
-    protected $app;
-
-    /**
-     * @var mixed
-     */
-    protected $container;
-
-    private static $instance = null;
-
-    /**
-     * @param $container
-     * @param $app
-     */
-    protected function __construct($container, $app)
+    public function __construct($modulesDir)
     {
-        $this->app = $app;
-        $this->container = $container;
-    }
-
-    public static function getInstance($container='', $app='')
-    {
-        if (!self::$instance) {
-            self::$instance = new self($container, $app);
+        if (!is_object(self::$moduleContainer)) {
+            self::$moduleContainer = new Container();
         }
 
-        return self::$instance;
+        $this->modulesDir = $modulesDir;
     }
 
-    /**
-     * @param $module
-     */
-    public function registerModule(IModule $module)
+    public function init()
     {
-        self::$moduleContainer[$module->getName()] = $module;
-    }
-
-    /**
-     * @param $name
-     */
-    public function install($name)
-    {}
-
-    /**
-     * @param $name
-     */
-    public function uninstall($name)
-    {}
-
-    public function coreInit()
-    {
-        $module = $this->getModule('core');
-
-        if (!$module) {
-            throw new \RuntimeException('Core module not found.');
-        }
-
-        if ($module->isInitModule()) {
-            return;
-        }
-
-        $this->container['modules'] = $this->getModulesName();
-
-        $module->beforeInitialization($this->app);
-        $module->initialization();
-
-        $event = new BaseAppEvent($this->app);
-
-        //$this->container->dispatcher->dispatch('module.core.beforeRegister.route', $event);
-        $module->registerRoute();
-        //$this->container->dispatcher->dispatch('module.core.afterRegister.route', $event);
-        //$this->container->dispatcher->dispatch('module.core.beforeRegister.di', $event);
-        $module->registerDi();
-        //$this->container->dispatcher->dispatch('module.core.afterRegister.di', $event);
-        //$this->container->dispatcher->dispatch('module.core.beforeRegister.middleware', $event);
-        $module->registerMiddleware();
-        //$this->container->dispatcher->dispatch('module.core.afterRegister.middleware', $event);
-        $module->afterInitialization();
-        $this->container->dispatcher->dispatch('module.core.afterInitialization', $event);
-
+        $this->modules = $this->findModules($this->modulesDir);
+        $this->checkModules($this->modules);
         return $this;
     }
 
-    public function checkRequireModule(array $arModulesName = [])
+    protected function findModules($dirName)
     {
-        $arAllInitModules = $this->getModulesName();
-        foreach($arModulesName as $moduleName){
-            if( !in_array($moduleName, $arAllInitModules) ){
-                $this->container->get('logger')->error("Module $module from required - not found.");
-                return false;
-            }
-
-            $module = $this->getModule($moduleName);
-
-            if( !$module->isInitModule() ){
-                $this->initializationProcess($module);
-            }
-        }
-
-        return true;
+        $folders = array_values(array_diff(scandir($dirName), ['.', '..', 'Core']));
+        return $folders;
     }
 
-    public function boot()
+    protected function checkModules(array $modules)
     {
-        foreach ($this->getModules() as $module) {
-            if ($module->isInitModule()) {
-                continue;
+        foreach ($modules as $module) {
+            $path = $this->modulesDir . $module . '/';
+            if (is_file($path . "info.json")) {
+                $this->checkModuleInfo(file_get_contents($path . "info.json"), $module);
+            } else {
+                AppFactory::getInstance('logger')->error("Don't find info.json for module \"$module\"");
             }
-            $name = $module->getName();
-
-            if( !$this->checkRequireModule($module->requireModules) ){
-                if( ($logger = $this->container->get('logger')) )
-                    $logger->error("Module $name no loaded require module not found.");
-
-                continue;
+            if (is_file($path . "config.json")) {
+                $this->checkModuleConfig(file_get_contents($path . "config.json"), $module);
+            } else {
+                AppFactory::getInstance('logger')->error("Don't find config.json for module \"$module\"");
             }
-
-            $event = new BaseAppEvent($this->app, $module);
-
-            $this->container->dispatcher->dispatch('module.' . $name . '.beforeInitialization', $event);
-
-            $this->initializationProcess($module);
-
-            $event = new BaseLoggerEvent($this->container->logger, $module);
-            $this->container->dispatcher->dispatch('module.' . $name . '.afterInitialization', $event, $module);
         }
+    }
 
-        $this->container->dispatcher->dispatch('module.allModuleLoaded');
+    protected function checkModuleInfo($json, $moduleName)
+    {
+        $moduleInfo = json_decode($json);
+        if ($moduleName == $moduleInfo->system_name) {
+            $this->addModuleToContainer($moduleInfo);
+        } else {
+            AppFactory::getInstance('logger')->error("info.json is bad for module \"$module\". Please check format file.");
+        }
+    }
+
+    protected function checkModuleConfig($json, $moduleName)
+    {
+        $moduleInfo = json_decode($json);
+
+        if (isset($moduleInfo->installed) &&
+            isset($moduleInfo->active)
+        ) {
+            $this->addModuleConfig($moduleName, $moduleInfo);
+        } else {
+            AppFactory::getInstance('logger')->error("config.json is bad for module \"$module\". Please check format file.");
+        }
+    }
+
+    protected function addModuleToContainer($moduleInfo)
+    {
+        self::$moduleContainer[$moduleInfo->system_name] = $moduleInfo;
+    }
+
+    protected function addModuleConfig($module, $moduleInfo)
+    {
+        self::$moduleContainer[$module]->config = $moduleInfo;
     }
 
     public function getModules()
@@ -149,38 +100,38 @@ class ModuleManager implements IModulesManager
         return self::$moduleContainer;
     }
 
-
-
-    protected function getModulesName()
+    public function getModuleByName($moduleName)
     {
-        $arModules = [];
-        foreach ($this->getModules() as $module) {
-            $arModules[] = $module->getName();
-        }
-        return $arModules;
+        return self::$moduleContainer[$moduleName];
     }
 
-    /**
-     * @param $name
-     */
-    public function getModule($name)
+    public function registerModules()
     {
-        return self::$moduleContainer[$name];
-    }
+        $arModules = self::$moduleContainer->keys();
+        foreach ($arModules as $moduleName) {
+            $moduleInfo = self::$moduleContainer[$moduleName];
 
-    protected function initializationProcess($module)
-    {
-        $module->beforeInitialization($this->app);
-        $module->initialization();
-        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
-        $module->registerRoute();
-        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.route', $event);
-        //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.di', $event);
-        $module->registerDi();
-        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.di', $event);
-        //$this->container->dispatcher->dispatch('module.'.$name.'.beforeRegister.middleware', $event);
-        $module->registerMiddleware();
-        //$this->container->dispatcher->dispatch('module.'.$name.'.afterRegister.middleware', $event);
-        $module->afterInitialization();
+            if ($moduleInfo->module)
+                continue;
+
+            if ($moduleInfo->config->installed &&
+                $moduleInfo->config->active
+            ) {
+                $moduleInfo->module = new Container();
+                $moduleInfo->module["init"] = function () use ($moduleInfo) {
+                    $cl = 'Modules\\' . $moduleInfo->system_name . '\\Module';
+                    if ($moduleInfo->config->load)
+                        $cl = $moduleInfo->config->load;
+                    return new $cl();
+                };
+                if ($moduleInfo->config->decorators) {
+                    foreach ($moduleInfo->config->decorators as $decorator) {
+                        $moduleInfo->module->extend("init", function ($module, $container) use ($decorator) {
+                            return new $decorator($module);
+                        });
+                    }
+                }
+            }
+        } // endforeach
     }
 }

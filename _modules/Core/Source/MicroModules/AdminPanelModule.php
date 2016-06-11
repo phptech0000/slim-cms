@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Source\MicroModules;
+namespace CoreModule\Source\MicroModules;
 
 use App\Source\AModule;
 use App\Source\Composite\Menu;

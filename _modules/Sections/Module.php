@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sections;
+namespace SectionsModule;
 
 use App\Source\AModule;
 use App\Source\RouteSystem\AdminResource;
