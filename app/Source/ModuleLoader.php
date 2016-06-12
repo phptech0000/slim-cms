@@ -68,14 +68,23 @@ class ModuleLoader implements IModuleLoader
             if(self::$loadedModules[$name])
                 continue;
 
-            if(self::$moduleContainer[$name])
+            if(self::$moduleContainer[$name]){
+                if( !self::$moduleContainer[$name]->config->installed ){
+                    AppFactory::getInstance('logger')->info("Module \"$module\" not installed");
+                    continue;
+                }
+                if( self::$moduleContainer[$name]->config->active ){
+                    AppFactory::getInstance('logger')->info("Module \"$module\" not active");
+                    continue;
+                }
                 self::bootModuleContainer(self::$moduleContainer[$name]);
+            }
             else
                 AppFactory::getInstance('logger')->error("Can't find module \"$module\" in container");
         }
     }
 
-    protected static function initializationProcess($module, $name)
+    protected static function initializationProcess(IModule $module, $name)
     {
         $event = new BaseAppEvent(AppFactory::getInstance(), $module);
         AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
@@ -94,7 +103,11 @@ class ModuleLoader implements IModuleLoader
 
     protected static function bootModuleContainer($module)
     {
-        if($module->module['init']->isInitModule()){
+        if( $module->module === null ){
+            AppFactory::getInstance('logger')->error("Can't find module class for \"{$module->system_name}\"");
+            return;
+        }
+        if( $module->module['init']->isInitModule()){
             self::$loadedModules[$module->system_name] = $module->system_name;
             return;
         }

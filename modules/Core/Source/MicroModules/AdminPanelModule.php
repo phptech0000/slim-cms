@@ -197,7 +197,7 @@ class AdminPanelModule extends AModule
                 'onlyDevelopersMode' => true,
                 'sort' => 1000
             ],
-            'sub_menu' => [
+            /*'sub_menu' => [
                 new Menu('Generator new module', [
                     'menu_name' => 'developers.generator_module',
                     'url' => '/admin/generate_module',
@@ -228,7 +228,7 @@ class AdminPanelModule extends AModule
                         'onlyDevelopersMode' => true,
                     ],
                 ])
-            ]
+            ]*/
         ]);
 
         $this->container->get('adminMenuLeft')->add($item);
