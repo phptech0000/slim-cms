@@ -1,7 +1,7 @@
 {
     "name": "andrey900/SlimCMS",
     "description": "CMS based on Slim Framework 3",
-    "version": "0.0.7-alpha",
+    "version": "0.0.8-alpha",
     "license": "MIT",
     "type": "project",
     "keywords": ["slim-framework", "slim 3", "cms", "blog", "bootstrap cms", "bootstrap"],
