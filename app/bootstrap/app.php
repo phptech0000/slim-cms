@@ -35,7 +35,7 @@ $config = array(
 );
 
 /** include Config files */
-$config += ConfigWorker::init([], true)->all();
+$config += ConfigWorker::init([], false)->all();
 
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
@@ -54,12 +54,12 @@ ModuleLoader::bootLoadModules($moduleLoader->getModules());
 
 unset($moduleLoader);
 
-$container->dispatcher->addListener('middleware.core.after', function ($event) {
+/*$container->dispatcher->addListener('middleware.core.after', function ($event) {
     $event->getLogger()->info("Core middleware after");
 });
 
 $container->dispatcher->addListener('middleware.core.before', function ($event) {
     $event->getLogger()->info("Core middleware before");
-});
+});*/
 
 return $app;

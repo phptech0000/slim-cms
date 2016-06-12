@@ -4,7 +4,8 @@ namespace Modules\Breadcrumb;
 
 use App\Source\AModule;
 use App\Source\Factory\ModelsFactory;
-use App\Source\Builders\BreadcrumbsBuilder;
+use Modules\Breadcrumb\Source\BreadcrumbsBuilder;
+
 
 class Module extends AModule
 {

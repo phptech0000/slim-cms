@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace Modules\Core\Source\Libs\Middleware;
 
 class CheckAjaxMiddleware
 {

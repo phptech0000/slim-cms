@@ -2,9 +2,10 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
 use Slim\Csrf\Guard;
-use App\Middleware\CSRFMiddleware;
+use App\Source\AModule;
+use Modules\Core\Source\Libs\Middleware\CSRFMiddleware;
+
 
 class CSRFModule extends AModule
 {

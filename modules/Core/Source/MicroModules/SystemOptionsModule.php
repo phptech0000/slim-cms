@@ -3,10 +3,10 @@
 namespace Modules\Core\Source\MicroModules;
 
 use App\Source\AModule;
-use App\Source\Facade\OptionsFacade;
 use App\Models\Options;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
+use Modules\Core\Source\Libs\Options\OptionsFacade;
 
 class SystemOptionsModule extends AModule
 {

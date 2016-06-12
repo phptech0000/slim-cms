@@ -24,15 +24,15 @@ class LoggerModule extends AModule
         $this->container->get('logger')->info("Request Url", [$_SERVER['REQUEST_URI']]);
         $this->container->get('logger')->info("Request Method", [$_SERVER['REQUEST_METHOD']]);
 
-        $this->container->dispatcher->addListener('module.modules.beforeAllInitialization', function ($event){
+        $this->container->dispatcher->addListener('module.modules.beforeAllInitialization', function (){
             $arModules = $this->container->modules->keys();
             foreach ($arModules as $name) {
-                $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) {
-                    $event->getLogger()->addInfo("action beforeInitialization", [$event->getParam()->getName()]);
+                $this->container->dispatcher->addListener('module.' . $name . '.beforeInitialization', function ($event) use ($name) {
+                    $event->getLogger()->info("action beforeInitialization", [$name]);//$event->getParam()->getName()
                 });
 
-                $this->container->dispatcher->addListener('module.' . $name . '.afterInitialization', function ($event) {
-                    $event->getLogger()->addInfo("action afterInitialization", [$event->getParam()->getName()]);
+                $this->container->dispatcher->addListener('module.' . $name . '.afterInitialization', function ($event) use ($name) {
+                    $event->getLogger()->info("action afterInitialization", [$name]);
                 });
             }
         });

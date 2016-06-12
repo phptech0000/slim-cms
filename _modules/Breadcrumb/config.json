@@ -1,9 +1,0 @@
-{
-  "installed" : true,
-  "active" : true,
-  "dependencies" : ["core"],
-  "decorators" : [
-    "Modules\\Breadcrumb\\ExtModule",
-    "Modules\\Breadcrumb\\Ext2Module"
-  ]
-}

@@ -15,6 +15,7 @@ use Pimple\Container;
 
 class ModuleManager implements IModuleManager
 {
+    public static $disableFolders = ['.', '..', '.default', 'Core'];
     protected static $moduleContainer;
     protected $modules;
     protected $modulesDir;
@@ -41,7 +42,7 @@ class ModuleManager implements IModuleManager
 
     protected function findModules($dirName)
     {
-        $folders = array_values(array_diff(scandir($dirName), ['.', '..', 'Core']));
+        $folders = array_values(array_diff(scandir($dirName), self::$disableFolders));
         return $folders;
     }
 

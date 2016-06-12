@@ -28,7 +28,14 @@ class ModuleLoader implements IModuleLoader
             throw new ParseException("No load module".$module->getName()." - is don't core module group");
         }
 
-        self::initializationProcess($module, $module->getName());
+        $module->beforeInitialization();
+        $module->initialization();
+        $module->registerRoute();
+        $module->registerDi();
+        $module->registerMiddleware();
+        $module->afterInitialization();
+
+        self::$loadedModules[$name] = $name;
     }
 
     public static function bootLoadModules(Container $moduleContainer)
@@ -70,6 +77,9 @@ class ModuleLoader implements IModuleLoader
 
     protected static function initializationProcess($module, $name)
     {
+        $event = new BaseAppEvent(AppFactory::getInstance(), $module);
+        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
+
         $module->beforeInitialization();
         $module->initialization();
         $module->registerRoute();
@@ -78,6 +88,8 @@ class ModuleLoader implements IModuleLoader
         $module->afterInitialization();
 
         self::$loadedModules[$name] = $name;
+        $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
+        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
     }
 
     protected static function bootModuleContainer($module)

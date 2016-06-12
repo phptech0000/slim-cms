@@ -2,8 +2,6 @@
 
 namespace Modules\Core;
 
-use App\Source\ModuleLoader;
-use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
 use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
@@ -12,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 use App\Source\AModule;
+use App\Source\ModuleLoader;
 use Modules\Core\Source\MicroModules\AuthModule;
 use Modules\Core\Source\MicroModules\CSRFModule;
 use Modules\Core\Source\MicroModules\FlashModule;
@@ -19,6 +18,7 @@ use Modules\Core\Source\MicroModules\LoggerModule;
 use Modules\Core\Source\MicroModules\PublicModule;
 use Modules\Core\Source\MicroModules\AdminPanelModule;
 use Modules\Core\Source\MicroModules\SystemOptionsModule;
+use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
 
 /**
  * Base module from use SlimCMS
@@ -97,7 +97,7 @@ class Module extends AModule
     public function registerMiddleware()
     {
         $this->container->dispatcher->addListener('app.beforeRun', function ($event) {
-            $event->getApp()->add('App\Middleware\CoreFirstLastMiddleware:core');
+            $event->getApp()->add('Modules\Core\Source\Libs\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
     }
 

@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Middleware\ItemPerPageMiddleware;
-use App\Middleware\LastPagePaginatorMiddleware;
 use App\Source\AModule;
+use Modules\Core\Source\Libs\Middleware\ItemPerPageMiddleware;
+use Modules\Core\Source\Libs\Middleware\LastPagePaginatorMiddleware;
 
 class CustomizerAdminPanelModule extends AModule
 {
@@ -12,7 +12,7 @@ class CustomizerAdminPanelModule extends AModule
 
     public function registerRoute()
     {
-    	$this->app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('App\Middleware\CheckAjaxMiddleware')->setName('ajax.custom.field');
+    	$this->app->options('/ajax', 'App\Controllers\Admin\UniversalAjaxController:update')->add('Modules\Core\Source\Libs\Middleware\CheckAjaxMiddleware')->setName('ajax.custom.field');
     }
 
     public function registerMiddleware()
@@ -26,7 +26,7 @@ class CustomizerAdminPanelModule extends AModule
         parent::afterInitialization();
 
         $this->container->dispatcher->addListener('middleware.itemparpage.after', function ($event) {
-            $page = new \App\Middleware\LastPagePaginatorMiddleware($event->getContainer());
+            $page = new LastPagePaginatorMiddleware($event->getContainer());
             $page->setOption(1, $event->getParams()['allParams']);
         });
     }

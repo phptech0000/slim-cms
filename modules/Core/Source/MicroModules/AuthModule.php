@@ -8,10 +8,6 @@ class AuthModule extends AModule
 {
     const MODULE_NAME = 'auth';
 
-    public function registerDi()
-    {
-    }
-
     public function registerRoute()
     {
         $this->app->group('/auth', function () {

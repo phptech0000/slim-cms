@@ -9,7 +9,7 @@ return [
             'use_log' => true, // @require: true | false
             'log_system' => 'file', // @require: file | db
             'log_filename' => 'app.log',
-            'register_log' => ['info', 'statistic', 'error'], // @require: info, statistic, error
+            'register_log' => ["info", 'statistic', "error"], // @require: info, statistic, error
             'determineRouteBeforeAppMiddleware' => true,
             'protect_double_route_register' => true,
         ],

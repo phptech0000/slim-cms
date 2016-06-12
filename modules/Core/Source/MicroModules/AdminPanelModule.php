@@ -4,10 +4,11 @@ namespace Modules\Core\Source\MicroModules;
 
 use App\Source\AModule;
 use App\Source\Composite\Menu;
-use App\Middleware\AuthMiddleware;
+
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
 use App\Helpers\SessionManager as Session;
+use Modules\Core\Source\Libs\Middleware\AuthMiddleware;
 
 class AdminPanelModule extends AModule
 {

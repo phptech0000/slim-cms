@@ -1,7 +1,8 @@
 <?php
-namespace App\Middleware;
+namespace Modules\Core\Source\Libs\Middleware;
 
 use App\Helpers\SessionManager as Session;
+use App\Middleware\ABaseMiddleware;
 use App\Source\Factory\ModelsFactory;
 use App\Helpers\RequestParams;
 use App\Source\Events\BaseContainerEvent;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Source\Builders;
+namespace Modules\Breadcrumb\Source;
 
 use App\Source\Factory\ModelsFactory;
 

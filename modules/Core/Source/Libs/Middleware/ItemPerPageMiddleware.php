@@ -1,10 +1,10 @@
 <?php
-namespace App\Middleware;
+namespace Modules\Core\Source\Libs\Middleware;
 
 use App\Helpers\SessionManager as Session;
+use App\Middleware\ABaseMiddleware;
 use App\Source\Factory\ModelsFactory;
 use App\Helpers\RequestParams;
-use Slim\Container;
 use App\Source\Events\BaseContainerEvent;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
