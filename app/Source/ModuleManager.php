@@ -93,7 +93,8 @@ class ModuleManager implements IModuleManager
 
     protected function addModuleConfig($module, $moduleInfo)
     {
-        self::$moduleContainer[$module]->config = $moduleInfo;
+        if( isset(self::$moduleContainer[$module]) )
+            self::$moduleContainer[$module]->config = $moduleInfo;
     }
 
     public function getModules()
