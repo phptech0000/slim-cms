@@ -13,8 +13,6 @@ class RequestParams
 	{
 		$this->request = $request;
 
-		$method = $this->request->getMethod();
-		
 		if( $this->request->isGet() ){
 			$this->getParamData = $this->request->getQueryParams();
 			$this->paramData = $this->request->getQueryParams();

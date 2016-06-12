@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Admin;
 
-use App\Helpers\SessionManager as Session;
 use App\Source\Factory\ModelsFactory;
 
 class DashboardController extends BaseController

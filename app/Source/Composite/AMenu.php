@@ -66,15 +66,16 @@ abstract class AMenu implements IMenuComposite, \ArrayAccess
     {
         $url  = $this->getUrl($options);
 
-        $this->name       = strtolower(preg_replace('/[^\w\d\-\_]/s', "", $name));
+        $this->name       = strtolower(preg_replace('/[^\w\d\-\_\.]/s', "", $name));
         $this->attributes = ( is_array($options) ) ? $this->extractAttr($options) : array();
 
-        if($_name || (is_array($options) && $options['menu_name']))
+        if($_name)
             $this->name = $_name;
 
         if( is_array($options) ){
             $linkAttr = $options['link_attr'];
             $this->meta = $options['meta_attr'];
+            $this->name = ($options['menu_name'])?$options['menu_name']:$this->name;
             if($options['sub_menu'] && is_array($options['sub_menu'])){
                 while ($item = array_shift($options['sub_menu'])) {
                     $this->add($item);

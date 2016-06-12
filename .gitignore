@@ -4,3 +4,4 @@ log/*
 cache/*
 .idea/*
 composer.lock
+.env

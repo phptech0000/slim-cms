@@ -1,9 +1,15 @@
 <?php
 
 function p($data, $die=false){
-	echo "<pre>";
-	print_r($data);
-	echo "</pre>";
+	if (function_exists("dump")) {
+		dump($data);
+		echo '<style>pre.sf-dump{font-size:16px;}</style>';
+	} else {
+		echo "<pre>";
+		print_r($data);
+		echo "</pre>";
+	}
+
 	if( $die ) die;
 }
 
