@@ -6,9 +6,9 @@
  * Time: 1:10 AM
  */
 
-namespace App\Helpers;
+namespace Modules\ModuleGenerator\Source;
 
-class Helper
+class Helpers
 {
     static public $mode = 0776;
 
