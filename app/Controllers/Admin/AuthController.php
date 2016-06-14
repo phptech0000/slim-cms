@@ -57,6 +57,6 @@ class AuthController extends BaseController
 		Session::put('auth', true);
 		Session::put('user', $user[0]->toArray());
 
-		return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('dashboard'));
+		return $res->withStatus(301)->withHeader('Location', '/admin/dashboard');
 	}
 }
