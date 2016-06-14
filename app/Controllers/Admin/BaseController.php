@@ -9,136 +9,154 @@ use App\Source\Events\BaseContainerEvent;
 
 class BaseController
 {
-	protected $controllerName = '';
-	protected $containerSlim;
-	protected $resourse = true;
+    protected $controllerName = '';
+    protected $containerSlim;
+    protected $resourse = true;
+    public $pageOrderBy = 'id';
+    public $pageOrderType = 'asc';
 
 
-	protected $data = array(
-			'title' => '',
-			'description' => '',
-			'keywords' => '',
-			'h1' => '',
-			'flash' => array(),
-			'page_counts' => [5,10,15,25,50,100,150],
-		);
+    protected $data = array(
+        'title' => '',
+        'description' => '',
+        'keywords' => '',
+        'h1' => '',
+        'flash' => array(),
+        'page_counts' => [5, 10, 15, 25, 50, 100, 150],
+    );
 
-	public function __construct($container){
-		$this->containerSlim = $container;
+    public function __construct($container)
+    {
+        $this->containerSlim = $container;
 
-		$this->view = $container->get('view');
-		$this->csrf = $container->get('csrf');
-		$this->flash = $container->get('flash');
-		$this->router = $container->get('router');
+        $this->view = $container->get('view');
+        $this->csrf = $container->get('csrf');
+        $this->flash = $container->get('flash');
+        $this->router = $container->get('router');
 
-		if( $messages = $this->containerSlim->get('flashMess') ){
-			foreach ($messages as $key => $value) {
-				$this->data[$key] = $value[0];
-			}
-		}
+        if ($messages = $this->containerSlim->get('flashMess')) {
+            foreach ($messages as $key => $value) {
+                $this->data[$key] = $value[0];
+            }
+        }
 
-		$this->init();
-	}
+        $this->init();
+    }
 
-	protected function init(){
-		if( !isset($this->controllerName) || !$this->controllerName )
-			return;
+    protected function init()
+    {
+        if (!isset($this->controllerName) || !$this->controllerName)
+            return;
 
-		$arDataContr = array('title', 'description', 'keywords', 'h1');
+        $arDataContr = array('title', 'description', 'keywords', 'h1');
 
-		foreach ($arDataContr as $name) {
-			$this->data[$name] = $this->controllerName;
-		}
+        foreach ($arDataContr as $name) {
+            $this->data[$name] = $this->controllerName;
+        }
+        $this->data['all_e_link'] = 'list.' . $this->controllerName;
+        if ($this->resourse) {
+            $this->data['create_link'] = 'add.' . $this->controllerName;
+            $this->data['edit_link'] = 'edit.' . $this->controllerName;
+            $this->data['store_link'] = 'store.' . $this->controllerName;
+            $this->data['save_link'] = 'save.' . $this->controllerName;
+            $this->data['delete_link'] = 'delete.' . $this->controllerName;
+        }
+        $this->data['system_options'] = $this->containerSlim->systemOptions;
 
-		$this->data['all_e_link']  = 'list.'.$this->controllerName;
-		if( $this->resourse ){
-			$this->data['create_link'] = 'add.'.$this->controllerName;
-			$this->data['edit_link']   = 'edit.'.$this->controllerName;
-			$this->data['store_link']  = 'store.'.$this->controllerName;
-			$this->data['save_link']   = 'save.'.$this->controllerName;
-			$this->data['delete_link'] = 'delete.'.$this->controllerName;
-		}
-		$this->data['system_options'] = $this->containerSlim->systemOptions;
+        $this->data['menu_left'] = $this->containerSlim->get('adminMenuLeft');
+        $this->data['menu_top'] = $this->containerSlim->get('adminMenuTop');
+    }
 
-		$this->data['menu_left'] = $this->containerSlim->get('adminMenuLeft');
-		$this->data['menu_top'] = $this->containerSlim->get('adminMenuTop');
-	}
+    protected function initRoute($req, $res)
+    {
+        $this->request = $req;
+        $this->response = $res;
 
-	protected function initRoute($req, $res){
-		$this->request = $res;
-		$this->response = $res;
+        $s = $req->getAttribute('route')->getName();
+        $this->data['current_route_name'] = $s;
 
-		$s = $req->getAttribute('route')->getName();
+        $this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
+        $this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
 
-		$this->containerSlim->get('logger')->addInfo("Run admin page: ", [Session::get('user')['login']]);
-		$this->containerSlim->get('logger')->addInfo("Get route: ", [$s]);
+        $model = ModelsFactory::getModel('UserViewsSettings');
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.' . basename($req->getUri()->getPath()))->where('code', 'page')->first();
 
-		$model = ModelsFactory::getModel('UserViewsSettings');
-        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'last.page.'.basename($req->getUri()->getPath()))->where('code', 'page')->first();
-        
-        if( $result )
-        	$current_page = $result->value;
+        if ($result)
+            $current_page = $result->value;
 
-	    Paginator::currentPageResolver(function() use ($current_page) {
-	        return $current_page;
-	    });
+        Paginator::currentPageResolver(function () use ($current_page) {
+            return $current_page;
+        });
 
-	    /*if( $_REQUEST['count_page'] ){
-	    	Session::push('admin_panel.count_page', $_REQUEST['count_page']);
-	    }*/
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'items.perpage.' . basename($req->getUri()->getPath()))->where('code', 'count_page')->first();
 
-	    $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'items.perpage.'.basename($req->getUri()->getPath()))->where('code', 'count_page')->first();
+        if ($result){
+            $this->pagecount = $result->value;
+            $this->data['page_count'] = $this->pagecount;
+        }
 
-	    if( $result )
-        	$this->pagecount = $result->value;
-	    
-	    //$this->pagecount = Session::get('admin_panel.count_page');
-	    $this->data['page_count'] = $this->pagecount; 
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'order.type.' . basename($req->getUri()->getPath()))->where('code', 'order_by')->first();
 
-	    if( !$this->controllerName )
-			$this->controllerName = substr($s, strpos($s, '.')+1);
-		
-		$this->init();
-		$this->csrf($req);
-	}
+        $this->pageOrderBy = "id";
+        if ($result){
+            $this->pageOrderBy = $result->value;
+        }
+        $this->data['page_order_by'] = $this->pageOrderBy;
 
-	protected function csrf($req){
-		$this->data['csrf'] = new \stdClass();
-    	$this->data['csrf']->nameKey = $this->csrf->getTokenNameKey();
-    	$this->data['csrf']->valueKey = $this->csrf->getTokenValueKey();
-    	$this->data['csrf']->name = $req->getAttribute('csrf_name');
-    	$this->data['csrf']->value = $req->getAttribute('csrf_value');
-	}
+        $result = $model->where('user_id', Session::get('user')['id'])->where('group', 'order.type.' . basename($req->getUri()->getPath()))->where('code', 'order_type')->first();
 
-	protected function getFields(array $arFields, $arSave=array(), $arHide=array()){
-		$arHide = array_merge($arHide, array('id', 'created_at', 'updated_at'));
+        $this->pageOrderType = "asc";
+        if ($result){
+            $this->pageOrderType = $result->value;
+        }
+        $this->data['page_order_type'] = $this->pageOrderType;
 
-		return array_diff(
-			$arFields, 
-			array_diff($arHide, $arSave)
-		);
-	}
+        if (!$this->controllerName)
+            $this->controllerName = substr($s, strpos($s, '.') + 1);
 
-	protected function render($templateName)
-	{
-		$this->beforeRender();
+        $this->init();
+        $this->csrf($req);
+    }
 
-		$res = $this->view->render($this->response, $templateName, $this->data);
-	
-		$this->afterRender();
+    protected function csrf($req)
+    {
+        $this->data['csrf'] = new \stdClass();
+        $this->data['csrf']->nameKey = $this->csrf->getTokenNameKey();
+        $this->data['csrf']->valueKey = $this->csrf->getTokenValueKey();
+        $this->data['csrf']->name = $req->getAttribute('csrf_name');
+        $this->data['csrf']->value = $req->getAttribute('csrf_value');
+    }
 
-		return $res;
-	}
+    protected function getFields(array $arFields, $arSave = array(), $arHide = array())
+    {
+        $arHide = array_merge($arHide, array('id', 'created_at', 'updated_at'));
 
-	protected function beforeRender()
-	{
-		$event = new BaseContainerEvent($this->containerSlim, $this->data);
+        return array_diff(
+            $arFields,
+            array_diff($arHide, $arSave)
+        );
+    }
+
+    protected function render($templateName)
+    {
+        $this->beforeRender();
+
+        $res = $this->view->render($this->response, $templateName, $this->data);
+
+        $this->afterRender();
+
+        return $res;
+    }
+
+    protected function beforeRender()
+    {
+        $event = new BaseContainerEvent($this->containerSlim, $this->data);
         $event = $this->containerSlim->dispatcher->dispatch('basecontroller.render.before', $event);
         $this->data = $event->getParams();
-	}
+    }
 
-	protected function afterRender()
-	{
+    protected function afterRender()
+    {
 
-	}
+    }
 }

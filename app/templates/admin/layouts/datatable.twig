@@ -8,7 +8,19 @@
                     <thead>
                         <tr>
                         {% for field in fields %}
-                            <th><a href="#">{{field | capitalize}} <i class="fa fa-sort"></i></a></th>
+                            {% set order_type_icon = '<i class="fa fa-sort"></i>' %}
+                            {% if page_order_by == field %}
+                                {% if page_order_type == 'asc' %}
+                                    {% set order_type = 'desc' %}
+                                    {% set order_type_icon = '<i class="fa fa-sort-asc"></i>' %}
+                                {% else %}
+                                    {% set order_type = 'asc' %}
+                                    {% set order_type_icon = '<i class="fa fa-sort-desc"></i>' %}
+                                {% endif %}
+                            {% else %}
+                                {% set order_type = 'asc' %}
+                            {% endif %}
+                            <th><a href="{{ path_for(current_route_name) }}?order_by={{ field }}&order_type={{ order_type }}">{{field | capitalize}} {{ order_type_icon | raw }}</a></th>
                         {% endfor %}
                             <th>Actions</th>
                         </tr>

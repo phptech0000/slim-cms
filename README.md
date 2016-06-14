@@ -62,4 +62,4 @@ Please submit all issues and questions using GitHub issues and I will try to hel
 The SlimCMS platform is free software distributed under the terms of the [MIT license](http://opensource.org/licenses/MIT).
 
 ## Donations
-Bitcoin address for donation: 17qXDeunJDgc2gVTmyRJEgkGSwyhNqaCok
+Bitcoin address for donation: 18ERsiXpvrkGMwcvLmCNVBrfJwmM8hqurY

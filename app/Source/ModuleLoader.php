@@ -16,6 +16,7 @@ use App\Source\Interfaces\IModule;
 use App\Source\Interfaces\IModuleLoader;
 use Noodlehaus\Exception\ParseException;
 use Pimple\Container;
+use App\Helpers\SessionManager as Session;
 
 class ModuleLoader implements IModuleLoader
 {
@@ -70,11 +71,11 @@ class ModuleLoader implements IModuleLoader
 
             if(self::$moduleContainer[$name]){
                 if( !self::$moduleContainer[$name]->config->installed ){
-                    AppFactory::getInstance('logger')->info("Module \"$module\" not installed");
+                    AppFactory::getInstance('logger')->info("Module \"$name\" not installed");
                     continue;
                 }
-                if( self::$moduleContainer[$name]->config->active ){
-                    AppFactory::getInstance('logger')->info("Module \"$module\" not active");
+                if( !self::$moduleContainer[$name]->config->active ){
+                    AppFactory::getInstance('logger')->info("Module \"$name\" not active");
                     continue;
                 }
                 self::bootModuleContainer(self::$moduleContainer[$name]);
@@ -103,6 +104,9 @@ class ModuleLoader implements IModuleLoader
 
     protected static function bootModuleContainer($module)
     {
+        if( $module->config->only_auth && !Session::get('auth')){
+            return;
+        }
         if( $module->module === null ){
             AppFactory::getInstance('logger')->error("Can't find module class for \"{$module->system_name}\"");
             return;

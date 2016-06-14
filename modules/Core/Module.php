@@ -11,6 +11,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 use App\Source\AModule;
 use App\Source\ModuleLoader;
+use App\Helpers\SessionManager as Session;
 use Modules\Core\Source\MicroModules\AuthModule;
 use Modules\Core\Source\MicroModules\CSRFModule;
 use Modules\Core\Source\MicroModules\FlashModule;
@@ -113,9 +114,12 @@ class Module extends AModule
         ModuleLoader::bootEasyModule(new CSRFModule());
         ModuleLoader::bootEasyModule(new FlashModule());
         ModuleLoader::bootEasyModule(new AuthModule());
-        ModuleLoader::bootEasyModule(new AdminPanelModule());
-        ModuleLoader::bootEasyModule(new CustomizerAdminPanelModule());
         ModuleLoader::bootEasyModule(new PublicModule());
+
+        if( Session::get('auth') ){
+            ModuleLoader::bootEasyModule(new AdminPanelModule());
+            ModuleLoader::bootEasyModule(new CustomizerAdminPanelModule());
+        }
 
         if (isset($this->container['settings']['protect_double_route_register']) &&
             $this->container['settings']['protect_double_route_register']

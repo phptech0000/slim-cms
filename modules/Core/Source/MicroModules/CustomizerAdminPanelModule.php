@@ -5,6 +5,7 @@ namespace Modules\Core\Source\MicroModules;
 use App\Source\AModule;
 use Modules\Core\Source\Libs\Middleware\ItemPerPageMiddleware;
 use Modules\Core\Source\Libs\Middleware\LastPagePaginatorMiddleware;
+use Modules\Core\Source\Libs\Middleware\OrderTypeMiddleware;
 
 class CustomizerAdminPanelModule extends AModule
 {
@@ -19,6 +20,7 @@ class CustomizerAdminPanelModule extends AModule
     {
         $this->app->add(new LastPagePaginatorMiddleware($this->container));
     	$this->app->add(new ItemPerPageMiddleware($this->container));
+        $this->app->add(new OrderTypeMiddleware($this->container));
     }
 
     public function afterInitialization()

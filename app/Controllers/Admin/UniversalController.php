@@ -15,7 +15,7 @@ class UniversalController extends BaseController
 
 		$model = ModelsFactory::getModelWithRequest($req);
 
-		$this->data['items'] = $model->paginate($this->pagecount);
+		$this->data['items'] = $model->orderBy($this->pageOrderBy, $this->pageOrderType)->paginate($this->pagecount);
 
 		$this->data['items']->setPath($this->router->pathFor($this->data['all_e_link']));
 		$this->data['fields'] = $this->getFields($model->getColumnsNames(), array('id'));

@@ -46,23 +46,21 @@ class Module extends AModule
 
         $this->adminPanelRouteRegister();
 
-        $this->adminPanelMenuRegister();
-
         $this->menuCreator();
 
         $this->container->dispatcher->addListener('basecontroller.render.before', function ($event) {
-            
+
             $arItems = $this->findFieldValues($event);
             if( !$arItems )
                 return true;
-            
+
             $model = ModelsFactory::getModel('sections');
             $arRes = $model->where('active', 1)->get();
 
             $data = [];
 
             foreach ($arRes as $item) {
-                if( ($arItems['parent_id'] || null === $arItems['parent_id']) && 
+                if( ($arItems['parent_id'] || null === $arItems['parent_id']) &&
                       $item->id != $event->getParams()['fieldsValues']->id
                 ){
                     $data[$item->id] = $item->name;
@@ -78,6 +76,7 @@ class Module extends AModule
     protected function adminPanelRouteRegister(){
         if( Session::has('auth') && Session::get('auth') ){
             AdminRouteCollection::add(new AdminResource('sections'));
+            $this->adminPanelMenuRegister();
         }
     }
 
