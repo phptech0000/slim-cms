@@ -124,7 +124,10 @@ class ModuleManager implements IModuleManager
                     $cl = 'Modules\\' . $moduleInfo->system_name . '\\Module';
                     if ($moduleInfo->config->load)
                         $cl = $moduleInfo->config->load;
-                    return new $cl();
+
+                    $module = new $cl();
+                    $module->info = $moduleInfo;
+                    return $module;
                 };
                 if ($moduleInfo->config->decorators) {
                     foreach ($moduleInfo->config->decorators as $decorator) {

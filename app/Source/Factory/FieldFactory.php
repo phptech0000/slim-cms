@@ -10,6 +10,7 @@ use App\Source\ModelFieldBuilder\JsonMultiField;
 use App\Source\ModelFieldBuilder\SelectField;
 use App\Source\ModelFieldBuilder\TextField;
 use App\Source\ModelFieldBuilder\StringField;
+use App\Source\ModelFieldBuilder\UploadFile;
 
 
 class FieldFactory implements IFieldFactory
@@ -19,6 +20,8 @@ class FieldFactory implements IFieldFactory
 			return false;
 
 		switch ($obj->type) {
+			case 'file':
+				return new UploadFile($obj);
 			case 'hidden':
 				return new HiddenField($obj);
 			case 'checkbox':

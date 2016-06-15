@@ -197,38 +197,6 @@ class AdminPanelModule extends AModule
                 'onlyDevelopersMode' => true,
                 'sort' => 1000
             ],
-            /*'sub_menu' => [
-                new Menu('Generator new module', [
-                    'menu_name' => 'developers.generator_module',
-                    'url' => '/admin/generate_module',
-                    'link_attr' => [
-                        'icon' => 'fa fa-ban fa-fw'
-                    ],
-                    'meta_attr' => [
-                        'onlyDevelopersMode' => true,
-                    ],
-                ]),
-                new Menu('Generator only model', [
-                    'menu_name' => 'developers.generator_module',
-                    'url' => '/admin/generate_model',
-                    'link_attr' => [
-                        'icon' => 'fa fa-ban fa-fw'
-                    ],
-                    'meta_attr' => [
-                        'onlyDevelopersMode' => true,
-                    ],
-                ]),
-                new Menu('All modules in system', [
-                    'menu_name' => 'developers.modules',
-                    'url' => '/admin/modules',
-                    'link_attr' => [
-                        'icon' => 'fa fa-ban fa-fw'
-                    ],
-                    'meta_attr' => [
-                        'onlyDevelopersMode' => true,
-                    ],
-                ])
-            ]*/
         ]);
 
         $this->container->get('adminMenuLeft')->add($item);

@@ -73,7 +73,8 @@ $this->data['ttt'] = $builder->getAll();
 		$this->initRoute($req, $res);
 		$model = ModelsFactory::getModelWithRequest($req, $req->getParsedBody());
 		$model->save();
-		
+
+
 		$this->flash->addMessage('success', $this->controllerName.' success added!');
 
 		return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('list.'.$this->controllerName));
@@ -84,6 +85,8 @@ $this->data['ttt'] = $builder->getAll();
 		$reqData = $req->getParsedBody();
 		$model = ModelsFactory::getModelWithRequest($req);
 		$model = $model->find($reqData['id']);
+
+		$reqData = $this->uploadFiles($req, $reqData);
 
 		$model->update($reqData);
 		$this->flash->addMessage('success', $this->controllerName.' success edited!');
@@ -100,5 +103,30 @@ $this->data['ttt'] = $builder->getAll();
 		$this->flash->addMessage('success', $this->controllerName.' success deleted!');
 
 		return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('list.'.$this->controllerName));
+	}
+
+	protected function uploadFiles($req, $reqData){
+		$files = $req->getUploadedFiles();
+		$arFields = array_keys($files);
+
+		if( !$arFields )
+			return $reqData;
+
+		$path = "uploads/".$this->controllerName.'/';
+		if( !is_dir(PUBLIC_PATH.$path) ){
+			mkdir(PUBLIC_PATH.$path);
+		}
+
+		foreach($arFields as $field){
+			$newfile = $files[$field][0];
+
+			if ($newfile->getError() === UPLOAD_ERR_OK) {
+				$uploadFileName = $newfile->getClientFilename();
+				$newfile->moveTo(PUBLIC_PATH.$path.$uploadFileName);
+				$reqData[$field] = $path.$uploadFileName;
+			}
+		}
+
+		return $reqData;
 	}
 }

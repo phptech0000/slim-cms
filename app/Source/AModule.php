@@ -10,6 +10,7 @@ abstract class AModule implements IModule
 	protected $container;
     protected $app;
 
+    public $info;
     protected $loaded = false;
 
     public $requireModules = ['Core'];
