@@ -2,6 +2,7 @@
 vendor/
 log/*
 cache/*
+upload/*
 .idea/*
 composer.lock
 .env
