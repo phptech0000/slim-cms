@@ -48,7 +48,7 @@ $app = AppFactory::setInstance(new App($container));
 ModuleLoader::bootCore(new \Modules\Core\Module());
 
 $moduleLoader = new \App\Source\ModuleManager(MODULE_PATH);
-$moduleLoader->init()->registerModules();
+$moduleLoader->init(false)->registerModules();
 
 ModuleLoader::bootLoadModules($moduleLoader->getModules());
 

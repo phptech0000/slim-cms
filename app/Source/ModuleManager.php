@@ -20,6 +20,10 @@ class ModuleManager implements IModuleManager
     protected $modules;
     protected $modulesDir;
 
+    public $cacheFolder = 'modules';
+    protected $cacheFileName;
+    protected $cacheFullPath;
+
     /**
      * ModuleLoader constructor.
      * @param $modulesDir
@@ -30,13 +34,19 @@ class ModuleManager implements IModuleManager
             self::$moduleContainer = new Container();
         }
 
+        $this->cacheFileName = md5($modulesDir).'.php';
         $this->modulesDir = $modulesDir;
     }
 
-    public function init()
+    public function init($recreateCache = false)
     {
-        $this->modules = $this->findModules($this->modulesDir);
-        $this->checkModules($this->modules);
+        if( $this->checkCache() && !$recreateCache ){
+            $this->getCache();
+        } else {
+            $this->modules = $this->findModules($this->modulesDir);
+            $this->checkModules($this->modules);
+            $this->setCache();
+        }
         return $this;
     }
 
@@ -138,5 +148,41 @@ class ModuleManager implements IModuleManager
                 }
             }
         } // endforeach
+    }
+
+    /**
+     * @param bool|false $reCreate
+     */
+    protected function checkCache()
+    {
+        $this->cacheFullPath = CACHE_PATH.$this->cacheFolder.'/'.$this->cacheFileName;
+
+        if( is_file($this->cacheFullPath) ){
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function setCache(){
+        if( !is_dir(CACHE_PATH.$this->cacheFolder) && !mkdir(CACHE_PATH.$this->cacheFolder)){
+            throw new \Exception("ModuleManager - can not create folder cache");
+        }
+
+        $arModules = self::$moduleContainer->keys();
+        $arItems = [];
+        foreach ($arModules as $moduleName) {
+            $moduleInfo = self::$moduleContainer[$moduleName];
+            $arItems[] = $moduleInfo;
+        }
+
+        file_put_contents($this->cacheFullPath, json_encode($arItems));
+    }
+
+    protected function getCache(){
+        $arItems = json_decode(file_get_contents($this->cacheFullPath));
+        foreach ($arItems as $moduleInfo) {
+            $this->addModuleToContainer($moduleInfo);
+        }
     }
 }
