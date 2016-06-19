@@ -11,7 +11,7 @@ return [
             'log_filename' => 'app.log',
             'register_log' => ["info", 'statistic', "error"], // @require: info, statistic, error
             'determineRouteBeforeAppMiddleware' => true,
-            'protect_double_route_register' => true,
+            'protect_double_route_register' => false,
         ],
     ],
 ];
