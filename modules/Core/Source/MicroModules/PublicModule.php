@@ -23,9 +23,11 @@ class PublicModule extends AModule
 
         while ($page = array_shift($pages)) {
             $url = $page['url_prefix'].'/'.$page['code'];
-            $controller = 'homeAction';
-            if( $page['id']>1 )
-                $controller = 'detailAction';
+
+            $controller = 'detailAction';
+
+            if( $page['code'] == "" )
+                $controller = 'homeAction';
 
             if( !$page['category_id'] )
                 PageRouteCollection::add(new PageResource($url, $controller, $page['id']));
@@ -39,7 +41,7 @@ class PublicModule extends AModule
 
         $this->container->dispatcher->addListener('app.beforeRun', function ($event){
             PageRouteCollection::register($event->getApp());
-        }, -980);
+        }, 2000);
     }
 
     protected function menuCreator(){
