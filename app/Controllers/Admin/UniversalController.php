@@ -72,15 +72,8 @@ $this->data['ttt'] = $builder->getAll();
 	public function doAdd(request $req, $res, $args){
 		$this->initRoute($req, $res);
 		$model = ModelsFactory::getModelWithRequest($req, $req->getParsedBody());
-		$reqData = $this->uploadFiles($req, array());
-
-		if(!empty($reqData)){
-			foreach ($reqData as $k=>$v) {
-				$model->$k = $v;
-			}
-		}
-
 		$model->save();
+
 
 		$this->flash->addMessage('success', $this->controllerName.' success added!');
 

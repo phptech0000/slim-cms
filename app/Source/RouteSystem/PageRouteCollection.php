@@ -23,8 +23,7 @@ class PageRouteCollection implements Interfaces\IRouteCollection
 		$info = $resource->getInfo();
 		$collectionName = str_replace('/', "_", substr($info['path'], 1));
 
-		if( !isset(self::$collection[$collectionName]) )
-			self::$collection[$collectionName] = $resource;
+		self::$collection[$collectionName] = $resource;
 	}
 
 	public static function pop(){

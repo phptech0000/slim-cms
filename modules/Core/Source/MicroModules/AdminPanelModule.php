@@ -245,19 +245,8 @@ class AdminPanelModule extends AModule
                 ])
             ]
         ]);
-        $item1 = new Menu('', [
-            'url' => '?clear_cache',
-            'link_attr' => [
-                'icon' => 'fa fa-refresh fa-fw'
-            ],
-            'meta_attr' => [
-                'onlyDevelopersMode' => false,
-                'sort' => 100
-            ]
-        ]);
-
+        
         $this->container->get('adminMenuTop')->add($item);
-        $this->container->get('adminMenuTop')->add($item1);
         endif;
     }
 }

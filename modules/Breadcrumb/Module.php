@@ -13,6 +13,10 @@ class Module extends AModule
 
     public $requireModules = ['core', 'sections'];
 
+    public function t(){
+        return "base module";
+    }
+
     public function afterInitialization(){
         parent::afterInitialization();
 
@@ -24,14 +28,15 @@ class Module extends AModule
                 $path = $page->path;
                 $url = $event->getContainer()->router->pathFor('page.s'.$page->id);
             }
-            if( $page instanceof \App\Models\Pages && $page->category_id > 0){
+            if( $page instanceof \App\Models\Pages && $page->category_id){
                 $path = ModelsFactory::getModel('sections')->find($page->category_id)['path'];
                 $path .= $page->category_id;
                 $url = $event->getContainer()->router->pathFor('page.sp'.$page->category_id, ['pageCode'=>$page->code]);
             }
-            if( $page instanceof \App\Models\Pages && $page->category_id<=0){
+            if( $page instanceof \App\Models\Pages && !$page->category_id){
                 $path = '0'.\App\Models\Sections::PATH_DELIMITER;
-                //$url = $event->getContainer()->router->pathFor('page.'.$page->id);
+                $path .= $page->category_id;
+                $url = $event->getContainer()->router->pathFor('page.'.$page->id);
             }
 
             $bc = new BreadcrumbsBuilder($path);

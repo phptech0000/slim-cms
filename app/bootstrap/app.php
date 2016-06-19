@@ -8,7 +8,7 @@ use App\Helpers\ConfigWorker;
 
 session_start();
 
-define('ROOT_PATH', realpath(__DIR__ . '/../../') . '/');
+define('ROOT_PATH', realpath(__DIR__ . '/../../').'/');
 
 define('APP_PATH', ROOT_PATH . 'app/');
 define('CACHE_PATH', ROOT_PATH . 'cache/');
@@ -34,13 +34,8 @@ $config = array(
     'path.resource' => RESOURCE_PATH,
 );
 
-$clearCache = false;
-if (isset($_REQUEST['clear_cache'])) {
-    $clearCache = true;
-}
-
 /** include Config files */
-$config += ConfigWorker::init([], $clearCache)->all();
+$config += ConfigWorker::init([], false)->all();
 
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
@@ -53,10 +48,18 @@ $app = AppFactory::setInstance(new App($container));
 ModuleLoader::bootCore(new \Modules\Core\Module());
 
 $moduleLoader = new \App\Source\ModuleManager(MODULE_PATH);
-$moduleLoader->init($clearCache)->registerModules();
+$moduleLoader->init(false)->registerModules();
 
 ModuleLoader::bootLoadModules($moduleLoader->getModules());
 
 unset($moduleLoader);
+
+/*$container->dispatcher->addListener('middleware.core.after', function ($event) {
+    $event->getLogger()->info("Core middleware after");
+});
+
+$container->dispatcher->addListener('middleware.core.before', function ($event) {
+    $event->getLogger()->info("Core middleware before");
+});*/
 
 return $app;
