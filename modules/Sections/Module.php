@@ -102,7 +102,7 @@ class Module extends AModule
                         'onlyDevelopersMode' => false,
                     ],
                 ]),
-                new Menu('Add new page', [
+                new Menu('Add new category', [
                     'menu_name' => 'categories.add',
                     'url' => '/admin/sections/add',
                     'link_attr' => [

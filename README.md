@@ -1,7 +1,7 @@
 # SlimCMS
 Lightweight CMS based on: php framework slim 3, laravel eloquent, symfony event dispatcher, Twig templater and other libraries
 
-The rapid creation of a new website.
+The fast creation of a new website.
 #
 Admin panel based on template: SB-admin v2;
 #
@@ -18,8 +18,10 @@ Implemented modules:
  - Many types show field from admin panel(hidden, checkbox, select, wysiwyg html, text)
  - Logging system
  - Developer admin panel mode
+ - Create new module
  
 If you are interested in this system, **place a star** )))
+If the project attains **more than 30 stars**, the official website of the documentation will be created.
  
 Installation:
 

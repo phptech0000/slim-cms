@@ -21,10 +21,18 @@ class PageResource implements Interfaces\IRouteResource
 		if( !$method )
 			$method = 'detail';
 
+		$repl = '';
+		if(preg_match("/\{(\w+)\}/", $groupPath, $m)){
+			$repl = rawurlencode($m[0]);
+		}
+
 		$this->method = $method;
 		//if( !$controller || !class_exists($controller) )
 		$controller = '\App\Controllers\Sites\UniversalPageController';	
-		$this->groupPath  = $groupPath;
+		$this->groupPath  = implode("/", array_map("rawurlencode", explode("/", $groupPath)));
+		if($repl){
+			$this->groupPath = str_replace($repl, $m[0], $this->groupPath);
+		}
 		$this->controller = $controller;
 
 		$this->groupName = ($groupName)?$groupName:substr(array_pop(explode('/', $groupPath)), 0, -1);
