@@ -27,6 +27,11 @@ Installation:
 
       git clone https://github.com/andrey900/SlimCMS.git
       php composer install
+or
+       mkdir ~/slimcms && cd ~/slimcms
+       composer create-project -s dev andrey900/slimcms .
+       mkdir cache && chmod a+w cache && mkdir log && chmod a+w log
+       php -S 127.0.0.1:8080 -t public/
  
  After install create folder: cache, log. Set permittion from write this folders.
 
