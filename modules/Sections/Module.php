@@ -166,4 +166,33 @@ class Module extends AModule
             $event->getParams()->menu = $menu;
         });
     }
+
+    public function installModule()
+    {
+        parent::installModule();
+
+        $this->container->get('db')->schema()->create('sections', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('code');
+            $table->integer('sort')->default(100)->nullable();
+            $table->integer('parent_id')->default(0)->nullable();
+            $table->text('detail_text')->nullable();
+            $table->string('detail_picture')->nullable();
+            $table->string('show_in_menu')->nullable();
+            $table->string('name_for_menu')->nullable();
+            $table->string('path')->nullable();
+            $table->char('active', 1)->default(1);
+            $table->timestamps();
+            $table->index(['code', 'parent_id', 'path']);
+            $table->foreign('parent_id')->references('id')->on('sections');
+        });
+    }
+
+    public function uninstallModule()
+    {
+        parent::uninstallModule();
+
+        $this->container->get('db')->schema()->dropIfExists('sections');
+    }
 }

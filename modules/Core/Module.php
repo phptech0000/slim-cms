@@ -164,4 +164,18 @@ class Module extends AModule
             });
         }, 1000);
     }
+
+    public function installModule()
+    {
+        parent::installModule();
+
+        $installMicroModule = new SystemOptionsModule();
+        $installMicroModule->installModule();
+        $installMicroModule = new AuthModule();
+        $installMicroModule->installModule();
+        $installMicroModule = new PublicModule();
+        $installMicroModule->installModule();
+        $installMicroModule = new CustomizerAdminPanelModule();
+        $installMicroModule->installModule();
+    }
 }

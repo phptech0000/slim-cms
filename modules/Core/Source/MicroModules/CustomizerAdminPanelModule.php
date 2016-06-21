@@ -32,4 +32,42 @@ class CustomizerAdminPanelModule extends AModule
             $page->setOption(1, $event->getParams()['allParams']);
         });
     }
+
+    public function installModule()
+    {
+        parent::installModule();
+
+        $this->container->get('db')->schema()->create('user_views_settings', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('code')->nullable();
+            $table->string('sort')->default(100)->nullable();
+            $table->string('url_prefix')->nullable();
+            $table->text('preview_text')->nullable();
+            $table->text('detail_text')->nullable();
+            $table->string('preview_picture')->nullable();
+            $table->string('detail_picture')->nullable();
+            $table->integer('show_in_menu')->default(0)->nullable();
+            $table->string('name_for_menu')->nullable();
+            $table->integer('active')->default(1);
+            $table->timestamps();
+        });
+
+        $this->container->get('db')->schema()->create('user_views_settings', function($table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('group');
+            $table->string('value')->nullable();
+            $table->string('option_type')->nullable();
+            $table->string('code');
+            $table->index(['user_id', 'group', 'code']);
+        });
+    }
+
+    public function uninstallModule()
+    {
+        parent::uninstallModule();
+
+        $this->container->get('db')->schema()->dropIfExists('user_views_settings');
+    }
 }

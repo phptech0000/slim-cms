@@ -67,4 +67,71 @@ class PublicModule extends AModule
             $event->getParams()->menu = $menu;
         });
     }
+
+    public function installModule()
+    {
+        parent::installModule();
+
+        $this->container->get('db')->schema()->create('pages', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('code')->nullable();
+            $table->string('sort')->default(100)->nullable();
+            $table->string('url_prefix')->nullable();
+            $table->text('preview_text')->nullable();
+            $table->text('detail_text')->nullable();
+            $table->string('preview_picture')->nullable();
+            $table->string('detail_picture')->nullable();
+            $table->integer('show_in_menu')->default(0)->nullable();
+            $table->string('name_for_menu')->nullable();
+            $table->integer('active')->default(1);
+            $table->timestamps();
+        });
+
+        $this->seed();
+    }
+
+    public function uninstallModule()
+    {
+        parent::uninstallModule();
+
+        $this->container->get('db')->schema()->dropIfExists('pages');
+    }
+
+    protected function seed()
+    {
+        $this->container->get('db')->table('pages')->insert(
+            [
+                "name" => "Home page",
+                "code" => "",
+                "sort" => 100,
+                "preview_text" => "<p>Preview text for home page</p>",
+                "detail_text" => "<p>Detail text for home page</p>",
+                "show_in_menu" => 1,
+                "name_for_menu" => "Home",
+                "active" => 1,
+            ],
+            [
+                "name" => "About page",
+                "code" => "about",
+                "sort" => 100,
+                "preview_text" => "<p>Preview text for about page</p>",
+                "detail_text" => "<p>Detail text for about page</p>",
+                "show_in_menu" => 1,
+                "name_for_menu" => "About",
+                "active" => 1,
+            ],
+            [
+                "name" => "Contacts page",
+                "code" => "contacts",
+                "url_prefix" => "about",
+                "sort" => 100,
+                "preview_text" => "<p>Preview text for contacts page</p>",
+                "detail_text" => "<p>Detail text for contacts page</p>",
+                "show_in_menu" => 1,
+                "name_for_menu" => "Contacts",
+                "active" => 1,
+            ]
+        );
+    }
 }
