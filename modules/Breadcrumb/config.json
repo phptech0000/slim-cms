@@ -1,5 +1,7 @@
 {
-  "installed" : true,
-  "active" : true,
-  "dependeny" : ["Sections"]
+    "installed": true,
+    "active": true,
+    "dependeny": [
+        "Sections"
+    ]
 }

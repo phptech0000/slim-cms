@@ -177,5 +177,24 @@ class Module extends AModule
         $installMicroModule->installModule();
         $installMicroModule = new CustomizerAdminPanelModule();
         $installMicroModule->installModule();
+
+        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
+    }
+
+    public function uninstallModule()
+    {
+        parent::uninstallModule();
+        $this->registerDB();
+
+        $installMicroModule = new SystemOptionsModule();
+        $installMicroModule->uninstallModule();
+        $installMicroModule = new AuthModule();
+        $installMicroModule->uninstallModule();
+        $installMicroModule = new PublicModule();
+        $installMicroModule->uninstallModule();
+        $installMicroModule = new CustomizerAdminPanelModule();
+        $installMicroModule->uninstallModule();
+
+        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
     }
 }

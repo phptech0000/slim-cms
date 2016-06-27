@@ -48,9 +48,13 @@ if ($config['slim']['settings']['debug']) {
 
 $container = new Container($config['slim']);
 $container->config = ConfigWorker::getConfig();
-
 $app = AppFactory::setInstance(new App($container));
 ModuleLoader::bootCore(new \Modules\Core\Module());
+//ModuleLoader::install(new \Modules\Core\Module());
+//ModuleLoader::install(new \Modules\Sections\Module());
+//ModuleLoader::uninstall(new \Modules\Core\Module());
+//ModuleLoader::uninstall(new \Modules\Sections\Module());
+//ModuleLoader::uninstall(new \Modules\Breadcrumb\Module());
 
 $moduleLoader = new \App\Source\ModuleManager(MODULE_PATH);
 $moduleLoader->init($clearCache)->registerModules();

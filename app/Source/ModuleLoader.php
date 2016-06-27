@@ -8,20 +8,52 @@
 
 namespace App\Source;
 
-
+use Pimple\Container;
+use Noodlehaus\Exception\ParseException;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Source\Events\BaseAppEvent;
 use App\Source\Events\BaseLoggerEvent;
 use App\Source\Factory\AppFactory;
 use App\Source\Interfaces\IModule;
 use App\Source\Interfaces\IModuleLoader;
-use Noodlehaus\Exception\ParseException;
-use Pimple\Container;
 use App\Helpers\SessionManager as Session;
 
 class ModuleLoader implements IModuleLoader
 {
     protected static $loadedModules = [];
     protected static $moduleContainer;
+
+    public static function install(IModule $module){
+        self::checkDbConnection();
+        $module->installModule();
+    }
+
+    public static function uninstall(IModule $module){
+        self::checkDbConnection();
+        $module->uninstallModule();
+    }
+
+    protected static function checkDbConnection(){
+        $container = AppFactory::getInstance()->getContainer();
+
+        if( $container->offsetExists('db') ){
+            return;
+        }
+
+        $config = $container->config;
+        $settings = $container->settings;
+
+        $capsule = new Capsule();
+
+        $capsule->addConnection($config['db'][$settings['db_driver']]);
+
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+
+        $container['db'] = function () {
+            return new Capsule();
+        };
+    }
 
     public static function bootCore(IModule $module)
     {

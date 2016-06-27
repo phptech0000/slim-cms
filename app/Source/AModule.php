@@ -4,6 +4,7 @@ namespace App\Source;
 
 use App\Source\Factory\AppFactory;
 use App\Source\Interfaces\IModule;
+use Illuminate\Support\Str;
 
 abstract class AModule implements IModule
 {
@@ -48,10 +49,14 @@ abstract class AModule implements IModule
     }
 
     public function installModule()
-    {}
+    {
+        $this->beforeInitialization();
+    }
 
     public function uninstallModule()
-    {}
+    {
+        $this->beforeInitialization();
+    }
 
     public function registerRoute()
     {}
@@ -61,4 +66,18 @@ abstract class AModule implements IModule
 
     public function registerDi()
     {}
+
+    protected function saveConfigForModule($class, array $arData){
+        $file = MODULE_PATH.Str::ucfirst($class::MODULE_NAME)."/config.json";
+        $arConfigData = new \stdClass();
+        if(file_exists($file)){
+            $arConfigData = json_decode(file_get_contents($file));
+        }
+        foreach($arData as $key=>$item){
+            $key = strtolower($key);
+            $arConfigData->$key = $item;
+        }
+
+        file_put_contents($file, json_encode($arConfigData, JSON_PRETTY_PRINT));
+    }
 }

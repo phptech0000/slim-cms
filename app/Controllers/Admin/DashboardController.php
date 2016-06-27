@@ -13,10 +13,11 @@ class DashboardController extends BaseController
 		$this->data['h1'] = 'Dashboard';
 
 		$this->data['cnt'] = new \stdClass();
-		$this->data['cnt']->sections = ModelsFactory::getModel('sections')->count();
 		$this->data['cnt']->pages = ModelsFactory::getModel('pages')->count();
 		$this->data['cnt']->users = ModelsFactory::getModel('users')->count();
 		$this->data['cnt']->options = ModelsFactory::getModel('options')->count();
+		if( $this->containerSlim->get('db')->schema()->hasTable('sections') )
+			$this->data['cnt']->sections = ModelsFactory::getModel('sections')->count();
 
 		$this->view->render($res, 'admin\dashboard.twig', $this->data);
 	}

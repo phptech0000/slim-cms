@@ -14,7 +14,7 @@ use App\Source\Composite\Menu;
 
 class Module extends AModule
 {
-    const MODULE_NAME = 'sections';
+    const MODULE_NAME = 'Sections';
 
     public function registerRoute()
     {
@@ -187,6 +187,8 @@ class Module extends AModule
             $table->index(['code', 'parent_id', 'path']);
             $table->foreign('parent_id')->references('id')->on('sections');
         });
+
+        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
     }
 
     public function uninstallModule()
@@ -194,5 +196,7 @@ class Module extends AModule
         parent::uninstallModule();
 
         $this->container->get('db')->schema()->dropIfExists('sections');
+
+        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
     }
 }

@@ -59,14 +59,14 @@ class AuthModule extends AModule
             ["name" => "Users", "description" => "registered user in site, no perm to admin panel", "active" => 1],
             ["name" => "Guests", "description" => "All other users", "active" => 1],
         ]);
-
-        $this->container->get('db')->table('options')->insert(
+        $this->container->get('db')->table('users')->insert(
             [
                 "email" => "admin@net.net",
                 "login" => "admin",
                 "password" => '$2y$12$YT0yYV1iUehdx0eymGIEfOR1fJ7Zo3EH7T/extuNFjq.0H942yNYK',
                 "active" => 1,
                 "group_id" => 1,
+
             ]
         );
     }
