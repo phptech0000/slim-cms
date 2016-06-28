@@ -100,6 +100,16 @@ class Module extends AModule
         $this->container->dispatcher->addListener('app.beforeRun', function ($event) {
             $event->getApp()->add('Modules\Core\Source\Libs\Middleware\CoreFirstLastMiddleware:core');
         }, -1000);
+
+        $this->app->add(function($request, $response, $next){
+            $response = $response->withAddedHeader('X-Powered-CMS', 'SlimCMS');
+            $response = $response->withAddedHeader('X-XSS-Protection', '1; mode=block');
+            $response = $response->withAddedHeader('X-Frame-Options', 'SAMEORIGIN');
+            $response = $response->withAddedHeader('X-Content-Type-Options', 'nosniff');
+            $response = $response->withAddedHeader('X-Permitted-Cross-Domain-Policies', 'master-only');
+
+            return $next($request, $response);
+        });
     }
 
     /**
