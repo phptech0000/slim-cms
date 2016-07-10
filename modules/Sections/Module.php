@@ -2,6 +2,7 @@
 
 namespace Modules\Sections;
 
+use App\Helpers\FileWorker;
 use App\Source\AModule;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
@@ -185,8 +186,45 @@ class Module extends AModule
             $table->char('active', 1)->default(1);
             $table->timestamps();
             $table->index(['code', 'parent_id', 'path']);
-            $table->foreign('parent_id')->references('id')->on('sections');
+            //$table->foreign('parent_id')->references('id')->on('sections');
         });
+
+        $this->container->get('db')->schema()->table('pages', function($table)
+        {
+            $table->integer('category_id')->default(0)->nullable();
+            //$table->foreign('category_id')->references('id')->on('sections');
+        });
+
+        $path = RESOURCE_PATH.'models_field_info/pages.json';
+        $pagesField = FileWorker::getJsonDataFile($path);
+
+        if( !$pagesField ){
+            $pagesField = [];
+        }
+
+        $trigUrlPrefix = false;
+        foreach($pagesField as $field){
+            if( $field->name == 'url_prefix' ){
+                $field->type = "hidden";
+                $trigUrlPrefix = true;
+                break;
+            }
+        }
+        if( !$trigUrlPrefix ){
+            $cId = new \stdClass();
+            $cId->name = "url_prefix";
+            $cId->type = "hidden";
+            $pagesField[] = $cId;
+        }
+
+        $cId = new \stdClass();
+        $cId->name = "category_id";
+        $cId->type = "select";
+        $pagesField[] = $cId;
+
+        FileWorker::saveJsonFile($path, $pagesField);
+
+        FileWorker::addItemInModelsFillable('Pages', 'category_id');
 
         $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
     }
@@ -195,7 +233,35 @@ class Module extends AModule
     {
         parent::uninstallModule();
 
+        $this->container->get('db')->schema()->table('pages', function($table)
+        {
+            $table->dropColumn('category_id');
+        });
+
         $this->container->get('db')->schema()->dropIfExists('sections');
+
+        $path = RESOURCE_PATH.'models_field_info/pages.json';
+        $pagesField = FileWorker::getJsonDataFile($path);
+
+        if( $pagesField ){
+            $cId = false;
+            foreach($pagesField as $k=>$field){
+                if( $field->name == 'url_prefix' ){
+                    $field->type = "string";
+                    continue;
+                }
+                if( $field->name == 'category_id' ){
+                    $cId = $k;
+                    continue;
+                }
+            }
+            if( $cId !== false ){
+                unset($pagesField[$cId]);
+                FileWorker::saveJsonFile($path, $pagesField);
+            }
+        }
+
+        FileWorker::removeItemInModelsFillable('Pages', 'category_id');
 
         $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
     }

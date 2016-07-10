@@ -44,8 +44,12 @@ class RequestParams
 		return $this->putParamData[$name];
 	}
 
-	public function all($name){
-		return $this->paramData[$name];
+	public function all($name = ""){
+		if($name){
+			return $this->paramData[$name];
+		}
+
+		return $this->paramData;
 	}
 
 	public function __call($name, $arguments) {

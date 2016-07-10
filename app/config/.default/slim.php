@@ -3,7 +3,7 @@
 return [
     'slim' => [
         'settings' => [
-            'db_driver' => 'sqlite', // (use config section DB) @require: sqlite | mysql
+            'db_driver' => 'mysql', // (use config section DB) @require: sqlite | mysql
             'displayErrorDetails' => true, // @require: true | false
             'debug' => true, // @require: true | false
             'use_log' => true, // @require: true | false

@@ -1,6 +1,6 @@
 {
-    "installed": true,
-    "active": true,
+    "installed": false,
+    "active": false,
     "dependeny": [
         "Sections"
     ]

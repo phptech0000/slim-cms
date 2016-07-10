@@ -12,16 +12,19 @@ abstract class AModule implements IModule
     protected $app;
 
     public $info;
+//    protected static $loaded = false;
     protected $loaded = false;
+    protected $specialData;
 
     public $requireModules = ['Core'];
 
-    public function __construct() {
+    public function __construct($data = null) {
     	$c = get_called_class();
         if (!$c::MODULE_NAME)
         {
             throw new \Exception('Constant MODULE_NAME is not defined on subclass ' . get_class($c));
         }
+        $this->specialData = $data;
     }
 
     public function beforeInitialization()
@@ -35,11 +38,13 @@ abstract class AModule implements IModule
 
     public function afterInitialization()
     {
+        //static::$loaded = true;
         $this->loaded = true;
     }
 
     public function isInitModule()
     {
+        //return (bool) static::$loaded;//$this->loaded;
         return (bool) $this->loaded;
     }
 

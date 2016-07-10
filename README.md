@@ -1,7 +1,9 @@
 # SlimCMS
-Lightweight CMS based on: php framework slim 3, laravel eloquent, symfony event dispatcher, Twig templater and other libraries.
+Lightweight CMS(CMF) based on: php framework slim 3, laravel eloquent, symfony event dispatcher, Twig templater and other libraries.
 
 The fast creation of a new website.
+
+If you have problems using or install system, please write in new issue or email(andrey@avgz.net)
 
 [![Latest Unstable Version](https://poser.pugx.org/andrey900/slimcms/v/unstable)](https://packagist.org/packages/andrey900/slimcms)
 [![Total Downloads](https://poser.pugx.org/andrey900/slimcms/downloads)](https://packagist.org/packages/andrey900/slimcms)
@@ -24,6 +26,7 @@ Implemented modules:
  - Logging system
  - Developer admin panel mode
  - Create new module
+ - Installer system
  
 If you are interested in this system, **place a star** )))
 If the project attains **more than 30 stars**, the official website of the documentation will be created.

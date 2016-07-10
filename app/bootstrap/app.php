@@ -1,10 +1,11 @@
 <?php
+$GLOBALS['startTime'] = microtime(true);
 
-use App\Source\Factory\AppFactory;
-use App\Source\ModuleLoader;
-use Slim\App;
 use Slim\Container;
+use App\Source\ModuleLoader;
 use App\Helpers\ConfigWorker;
+use App\Source\Factory\AppFactory;
+use App\Source\Decorators\SlimCMS;
 
 session_start();
 
@@ -42,17 +43,25 @@ if (isset($_REQUEST['clear_cache'])) {
 /** include Config files */
 $config += ConfigWorker::init([], $clearCache)->all();
 
+if( !isset($config['slim']) ){
+    $container = new Container(['debug' => true, 'use_log' => false, 'determineRouteBeforeAppMiddleware' => true, 'displayErrorDetails' => true]);
+    $app = AppFactory::setInstance(new SlimCMS($container));
+    ModuleLoader::bootEasyModule(new Modules\SystemInstaller\Module());
+    return $app;
+}
+
 if ($config['slim']['settings']['debug']) {
     error_reporting(E_ALL ^ E_NOTICE);
 }
 
 $container = new Container($config['slim']);
 $container->config = ConfigWorker::getConfig();
-$app = AppFactory::setInstance(new App($container));
+
+$app = AppFactory::setInstance(new SlimCMS($container));
+
 ModuleLoader::bootCore(new \Modules\Core\Module());
-//ModuleLoader::install(new \Modules\Core\Module());
 //ModuleLoader::install(new \Modules\Sections\Module());
-//ModuleLoader::uninstall(new \Modules\Core\Module());
+//ModuleLoader::install(new \Modules\Breadcrumb\Module());
 //ModuleLoader::uninstall(new \Modules\Sections\Module());
 //ModuleLoader::uninstall(new \Modules\Breadcrumb\Module());
 

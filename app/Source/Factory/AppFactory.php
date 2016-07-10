@@ -28,6 +28,7 @@ class AppFactory
         if( !$name )
             return self::$app;
 
-        return self::$app->getContainer()->get($name);
+        if(self::$app->getContainer()->offsetExists($name))
+            return self::$app->getContainer()->get($name);
     }
 }

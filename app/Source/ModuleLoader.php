@@ -22,6 +22,7 @@ class ModuleLoader implements IModuleLoader
 {
     protected static $loadedModules = [];
     protected static $moduleContainer;
+    protected static $coreLoaded = false;
 
     public static function install(IModule $module){
         self::checkDbConnection();
@@ -55,24 +56,34 @@ class ModuleLoader implements IModuleLoader
         };
     }
 
+    public static function bootInstaller(IModule $module){
+        if(!preg_match("/(installer|setup))/sui", $module->getName())){
+            throw new ParseException("No load module".$module->getName()." - is don't installer module group");
+        }
+
+        self::initProcess($module);
+        self::$loadedModules[$name] = $name;
+    }
+
     public static function bootCore(IModule $module)
     {
         if(!preg_match("/core/sui", $module->getName())){
             throw new ParseException("No load module".$module->getName()." - is don't core module group");
         }
 
-        $module->beforeInitialization();
-        $module->initialization();
-        $module->registerRoute();
-        $module->registerDi();
-        $module->registerMiddleware();
-        $module->afterInitialization();
+        self::initProcess($module);
 
-        self::$loadedModules[$name] = $name;
+        if($module->isInitModule()){
+            self::$loadedModules[$name] = $name;
+            self::$coreLoaded = true;
+        }
     }
 
     public static function bootLoadModules(Container $moduleContainer)
     {
+        if( !self::$coreLoaded )
+            return false;
+
         $c = AppFactory::getInstance()->getContainer();
         $c['modules'] = self::$moduleContainer = $moduleContainer;
         $c->dispatcher->dispatch('module.modules.beforeAllInitialization');
@@ -86,11 +97,14 @@ class ModuleLoader implements IModuleLoader
         if( !$name )
             $name = $module->getName();
 
-        $event = new BaseAppEvent(AppFactory::getInstance(), $module);
-        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
-        self::initializationProcess($module, $name);
-        $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
-        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
+//        $event = new BaseAppEvent(AppFactory::getInstance(), $module);
+//        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
+//        self::initializationProcess($module, $name);
+        self::initProcess($module);
+
+        self::$loadedModules[$name] = $name;
+//        $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
+//        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
     }
 
     protected static function checkDependency($arDependency=false)
@@ -122,14 +136,9 @@ class ModuleLoader implements IModuleLoader
         $event = new BaseAppEvent(AppFactory::getInstance(), $module);
         AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
 
-        $module->beforeInitialization();
-        $module->initialization();
-        $module->registerRoute();
-        $module->registerDi();
-        $module->registerMiddleware();
-        $module->afterInitialization();
-
+        self::initProcess($module);
         self::$loadedModules[$name] = $name;
+
         $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
         AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
     }
@@ -151,5 +160,18 @@ class ModuleLoader implements IModuleLoader
         self::checkDependency($module->config->dependeny);
 
         self::initializationProcess($module->module['init'], $module->system_name);
+    }
+
+    /**
+     * @param IModule $module
+     */
+    protected static function initProcess(IModule $module)
+    {
+        $module->beforeInitialization();
+        $module->initialization();
+        $module->registerRoute();
+        $module->registerDi();
+        $module->registerMiddleware();
+        $module->afterInitialization();
     }
 }

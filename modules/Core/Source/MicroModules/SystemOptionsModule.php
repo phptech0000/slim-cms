@@ -44,7 +44,7 @@ class SystemOptionsModule extends AModule
             $table->text('description');
             $table->string('value')->nullable();
             $table->string('type');
-            $table->integer('code');
+            $table->string('code');
             $table->string('values')->nullable();
             $table->string('frozen')->nullable();
             $table->timestamps();

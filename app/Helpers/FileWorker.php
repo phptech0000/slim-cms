@@ -13,11 +13,14 @@ class FileWorker
     {
         $strData = var_export($data, true);
         $content = sprintf('<?php ' . PHP_EOL . PHP_EOL . 'return %s;', $strData);
-        $fileName = realpath($pathFileName);
-        $path = pathinfo($fileName);
+        $path = pathinfo($pathFileName);
+        if($p = realpath($path['dirname'])){
+            $path['dirname'] = $p;
+        }
         if (!is_dir($path['dirname'])) {
             self::mkDir($path['dirname']);
         }
+        $fileName = $path['dirname'].DIRECTORY_SEPARATOR.$path['basename'];
         self::saveFile($fileName, $content);
     }
 
@@ -85,12 +88,36 @@ class FileWorker
         return file_put_contents($file, $file_contents);
     }
 
-    public static function replaceInModelsFillable($file, $find, $repl=""){
-    	$file_contents = file_get_contents($file);
-    	if(preg_match('/protected \$fillable = (\D+);/', $file_contents, $m)){
-    		$str = preg_replace('/( ){0,1}(\'|")'.$find.'(\'|"),/s', $repl, $m[0]);
-    		$file_contents = str_replace($m[0], $str, $file_contents);
-    		self::saveFile($file, $file_contents);
-    	}
+    public static function addItemInModelsFillable($modelName, $fieldName){
+        self::workInModel($modelName, $fieldName, 'add');
+    }
+
+    public static function removeItemInModelsFillable($modelName, $fieldName)
+    {
+        self::workInModel($modelName, $fieldName, 'remove');
+    }
+
+    protected static function workInModel($modelName, $fieldName, $type){
+        $path = APP_PATH.'Models/'.$modelName.'.php';
+        $file_contents = file_get_contents($path);
+
+        $cl = "App\\Models\\$modelName";
+        $model = new $cl;
+        $fillable = $model->getFillable();
+        if($type == 'add'){
+            if( array_search($fieldName, $fillable)===false ){
+                $fillable[] = $fieldName;
+            }
+        }elseif($type == 'remove'){
+            if( ($k = array_search($fieldName, $fillable))!==false ){
+                unset($fillable[$k]);
+            }
+        }
+
+        $strData = var_export($fillable, true);
+
+        if(preg_match('/protected \$fillable = ([^;]+);(\r|\n)/', $file_contents, $m)){
+            self::replaseInFile($path, $m[1], $strData);
+        }
     }
 }

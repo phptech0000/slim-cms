@@ -2,8 +2,8 @@
 
 namespace Modules\Core;
 
+use Modules\Core\Source\MicroModules\InstallerModule;
 use Slim\Flash\Messages;
-use Slim\Router;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -48,10 +48,6 @@ class Module extends AModule
 
         $this->container['dispatcher'] = function () {
             return new EventDispatcher();
-        };
-
-        $this->container['router'] = function () {
-            return new Router();
         };
 
         $this->container->dispatcher->dispatch('module.core.beforeInitialization');
@@ -126,9 +122,13 @@ class Module extends AModule
         ModuleLoader::bootEasyModule(new AuthModule());
         ModuleLoader::bootEasyModule(new PublicModule());
 
+        $module = new AdminPanelModule();
         if( Session::get('auth') ){
-            ModuleLoader::bootEasyModule(new AdminPanelModule());
+            ModuleLoader::bootEasyModule($module);
             ModuleLoader::bootEasyModule(new CustomizerAdminPanelModule());
+        } else {
+            $module->beforeInitialization();
+            $module->registerRoute();
         }
 
         if (isset($this->container['settings']['protect_double_route_register']) &&
@@ -196,13 +196,13 @@ class Module extends AModule
         parent::uninstallModule();
         $this->registerDB();
 
-        $installMicroModule = new SystemOptionsModule();
-        $installMicroModule->uninstallModule();
-        $installMicroModule = new AuthModule();
+        $installMicroModule = new CustomizerAdminPanelModule();
         $installMicroModule->uninstallModule();
         $installMicroModule = new PublicModule();
         $installMicroModule->uninstallModule();
-        $installMicroModule = new CustomizerAdminPanelModule();
+        $installMicroModule = new AuthModule();
+        $installMicroModule->uninstallModule();
+        $installMicroModule = new SystemOptionsModule();
         $installMicroModule->uninstallModule();
 
         $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);

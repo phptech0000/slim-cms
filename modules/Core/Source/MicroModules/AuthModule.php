@@ -48,8 +48,8 @@ class AuthModule extends AModule
     {
         parent::uninstallModule();
 
-        $this->container->get('db')->schema()->dropIfExists('groups');
         $this->container->get('db')->schema()->dropIfExists('users');
+        $this->container->get('db')->schema()->dropIfExists('groups');
     }
 
     protected function seed()

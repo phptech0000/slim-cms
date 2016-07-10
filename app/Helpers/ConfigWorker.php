@@ -82,6 +82,10 @@ class ConfigWorker
     protected static function cacheConfig($reCreate = false)
     {
         if ($reCreate || self::$folders->blockConfigCache || !is_file(self::$folders->cacheConfigFile)) {
+            if( !is_dir(self::$folders->realConfigPath) || !glob(self::$folders->realConfigPath.DIRECTORY_SEPARATOR.'*')){
+                self::$config = new Config([]);
+                return;
+            }
             self::$config = new Config(self::$folders->realConfigPath);
             if (!self::$folders->blockConfigCache) {
                 self::makeCacheConfig(self::$config->all());

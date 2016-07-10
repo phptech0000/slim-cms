@@ -13,7 +13,7 @@ class LoggerSystem
     protected $levelInfo = ['info', 'statistic', 'error'];
     protected $statLevelInfo = [];
 
-    function __construct($loggerSystem, $arConfig = [])
+    function __construct($loggerSystem, array $arConfig = [])
     {
         $this->logger = $loggerSystem;
         foreach ($arConfig as $levelInfo) {
