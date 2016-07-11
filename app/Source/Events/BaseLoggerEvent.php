@@ -14,7 +14,7 @@ class BaseLoggerEvent extends Event
 
     protected $undefinedObject;
 
-    public function __construct(LoggerSystem $logger, $param = null)
+    public function __construct($logger, $param = null)
     {
         $this->logger = $logger;
         $this->undefinedObject = $param;

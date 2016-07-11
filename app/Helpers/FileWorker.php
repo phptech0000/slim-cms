@@ -48,9 +48,6 @@ class FileWorker
 
     public static function copy($source, $target)
     {
-    	$source = realpath($source);
-    	$target = realpath($target);
-        
         if (!is_dir($source)) {//it is a file, do a normal copy
             if( !copy($source, $target) ){
                 return false;

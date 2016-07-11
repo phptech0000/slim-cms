@@ -22,7 +22,7 @@ class LoggerSystem
             }
         }
         if (in_array('none', $arConfig))
-            $this->statLevelInfo;
+            $this->statLevelInfo = [];
     }
 
     public function info($mess, $data = [])

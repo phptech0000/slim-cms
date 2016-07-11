@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use Modules\ModuleGenerator\Source\Helpers;
+use App\Helpers\FileWorker;
 use App\Helpers\RequestParams;
 use Illuminate\Support\Str;
 
@@ -44,12 +44,12 @@ class ModuleGenerator extends BaseController
 
         $path = MODULE_PATH . $sys_name;
 
-        if (!Helpers::copy(MODULE_PATH . '.default', $path)) {
+        if (!FileWorker::copy(MODULE_PATH . 'ModuleGenerator'.DIRECTORY_SEPARATOR.'Source'.DIRECTORY_SEPARATOR.'.default', $path)) {
             $this->flash->addMessage('errors', 'Module dir \"' . MODULE_PATH . '\" - is write protect. Check permissions!');
             return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('developers.module.generator'));
         }
 
-        $ret = Helpers::replaseInFile(
+        $ret = FileWorker::replaseInFile(
             $path . '/info.json',
             ["%name%", "%description%", "%system_name%", "%version%", "%author%"],
             [$name, $desc, $sys_name, $version, $author]
@@ -60,7 +60,7 @@ class ModuleGenerator extends BaseController
             return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('developers.module.generator'));
         }
 
-        $ret = Helpers::replaseInFile(
+        $ret = FileWorker::replaseInFile(
             $path . '/Module.php',
             ["%system_name%"],
             [$sys_name]

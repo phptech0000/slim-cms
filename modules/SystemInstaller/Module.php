@@ -181,7 +181,7 @@ class Module extends AModule
             ]
         ];
 
-        FileWorker::savePhpReturnFile(APP_PATH.'config/local/newconfig.php', $arConfig);
+        FileWorker::savePhpReturnFile(APP_PATH.'config/local/autoconfig.php', $arConfig);
 
         $this->registerDB($dbConfig[$arParams['dbType']]);
 

@@ -88,7 +88,8 @@ class ModuleLoader implements IModuleLoader
         $c['modules'] = self::$moduleContainer = $moduleContainer;
         $c->dispatcher->dispatch('module.modules.beforeAllInitialization');
         foreach($moduleContainer->keys() as $module){
-            self::bootModuleContainer($moduleContainer[$module]);
+            if( $moduleContainer[$module]->config->installed && $moduleContainer[$module]->config->active )
+                self::bootModuleContainer($moduleContainer[$module]);
         }
     }
 

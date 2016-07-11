@@ -12,12 +12,6 @@ class Module extends AModule
 
     public $requireModules = ['Core'];
 
-    public function installModule()
-    {}
-
-    public function uninstallModule()
-    {}
-
     public function beforeInitialization()
     {
         parent::beforeInitialization();
@@ -52,5 +46,17 @@ class Module extends AModule
             $this->app->get('/admin/generate_module', 'App\Controllers\Admin\ModuleGenerator:index')->setName('developers.module.generator');
             $this->app->post('/admin/generate_module', 'App\Controllers\Admin\ModuleGenerator:doAdd')->setName('developers.module.generator.add');
         }
+    }
+
+    public function installModule()
+    {
+        parent::installModule();
+        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
+    }
+
+    public function uninstallModule()
+    {
+        parent::uninstallModule();
+        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
     }
 }
