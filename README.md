@@ -51,13 +51,13 @@ Enter admin panel:
  - password: admin
 
 *if use email for login: admin@admin.net
- 
-# Screenshots
-![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png)
-![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png)
-![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989510.png)
 
-Project use additional library:
+## Screenshots
+| Sign In       | Users page    | Column config  |
+| ------------- |:-------------:| --------------:|
+| ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989510.png) |
+
+#### Project use additional library:
  - Slim v3;
  - Slim Twig Templater v2;
  - Slim Flash;
@@ -80,3 +80,6 @@ The SlimCMS platform is free software distributed under the terms of the [MIT li
 
 ## Donations
 Bitcoin address for donation: 18ERsiXpvrkGMwcvLmCNVBrfJwmM8hqurY
+
+### Social Links
+[Official facebook](https://www.facebook.com/groups/997922036987106/)
