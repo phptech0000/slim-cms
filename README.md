@@ -3,8 +3,6 @@ Lightweight CMS(CMF) based on: php framework slim 3, laravel eloquent, symfony e
 
 The fast creation of a new website.
 
-If you have problems using or install system, please write in new issue or email(andrey@avgz.net)
-
 [![Latest Unstable Version](https://poser.pugx.org/andrey900/slimcms/v/unstable)](https://packagist.org/packages/andrey900/slimcms)
 [![Total Downloads](https://poser.pugx.org/andrey900/slimcms/downloads)](https://packagist.org/packages/andrey900/slimcms)
 [![License](https://poser.pugx.org/andrey900/slimcms/license)](https://packagist.org/packages/andrey900/slimcms)
@@ -43,7 +41,7 @@ or
        php -S 127.0.0.1:8080 -t public/
        open browser url: http://127.0.0.1:8080
  
- After install create folder: cache, log. Set permittion from write this folders.
+ After install create folder: **cache, log**. Set permittion from write this folders.
 
 Enter admin panel:
  - url: /auth/login
@@ -52,7 +50,7 @@ Enter admin panel:
 
 *if use email for login: admin@admin.net
 
-## Screenshots
+#### Screenshots
 | Sign In       | Users page    | Column config  |
 | ------------- |:-------------:| --------------:|
 | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989510.png) |
@@ -73,7 +71,7 @@ Supported versions of php:
  - php: ^7.0
 
 ## If You Need Help
-Please submit all issues and questions using GitHub issues and I will try to help you :)
+If you have problems using or install system, please write in new issue or email(andrey@avgz.net), and I will try to help you
 
 ## License
 The SlimCMS platform is free software distributed under the terms of the [MIT license](http://opensource.org/licenses/MIT).
