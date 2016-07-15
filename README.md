@@ -1,13 +1,13 @@
 # SlimCMS
 Lightweight CMS(CMF) based on: php framework slim 3, laravel eloquent, symfony event dispatcher, Twig templater and other libraries.
 
-The fast creation of a new website.
+The fast creation of a new website(blog, news, ecommerce, etc).
 
 [![Latest Unstable Version](https://poser.pugx.org/andrey900/slimcms/v/unstable)](https://packagist.org/packages/andrey900/slimcms)
 [![Total Downloads](https://poser.pugx.org/andrey900/slimcms/downloads)](https://packagist.org/packages/andrey900/slimcms)
 [![License](https://poser.pugx.org/andrey900/slimcms/license)](https://packagist.org/packages/andrey900/slimcms)
 
-#### Screenshots
+### Screenshots
 | Sign In       | Users page    | Column config  |
 | ------------- |:-------------:| --------------:|
 | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989450.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989486.png) | ![alt tag](http://ipic.su/img/img7/fs/ScreenShot2016-03-26at13.1458989510.png) |
@@ -28,7 +28,7 @@ The fast creation of a new website.
 | php: ^5.5 | Create new module |
 | php: ^7.0 | Installer system |
 
-Installation:
+### Installation:
 
       git clone https://github.com/andrey900/SlimCMS.git
       php composer install
@@ -49,11 +49,10 @@ Enter admin panel:
 
 *if use email for login: admin@admin.net
 
+## If You Need Help
+If you have problems using or install system, please write in new issue or email(andrey@avgz.net), and I will try to help you.
 If you are interested in this system, **place a star** )))
 If the project attains **more than 30 stars**, the official website of the documentation will be created.
-
-## If You Need Help
-If you have problems using or install system, please write in new issue or email(andrey@avgz.net), and I will try to help you
 
 ## License
 The SlimCMS platform is free software distributed under the terms of the [MIT license](http://opensource.org/licenses/MIT).
