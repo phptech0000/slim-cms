@@ -14,19 +14,18 @@ The fast creation of a new website(blog, news, ecommerce, etc).
 
 | Project use additional library | Implemented modules |
 |---|---|
-| Slim v3 | Options |
-| Slim Twig Templater v2 | Group Options |
-| Slim Flash | Auth system |
-| Monolog - save log in file or DB(mysql, sqlite) | Create visual page, and create route |
-| Slim http cache(don't use this time) | Create sections(categories) and hierarchical sections(categories) |
-| Slim CSRF protection | Frendly admin panel(based on template: SB-admin v2) |
+| Slim v3 | Frendly admin panel(based on template: SB-admin v2) |
+| Slim Twig Templater v2 | Create visual page, and create route |
+| Slim Flash | Create sections(categories) and hierarchical sections(categories) |
+| Monolog - save log in file or DB(mysql, sqlite) | Many types show field from admin panel(hidden, checkbox, select, wysiwyg html, text) |
+| Slim http cache(don't use this time) | Admin panel count show items in table(your settings for every page type) |
+| Slim CSRF protection | Admin panel table pagination(your settings for every page type) |
 | Portable DB sqlite | User customize show field and sortable fields from tables(your settings for every page type) |
-| Illuminate database v5.2 | Admin panel table pagination(your settings for every page type) |
-| Illuminate pagination v5.2 | Admin panel count show items in table(your settings for every page type) |
-|  | Many types show field from admin panel(hidden, checkbox, select, wysiwyg html, text) |
+| Illuminate database v5.2 | Options system |
+| Illuminate pagination v5.2 | Auth system |
 | **Supported versions of php:** | Logging system |
 | php: ^5.5 | Create new module |
-| php: ^7.0 | Installer system |
+| php: ^7.0 | Installer module |
 
 ### Installation:
 
