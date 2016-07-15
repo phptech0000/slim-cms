@@ -51,8 +51,11 @@ Enter admin panel:
 
 ## If You Need Help
 If you have problems using or install system, please write in new issue or email(andrey@avgz.net), and I will try to help you.
+
 If you are interested in this system, **place a star** )))
+
 If the project attains **more than 30 stars**, the official website of the documentation will be created.
+
 
 ## License
 The SlimCMS platform is free software distributed under the terms of the [MIT license](http://opensource.org/licenses/MIT).
