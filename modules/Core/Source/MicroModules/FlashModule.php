@@ -8,6 +8,7 @@ use App\Source\AModule;
 class FlashModule extends AModule
 {
     const MODULE_NAME = 'session_flash';
+    protected static $loaded = false;
 
     public function registerDi()
     {

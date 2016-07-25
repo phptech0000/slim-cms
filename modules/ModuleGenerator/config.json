@@ -1,5 +1,5 @@
 {
-  "installed" : false,
-  "active" : false,
+  "installed" : true,
+  "active" : true,
   "only_auth" : true
 }

@@ -20,5 +20,6 @@ class Pages extends BaseModel
   10 => 'slogan',
   11 => 'fullname',
   12 => 'sort',
+  13 => 'category_id',
 );
 }

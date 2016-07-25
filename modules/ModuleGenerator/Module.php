@@ -9,6 +9,7 @@ use App\Helpers\SessionManager;
 class Module extends AModule
 {
     const MODULE_NAME = 'ModuleGenerator';
+    protected static $loaded = false;
 
     public $requireModules = ['Core'];
 

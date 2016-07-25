@@ -9,6 +9,7 @@
 namespace App\Source;
 
 
+use App\Helpers\FileWorker;
 use App\Source\Factory\AppFactory;
 use App\Source\Interfaces\IModuleManager;
 use Pimple\Container;
@@ -61,12 +62,12 @@ class ModuleManager implements IModuleManager
         foreach ($modules as $module) {
             $path = $this->modulesDir . $module . '/';
             if (is_file($path . "info.json")) {
-                $this->checkModuleInfo(file_get_contents($path . "info.json"), $module);
+                $this->checkModuleInfo($path . "info.json", $module);
             } else {
                 AppFactory::getInstance('logger')->error("Don't find info.json for module \"$module\"");
             }
             if (is_file($path . "config.json")) {
-                $this->checkModuleConfig(file_get_contents($path . "config.json"), $module);
+                $this->checkModuleConfig($path . "config.json", $module);
             } else {
                 AppFactory::getInstance('logger')->error("Don't find config.json for module \"$module\"");
             }
@@ -75,7 +76,7 @@ class ModuleManager implements IModuleManager
 
     protected function checkModuleInfo($json, $moduleName)
     {
-        $moduleInfo = json_decode($json);
+        $moduleInfo = FileWorker::getJsonDataFile($json);
         if ($moduleName == $moduleInfo->system_name) {
             $this->addModuleToContainer($moduleInfo);
         } else {
@@ -85,7 +86,7 @@ class ModuleManager implements IModuleManager
 
     protected function checkModuleConfig($json, $moduleName)
     {
-        $moduleInfo = json_decode($json);
+        $moduleInfo = FileWorker::getJsonDataFile($json);
 
         if (isset($moduleInfo->installed) &&
             isset($moduleInfo->active)
@@ -136,7 +137,8 @@ class ModuleManager implements IModuleManager
                         $cl = $moduleInfo->config->load;
 
                     $module = new $cl();
-                    $module->info = $moduleInfo;
+
+                    $module->setInfo(clone($moduleInfo));
                     return $module;
                 };
                 if ($moduleInfo->config->decorators) {
@@ -176,11 +178,11 @@ class ModuleManager implements IModuleManager
             $arItems[] = $moduleInfo;
         }
 
-        file_put_contents($this->cacheFullPath, json_encode($arItems));
+        FileWorker::saveJsonFile($this->cacheFullPath, $arItems);
     }
 
     protected function getCache(){
-        $arItems = json_decode(file_get_contents($this->cacheFullPath));
+        $arItems = FileWorker::getJsonDataFile($this->cacheFullPath);
         foreach ($arItems as $moduleInfo) {
             $this->addModuleToContainer($moduleInfo);
         }

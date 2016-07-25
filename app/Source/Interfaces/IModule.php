@@ -10,20 +10,19 @@ namespace App\Source\Interfaces;
 interface IModule
 {
     /**
-     * Run if module no install
+     * Run for install module
      * @return void
      */
     public function installModule();
 
     /**
-     * Run if remove module from system
+     * Run for module remove
      * @return void
      */
     public function uninstallModule();
 
     /**
      * Instance app, and container in module
-     * @param App $app
      * @return void
      */
     public function beforeInitialization();
@@ -69,4 +68,6 @@ interface IModule
      * @return string
      */
     public static function getName();
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\Core;
 
+use App\Helpers\FileWorker;
 use Modules\Core\Source\MicroModules\InstallerModule;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
@@ -28,6 +29,17 @@ use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
  */
 class Module extends AModule
 {
+    protected static $loaded = false;
+
+    protected $arModulesName = [
+        "LoggerModule",
+        "SystemOptionsModule",
+        "CSRFModule",
+        "FlashModule",
+        "AuthModule",
+        "PublicModule"
+    ];
+
     /**
      * Module name
      */
@@ -38,6 +50,26 @@ class Module extends AModule
      * @var array
      */
     public $requireModules = [];
+
+    public function beforeInitialization()
+    {
+        parent::beforeInitialization();
+
+        $path = str_replace("Modules\\", MODULE_PATH, static::class);
+        $path = str_replace("\\", DIRECTORY_SEPARATOR, $path);
+        $path = substr($path, 0, strrpos($path, parse_classname(get_class($this))['classname']));
+
+        $info = new \stdClass();
+        if (is_file($path . "info.json")) {
+            $info = FileWorker::getJsonDataFile($path . "info.json");
+        }
+        if (is_file($path . "config.json")) {
+            $info->config = FileWorker::getJsonDataFile($path . "config.json");
+        }
+
+        $this->setInfo($info);
+    }
+
 
     /**
      * Init module
@@ -115,17 +147,19 @@ class Module extends AModule
     {
         parent::afterInitialization();
 
-        ModuleLoader::bootEasyModule(new LoggerModule());
-        ModuleLoader::bootEasyModule(new SystemOptionsModule());
-        ModuleLoader::bootEasyModule(new CSRFModule());
-        ModuleLoader::bootEasyModule(new FlashModule());
-        ModuleLoader::bootEasyModule(new AuthModule());
-        ModuleLoader::bootEasyModule(new PublicModule());
+        $config = $this->getConfig();
+
+        if( !isset($config->microInit) || in_array('all', $config->microInit)){
+            foreach($this->arModulesName as $moduleName){
+                $cl = "Modules\\Core\\Source\\MicroModules\\".$moduleName;
+                $this->initMicroModule(new $cl());
+            }
+        }
 
         $module = new AdminPanelModule();
         if( Session::get('auth') ){
-            ModuleLoader::bootEasyModule($module);
-            ModuleLoader::bootEasyModule(new CustomizerAdminPanelModule());
+            $this->initMicroModule($module);
+            $this->initMicroModule(new CustomizerAdminPanelModule());
         } else {
             $module->beforeInitialization();
             $module->registerRoute();
@@ -206,5 +240,15 @@ class Module extends AModule
         $installMicroModule->uninstallModule();
 
         $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
+    }
+
+    protected function initMicroModule($module){
+        $module->setConfig($this->getConfig());
+        /*if(){
+            $extended = function () use ($callable, $module) {
+                return new $callable($module);
+            };
+        }*/
+        ModuleLoader::bootEasyModule($module);
     }
 }

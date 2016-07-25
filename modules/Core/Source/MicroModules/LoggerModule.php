@@ -15,6 +15,7 @@ class LoggerModule extends AModule
     const MODULE_NAME = 'logger';
 
     protected $registerDi = false;
+    protected static $loaded = false;
 
     public function initialization()
     {

@@ -60,16 +60,12 @@ $container->config = ConfigWorker::getConfig();
 $app = AppFactory::setInstance(new SlimCMS($container));
 
 ModuleLoader::bootCore(new \Modules\Core\Module());
-//ModuleLoader::install(new \Modules\Sections\Module());
-//ModuleLoader::install(new \Modules\Breadcrumb\Module());
-//ModuleLoader::uninstall(new \Modules\Sections\Module());
-//ModuleLoader::uninstall(new \Modules\Breadcrumb\Module());
 
-$moduleLoader = new \App\Source\ModuleManager(MODULE_PATH);
-$moduleLoader->init($clearCache)->registerModules();
+$moduleManager = new \App\Source\ModuleManager(MODULE_PATH);
+$moduleManager->init($clearCache)->registerModules();
 
-ModuleLoader::bootLoadModules($moduleLoader->getModules());
+ModuleLoader::bootLoadModules($moduleManager->getModules());
 
-unset($moduleLoader);
+unset($moduleManager);
 
 return $app;

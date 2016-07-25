@@ -1,4 +1,5 @@
 {
-    "installed": false,
-    "active": false
+    "installed": true,
+    "active": true,
+    "microInit": ["all"]
 }

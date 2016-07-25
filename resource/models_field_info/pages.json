@@ -37,6 +37,10 @@
     },
     {
         "name": "url_prefix",
-        "type": "string"
+        "type": "hidden"
+    },
+    {
+        "name": "category_id",
+        "type": "select"
     }
 ]

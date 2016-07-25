@@ -10,6 +10,7 @@ use Modules\Core\Source\Libs\Middleware\CSRFMiddleware;
 class CSRFModule extends AModule
 {
     const MODULE_NAME = 'csrf';
+    protected static $loaded = false;
 
     public function registerDi()
     {

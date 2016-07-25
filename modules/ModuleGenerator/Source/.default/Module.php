@@ -7,6 +7,7 @@ use App\Source\AModule;
 class Module extends AModule
 {
     const MODULE_NAME = '%system_name%';
+    protected static $_loaded = false;
 
     public $requireModules = ['core'];
 

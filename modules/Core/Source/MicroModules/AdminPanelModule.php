@@ -13,6 +13,7 @@ use Modules\Core\Source\Libs\Middleware\AuthMiddleware;
 class AdminPanelModule extends AModule
 {
     const MODULE_NAME = 'admin_panel';
+    protected static $loaded = false;
 
     public function registerDi()
     {

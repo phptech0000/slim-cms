@@ -10,10 +10,12 @@ use Modules\Breadcrumb\Source\BreadcrumbsBuilder;
 class Module extends AModule
 {
     const MODULE_NAME = 'breadcrumb';
+    protected static $loaded = false;
 
     public $requireModules = ['core', 'sections'];
 
     public function afterInitialization(){
+
         parent::afterInitialization();
 
         $this->container->dispatcher->addListener('publiccontroller.render.before', function ($event) {
