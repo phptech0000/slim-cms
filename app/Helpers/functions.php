@@ -23,3 +23,11 @@ function memoryFormat($m){
 
 	return $m;
 }
+
+function parse_classname ($name)
+{
+	return array(
+		'namespace' => array_slice(explode('\\', $name), 0, -1),
+		'classname' => join('', array_slice(explode('\\', $name), -1)),
+	);
+}

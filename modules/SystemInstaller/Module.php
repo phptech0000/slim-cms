@@ -19,6 +19,7 @@ use Slim\Views\TwigExtension;
 class Module extends AModule
 {
     const MODULE_NAME = 'SystemInstaller';
+    protected static $loaded = false;
 
     public function registerDi()
     {

@@ -11,6 +11,7 @@ use Modules\Core\Source\Libs\Options\OptionsFacade;
 class SystemOptionsModule extends AModule
 {
     const MODULE_NAME = 'system_options';
+    protected static $loaded = false;
 
     public function registerDi()
     {

@@ -17,6 +17,8 @@ class Module extends AModule
 {
     const MODULE_NAME = 'Sections';
 
+    protected static $loaded = false;
+
     public function registerRoute()
     {
         $sections = Sections::getAllGlobalActive()->keyBy('id')->toArray();

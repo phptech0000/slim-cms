@@ -8,22 +8,27 @@ use Illuminate\Support\Str;
 
 abstract class AModule implements IModule
 {
-	protected $container;
+    protected $container;
     protected $app;
 
-    public $info;
-//    protected static $loaded = false;
-    protected $loaded = false;
+    private $config;
+    private $info;
+
     protected $specialData;
 
     public $requireModules = ['Core'];
 
-    public function __construct($data = null) {
-    	$c = get_called_class();
-        if (!$c::MODULE_NAME)
-        {
+    public function __construct($data = null)
+    {
+        $c = get_called_class();
+        if (!$c::MODULE_NAME) {
             throw new \Exception('Constant MODULE_NAME is not defined on subclass ' . get_class($c));
         }
+
+        if (!isset(static::$loaded)) {
+            throw new \Exception('Protected static variable $loaded is not defined on subclass ' . $c);//static::$_loaded = false;
+        }
+
         $this->specialData = $data;
     }
 
@@ -34,18 +39,17 @@ abstract class AModule implements IModule
     }
 
     public function initialization()
-    {}
+    {
+    }
 
     public function afterInitialization()
     {
-        //static::$loaded = true;
-        $this->loaded = true;
+        static::setLoad();
     }
 
     public function isInitModule()
     {
-        //return (bool) static::$loaded;//$this->loaded;
-        return (bool) $this->loaded;
+        return (bool)static::getLoad();
     }
 
     public static function getName()
@@ -64,25 +68,71 @@ abstract class AModule implements IModule
     }
 
     public function registerRoute()
-    {}
+    {
+    }
 
     public function registerMiddleware()
-    {}
+    {
+    }
 
     public function registerDi()
-    {}
+    {
+    }
 
-    protected function saveConfigForModule($class, array $arData){
-        $file = MODULE_PATH.Str::ucfirst($class::MODULE_NAME)."/config.json";
+    protected function saveConfigForModule($class, array $arData)
+    {
+        $file = MODULE_PATH . Str::ucfirst($class::MODULE_NAME) . "/config.json";
         $arConfigData = new \stdClass();
-        if(file_exists($file)){
+        if (file_exists($file)) {
             $arConfigData = json_decode(file_get_contents($file));
         }
-        foreach($arData as $key=>$item){
+        foreach ($arData as $key => $item) {
             $key = strtolower($key);
             $arConfigData->$key = $item;
         }
 
         file_put_contents($file, json_encode($arConfigData, JSON_PRETTY_PRINT));
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    public function setConfig($config)
+    {
+        if( is_object($config) )
+            $this->config = $config;
+
+        return $this->config;
+    }
+
+    public function setInfo($info)
+    {
+        if (!is_object($info))
+            return $this->info;
+
+        if (isset($info->config)){
+            $this->setConfig($info->config);
+            unset($info->config, $info->module);
+        }
+
+        $this->info = $info;
+        return $this->info;
+    }
+
+    public static function getLoad()
+    {
+        return static::$loaded;
+    }
+
+    public static function setLoad()
+    {
+        static::$loaded = true;
     }
 }

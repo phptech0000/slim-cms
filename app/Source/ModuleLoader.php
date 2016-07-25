@@ -56,15 +56,6 @@ class ModuleLoader implements IModuleLoader
         };
     }
 
-    public static function bootInstaller(IModule $module){
-        if(!preg_match("/(installer|setup))/sui", $module->getName())){
-            throw new ParseException("No load module".$module->getName()." - is don't installer module group");
-        }
-
-        self::initProcess($module);
-        self::$loadedModules[$name] = $name;
-    }
-
     public static function bootCore(IModule $module)
     {
         if(!preg_match("/core/sui", $module->getName())){
@@ -98,14 +89,9 @@ class ModuleLoader implements IModuleLoader
         if( !$name )
             $name = $module->getName();
 
-//        $event = new BaseAppEvent(AppFactory::getInstance(), $module);
-//        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
-//        self::initializationProcess($module, $name);
         self::initProcess($module);
 
         self::$loadedModules[$name] = $name;
-//        $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
-//        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
     }
 
     protected static function checkDependency($arDependency=false)
@@ -132,13 +118,12 @@ class ModuleLoader implements IModuleLoader
         }
     }
 
-    protected static function initializationProcess(IModule $module, $name)
+    public static function initializationProcess(IModule $module, $name)
     {
         $event = new BaseAppEvent(AppFactory::getInstance(), $module);
         AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
 
-        self::initProcess($module);
-        self::$loadedModules[$name] = $name;
+        self::bootEasyModule($module, $name);
 
         $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
         AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);

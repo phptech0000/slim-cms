@@ -10,6 +10,7 @@ use Modules\Core\Source\Libs\Middleware\OrderTypeMiddleware;
 class CustomizerAdminPanelModule extends AModule
 {
     const MODULE_NAME = 'customizer_admin_panel';
+    protected static $loaded = false;
 
     public function registerRoute()
     {

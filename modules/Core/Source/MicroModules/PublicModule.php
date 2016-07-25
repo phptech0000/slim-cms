@@ -11,6 +11,7 @@ use App\Source\RouteSystem\PageRouteCollection;
 class PublicModule extends AModule
 {
     const MODULE_NAME = 'public_cms';
+    protected static $loaded = false;
 
     public function registerRoute()
     {

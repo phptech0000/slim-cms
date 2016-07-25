@@ -7,6 +7,7 @@ use App\Source\AModule;
 class AuthModule extends AModule
 {
     const MODULE_NAME = 'auth';
+    protected static $loaded = false;
 
     public function registerRoute()
     {
