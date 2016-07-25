@@ -45,6 +45,8 @@ class AdminPanelModule extends AModule
                 return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('dashboard'));
                 });
             }
+
+            $this->get('/phpinfo', 'App\Controllers\Admin\DeveloperController:phpinfo')->setName('phpinfo');
         })->add( new AuthMiddleware() );
     }
 
@@ -198,6 +200,18 @@ class AdminPanelModule extends AModule
                 'onlyDevelopersMode' => true,
                 'sort' => 1000
             ],
+            'sub_menu' => [
+                new Menu('PHP info', [
+                    'menu_name' => 'developer.phpinfo',
+                    'url' => '/admin/phpinfo',
+                    'link_attr' => [
+                        'icon' => 'fa fa-gear fa-fw'
+                    ],
+                    'meta_attr' => [
+                        'onlyDevelopersMode' => false,
+                    ],
+                ]),
+            ]
         ]);
 
         $this->container->get('adminMenuLeft')->add($item);
