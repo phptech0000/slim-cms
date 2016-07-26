@@ -6,3 +6,5 @@ uploads/*
 .idea/*
 composer.lock
 .env
+app/config/*
+resource/*
