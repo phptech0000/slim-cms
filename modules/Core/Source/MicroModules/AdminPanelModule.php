@@ -40,13 +40,13 @@ class AdminPanelModule extends AModule
             });
             $this->get('/dashboard', 'App\Controllers\Admin\DashboardController:index')->setName('dashboard');
 
+            $this->get('/phpinfo', 'App\Controllers\Admin\DeveloperController:phpinfo')->setName('phpinfo');
+
             if( !Session::has('auth') || !Session::get('auth') ){
                 $this->get('/{page:.*}', function($req, $res){
                 return $res->withStatus(301)->withHeader('Location', $this->router->pathFor('dashboard'));
                 });
             }
-
-            $this->get('/phpinfo', 'App\Controllers\Admin\DeveloperController:phpinfo')->setName('phpinfo');
         })->add( new AuthMiddleware() );
     }
 
