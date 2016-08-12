@@ -25,6 +25,8 @@ class SlimCMS extends App
 
     protected function onFinish()
     {
+        if( !$this->getContainer()->offsetExists('logger') ) return;
+        
         $event = new \App\Source\Events\BaseLoggerEvent($this->getContainer()->get('logger'));
         if($this->getContainer()->offsetExists('dispatcher')) {
             $this->getContainer()->dispatcher->dispatch('app.afterRun', $event);
