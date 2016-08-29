@@ -53,7 +53,7 @@ If you have problems using or install system, please write in new issue or email
 
 If you are interested in this system, **place a star** )))
 
-If the project attains **more than 30 stars**, the official website of the documentation will be created.
+If the project attains **more than 50 stars**, the official website of the documentation will be created.
 
 
 ## License
