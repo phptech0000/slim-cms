@@ -3,9 +3,9 @@
 namespace Modules\Core\Source\MicroModules;
 
 use Slim\Flash\Messages;
-use App\Source\AModule;
+use App\Source\BaseModule;
 
-class FlashModule extends AModule
+class FlashModule extends BaseModule
 {
     const MODULE_NAME = 'session_flash';
     protected static $loaded = false;

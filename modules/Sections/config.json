@@ -1,4 +1,6 @@
 {
-    "installed": true,
-    "active": true
+    "params": {
+        "installed": true,
+        "active": true
+    }
 }

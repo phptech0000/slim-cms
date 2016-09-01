@@ -6,7 +6,7 @@
  * Time: 9:18 PM
  */
 
-namespace App\Source\Factory;
+namespace SlimCMS\Factory;
 
 
 use Slim\App;

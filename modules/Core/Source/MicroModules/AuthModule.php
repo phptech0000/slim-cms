@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 
-class AuthModule extends AModule
+class AuthModule extends BaseModule
 {
     const MODULE_NAME = 'auth';
     protected static $loaded = false;

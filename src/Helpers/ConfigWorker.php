@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace SlimCMS\Helpers;
 
 use Noodlehaus\Config;
 
@@ -27,7 +27,7 @@ class ConfigWorker
      * @param bool|false $recreateCache
      * @return array
      */
-    public static function init($arConfig = [], $recreateCache = false)
+    public static function init($recreateCache = false, array $arConfig = [])
     {
         self::loadEnvFiles($arConfig);
 
@@ -39,10 +39,10 @@ class ConfigWorker
 
     /**
      * Load configuration files
-     * @params arConfig array
+     * @params array $arConfig
      * @return void|null
      */
-    public static function loadEnvFiles($arConfig = [])
+    public static function loadEnvFiles(array $arConfig = [])
     {
         if (is_object(self::$folders))
             return;
@@ -96,7 +96,7 @@ class ConfigWorker
     }
 
     /**
-     * @param $allConfig
+     * @param mixed $allConfig
      */
     protected static function makeCacheConfig($allConfig)
     {

@@ -3,6 +3,7 @@
 namespace Modules\Core;
 
 use App\Helpers\FileWorker;
+use App\Source\BaseModule;
 use Modules\Core\Source\MicroModules\InstallerModule;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
@@ -10,13 +11,9 @@ use Slim\Views\TwigExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-use App\Source\AModule;
-use App\Source\ModuleLoader;
+use SlimCMS\Modules\ModuleLoader;
 use App\Helpers\SessionManager as Session;
 use Modules\Core\Source\MicroModules\AuthModule;
-use Modules\Core\Source\MicroModules\CSRFModule;
-use Modules\Core\Source\MicroModules\FlashModule;
-use Modules\Core\Source\MicroModules\LoggerModule;
 use Modules\Core\Source\MicroModules\PublicModule;
 use Modules\Core\Source\MicroModules\AdminPanelModule;
 use Modules\Core\Source\MicroModules\SystemOptionsModule;
@@ -27,7 +24,7 @@ use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
  * Class CoreModule
  * @package Modules\Core
  */
-class Module extends AModule
+class Module extends BaseModule
 {
     protected static $loaded = false;
 
@@ -155,7 +152,7 @@ class Module extends AModule
                 $this->initMicroModule(new $cl());
             }
         }
-
+/*
         $module = new AdminPanelModule();
         if( Session::get('auth') ){
             $this->initMicroModule($module);
@@ -163,7 +160,7 @@ class Module extends AModule
         } else {
             $module->beforeInitialization();
             $module->registerRoute();
-        }
+        }*/
 
         if (isset($this->container['settings']['protect_double_route_register']) &&
             $this->container['settings']['protect_double_route_register']
@@ -244,7 +241,7 @@ class Module extends AModule
 
     protected function initMicroModule($module){
         $module->setConfig($this->getConfig());
-        /*if(){
+ /*       if(){
             $extended = function () use ($callable, $module) {
                 return new $callable($module);
             };

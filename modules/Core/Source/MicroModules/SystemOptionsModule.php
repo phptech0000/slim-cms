@@ -2,13 +2,13 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Models\Options;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
 use Modules\Core\Source\Libs\Options\OptionsFacade;
 
-class SystemOptionsModule extends AModule
+class SystemOptionsModule extends BaseModule
 {
     const MODULE_NAME = 'system_options';
     protected static $loaded = false;

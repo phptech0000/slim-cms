@@ -3,12 +3,12 @@
 namespace Modules\Core\Source\MicroModules;
 
 use App\Models\Pages;
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Source\RouteSystem\PageResource;
 use App\Source\RouteSystem\PageRouteCollection;
 
 
-class PublicModule extends AModule
+class PublicModule extends BaseModule
 {
     const MODULE_NAME = 'public_cms';
     protected static $loaded = false;

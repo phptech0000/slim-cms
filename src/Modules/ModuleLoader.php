@@ -6,15 +6,16 @@
  * Time: 8:52 PM
  */
 
-namespace App\Source;
+namespace SlimCMS\Modules;
 
-use Pimple\Container;
+//use Pimple\Container;
+use Illuminate\Container\Container;
 use Noodlehaus\Exception\ParseException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Source\Events\BaseAppEvent;
 use App\Source\Events\BaseLoggerEvent;
-use App\Source\Factory\AppFactory;
-use App\Source\Interfaces\IModule;
+use SlimCMS\Factory\AppFactory;
+use SlimCMS\Contracts\Modules\IModule;
 use App\Source\Interfaces\IModuleLoader;
 use App\Helpers\SessionManager as Session;
 
@@ -76,11 +77,10 @@ class ModuleLoader implements IModuleLoader
             return false;
 
         $c = AppFactory::getInstance()->getContainer();
-        $c['modules'] = self::$moduleContainer = $moduleContainer;
+        //$c['modules'] = self::$moduleContainer = $moduleContainer;
         $c->dispatcher->dispatch('module.modules.beforeAllInitialization');
-        foreach($moduleContainer->keys() as $module){
-            if( $moduleContainer[$module]->config->installed && $moduleContainer[$module]->config->active )
-                self::bootModuleContainer($moduleContainer[$module]);
+        foreach($c->modules->keys() as $module){
+            self::bootModuleContainer($moduleContainer->make($module));
         }
     }
 
@@ -131,21 +131,22 @@ class ModuleLoader implements IModuleLoader
 
     protected static function bootModuleContainer($module)
     {
-        if( $module->config->only_auth && !Session::get('auth')){
+        if( $module->only_auth && !Session::get('auth')){
             return;
         }
-        if( $module->module === null ){
+        /*if( $module->module === null ){
             AppFactory::getInstance('logger')->error("Can't find module class for \"{$module->system_name}\"");
             return;
-        }
-        if( $module->module['init']->isInitModule()){
+        }*/
+
+        if( $module->isInitModule() ){
             self::$loadedModules[$module->system_name] = $module->system_name;
             return;
         }
 
-        self::checkDependency($module->config->dependeny);
+        self::checkDependency($module->dependeny);
 
-        self::initializationProcess($module->module['init'], $module->system_name);
+        self::initializationProcess($module, $module->system_name);
     }
 
     /**

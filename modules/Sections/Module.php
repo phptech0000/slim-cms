@@ -3,7 +3,7 @@
 namespace Modules\Sections;
 
 use App\Helpers\FileWorker;
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Source\RouteSystem\AdminResource;
 use App\Source\RouteSystem\AdminRouteCollection;
 use App\Helpers\SessionManager as Session;
@@ -13,7 +13,7 @@ use App\Source\RouteSystem\PageResource;
 use App\Source\RouteSystem\PageRouteCollection;
 use App\Source\Composite\Menu;
 
-class Module extends AModule
+class Module extends BaseModule
 {
     const MODULE_NAME = 'Sections';
 

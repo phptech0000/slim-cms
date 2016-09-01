@@ -1,36 +1,39 @@
 <?php
 $GLOBALS['startTime'] = microtime(true);
 
+use SlimCMS\Modules\ModuleLoader;
 use Slim\Container;
-use App\Source\ModuleLoader;
-use App\Helpers\ConfigWorker;
-use App\Source\Factory\AppFactory;
+use SlimCMS\Modules\SModuleManager;
+use SlimCMS\Helpers\ConfigWorker;
+use SlimCMS\Factory\AppFactory;
 use App\Source\Decorators\SlimCMS;
 
 session_start();
 
-define('ROOT_PATH', realpath(__DIR__ . '/../../') . '/');
+define('ROOT_PATH', str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__ . '/../../') . '/'));
 
-define('APP_PATH', ROOT_PATH . 'app/');
-define('CACHE_PATH', ROOT_PATH . 'cache/');
-define('VENDOR_PATH', ROOT_PATH . 'vendor/');
-define('PUBLIC_PATH', ROOT_PATH . 'public/');
-define('RESOURCE_PATH', ROOT_PATH . 'resource/');
+define('APP_PATH', ROOT_PATH . 'app' . DIRECTORY_SEPARATOR);
+define('SLIM_PATH', ROOT_PATH . 'src' . DIRECTORY_SEPARATOR);
+define('CACHE_PATH', ROOT_PATH . 'cache' . DIRECTORY_SEPARATOR);
+define('VENDOR_PATH', ROOT_PATH . 'vendor' . DIRECTORY_SEPARATOR);
+define('PUBLIC_PATH', ROOT_PATH . 'public' . DIRECTORY_SEPARATOR);
+define('RESOURCE_PATH', ROOT_PATH . 'resource' . DIRECTORY_SEPARATOR);
 
-define('MODULE_PATH', ROOT_PATH . 'modules/');
+define('MODULE_PATH', ROOT_PATH . 'modules' . DIRECTORY_SEPARATOR);
 
 $classLoader = require VENDOR_PATH . 'autoload.php';
 
-require APP_PATH . 'Helpers/functions.php';
+require SLIM_PATH . 'Helpers'.DIRECTORY_SEPARATOR.'functions.php';
 
 /**
  * Load the configuration
  */
 $config = array(
+    'path.app' => APP_PATH,
     'path.root' => ROOT_PATH,
+    'path.slim' => SLIM_PATH,
     'path.cache' => CACHE_PATH,
     'path.public' => PUBLIC_PATH,
-    'path.app' => APP_PATH,
     'path.module' => MODULE_PATH,
     'path.resource' => RESOURCE_PATH,
 );
@@ -41,7 +44,8 @@ if (isset($_REQUEST['clear_cache'])) {
 }
 
 /** include Config files */
-$config += ConfigWorker::init([], $clearCache)->all();
+$config += ConfigWorker::init($clearCache)->all();
+
 
 if( !isset($config['slim']) ){
     $container = new Container(['debug' => true, 'use_log' => false, 'determineRouteBeforeAppMiddleware' => true, 'displayErrorDetails' => true]);
@@ -55,17 +59,14 @@ if ($config['slim']['settings']['debug']) {
 }
 
 $container = new Container($config['slim']);
-$container->config = ConfigWorker::getConfig();
+$container->config = $config;
 
 $app = AppFactory::setInstance(new SlimCMS($container));
 
-ModuleLoader::bootCore(new \Modules\Core\Module());
+$container->modules = new SModuleManager($clearCache);
+$container->modules->loadModules();
 
-$moduleManager = new \App\Source\ModuleManager(MODULE_PATH);
-$moduleManager->init($clearCache)->registerModules();
-
-ModuleLoader::bootLoadModules($moduleManager->getModules());
-
-unset($moduleManager);
+ModuleLoader::bootCore($app->getContainer()->modules->module('Core'));
+ModuleLoader::bootLoadModules($app->getContainer()->modules->getModules());
 
 return $app;

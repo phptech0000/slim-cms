@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Source\Libs\Logger\LoggerSystem;
 use Modules\Core\Source\Libs\Logger\SqliteMonologHandler;
@@ -10,7 +10,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use MySQLHandler\MySQLHandler;
 
-class LoggerModule extends AModule
+class LoggerModule extends BaseModule
 {
     const MODULE_NAME = 'logger';
 

@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Source;
+namespace SlimCMS\Contracts\Modules;
 
-use App\Source\Factory\AppFactory;
-use App\Source\Interfaces\IModule;
-use Illuminate\Support\Str;
+use SlimCMS\Factory\AppFactory;
 
 abstract class AModule implements IModule
 {

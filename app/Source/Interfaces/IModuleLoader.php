@@ -7,7 +7,9 @@
  */
 namespace App\Source\Interfaces;
 
-use Pimple\Container;
+//use Pimple\Container;
+use Illuminate\Container\Container;
+use SlimCMS\Contracts\Modules\IModule;
 
 interface IModuleLoader
 {

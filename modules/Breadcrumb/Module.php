@@ -2,12 +2,12 @@
 
 namespace Modules\Breadcrumb;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Source\Factory\ModelsFactory;
 use Modules\Breadcrumb\Source\BreadcrumbsBuilder;
 
 
-class Module extends AModule
+class Module extends BaseModule
 {
     const MODULE_NAME = 'breadcrumb';
     protected static $loaded = false;

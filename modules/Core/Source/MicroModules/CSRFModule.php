@@ -3,11 +3,11 @@
 namespace Modules\Core\Source\MicroModules;
 
 use Slim\Csrf\Guard;
-use App\Source\AModule;
+use App\Source\BaseModule;
 use Modules\Core\Source\Libs\Middleware\CSRFMiddleware;
 
 
-class CSRFModule extends AModule
+class CSRFModule extends BaseModule
 {
     const MODULE_NAME = 'csrf';
     protected static $loaded = false;
