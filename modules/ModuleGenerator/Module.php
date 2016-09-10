@@ -2,11 +2,11 @@
 
 namespace Modules\ModuleGenerator;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Source\Composite\Menu;
 use App\Helpers\SessionManager;
 
-class Module extends AModule
+class Module extends BaseModule
 {
     const MODULE_NAME = 'ModuleGenerator';
     protected static $loaded = false;

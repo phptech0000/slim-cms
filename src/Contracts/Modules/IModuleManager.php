@@ -5,15 +5,17 @@
  * Date: 6/11/16
  * Time: 4:10 PM
  */
-namespace App\Source\Interfaces;
+namespace SlimCMS\Contracts\Modules;
 
 interface IModuleManager
 {
-    public function init();
+    public function loadModules($path = "");
+
+    public function module($name);
 
     public function getModules();
 
-    public function getModuleByName($moduleName);
+    public function keys();
 
-    public function registerModules();
+    public function loadModule($name, $config, $info);
 }

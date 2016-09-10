@@ -106,22 +106,12 @@ abstract class AModule implements IModule
     {
         if( is_object($config) )
             $this->config = $config;
-
-        return $this->config;
     }
 
     public function setInfo($info)
     {
-        if (!is_object($info))
-            return $this->info;
-
-        if (isset($info->config)){
-            $this->setConfig($info->config);
-            unset($info->config, $info->module);
-        }
-
-        $this->info = $info;
-        return $this->info;
+        if ( is_object($info) )
+            $this->info = $info;
     }
 
     public static function getLoad()

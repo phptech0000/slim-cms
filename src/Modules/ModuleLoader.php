@@ -12,8 +12,9 @@ namespace SlimCMS\Modules;
 use Illuminate\Container\Container;
 use Noodlehaus\Exception\ParseException;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use App\Source\Events\BaseAppEvent;
-use App\Source\Events\BaseLoggerEvent;
+//use App\Source\Events\BaseAppEvent;
+//use App\Source\Events\BaseLoggerEvent;
+use SlimCMS\Contracts\Modules\IModuleManager;
 use SlimCMS\Factory\AppFactory;
 use SlimCMS\Contracts\Modules\IModule;
 use App\Source\Interfaces\IModuleLoader;
@@ -71,16 +72,13 @@ class ModuleLoader implements IModuleLoader
         }
     }
 
-    public static function bootLoadModules(Container $moduleContainer)
+    public static function bootLoadModules(IModuleManager $moduleContainer)
     {
         if( !self::$coreLoaded )
             return false;
 
-        $c = AppFactory::getInstance()->getContainer();
-        //$c['modules'] = self::$moduleContainer = $moduleContainer;
-        $c->dispatcher->dispatch('module.modules.beforeAllInitialization');
-        foreach($c->modules->keys() as $module){
-            self::bootModuleContainer($moduleContainer->make($module));
+        foreach($moduleContainer->keys() as $name){
+            self::bootModuleContainer($moduleContainer->module($name));
         }
     }
 
@@ -104,7 +102,6 @@ class ModuleLoader implements IModuleLoader
 
             if(self::$moduleContainer[$name]){
                 if( !self::$moduleContainer[$name]->config->installed ){
-                    AppFactory::getInstance('logger')->info("Module \"$name\" not installed");
                     continue;
                 }
                 if( !self::$moduleContainer[$name]->config->active ){
@@ -120,13 +117,7 @@ class ModuleLoader implements IModuleLoader
 
     public static function initializationProcess(IModule $module, $name)
     {
-        $event = new BaseAppEvent(AppFactory::getInstance(), $module);
-        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.beforeInitialization', $event);
-
         self::bootEasyModule($module, $name);
-
-        $event = new BaseLoggerEvent(AppFactory::getInstance('logger'), $module);
-        AppFactory::getInstance('dispatcher')->dispatch('module.' . $name . '.afterInitialization', $event, $module);
     }
 
     protected static function bootModuleContainer($module)
@@ -134,10 +125,6 @@ class ModuleLoader implements IModuleLoader
         if( $module->only_auth && !Session::get('auth')){
             return;
         }
-        /*if( $module->module === null ){
-            AppFactory::getInstance('logger')->error("Can't find module class for \"{$module->system_name}\"");
-            return;
-        }*/
 
         if( $module->isInitModule() ){
             self::$loadedModules[$module->system_name] = $module->system_name;
@@ -160,5 +147,6 @@ class ModuleLoader implements IModuleLoader
         $module->registerDi();
         $module->registerMiddleware();
         $module->afterInitialization();
+        $module->setLoad();
     }
 }

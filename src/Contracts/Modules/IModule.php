@@ -64,4 +64,7 @@ interface IModule
      */
     public static function getName();
 
+    public static function setLoad();
+
+    public static function getLoad();
 }

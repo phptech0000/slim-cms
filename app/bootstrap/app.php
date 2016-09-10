@@ -64,9 +64,9 @@ $container->config = $config;
 $app = AppFactory::setInstance(new SlimCMS($container));
 
 $container->modules = new SModuleManager($clearCache);
-$container->modules->loadModules();
+$container->modules->loadModules(MODULE_PATH);
 
-ModuleLoader::bootCore($app->getContainer()->modules->module('Core'));
-ModuleLoader::bootLoadModules($app->getContainer()->modules->getModules());
+ModuleLoader::bootCore($container->modules->module('Core'));
+ModuleLoader::bootLoadModules($container->modules);
 
 return $app;

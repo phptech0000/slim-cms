@@ -11,7 +11,15 @@ use App\Models\Sections;
 class UniversalPageController extends BaseController
 {
 	public function homeAction(request $req, $res){
-		$this->data['pageData'] = PageFactory::getPageWithRequest($req);
+		$store = $this->c->cache->store();
+		if( !$store->has('controller.universal.homeAction') ){
+			$this->data['pageData'] = PageFactory::getPageWithRequest($req);
+			$ar = $this->data['pageData']->toArray();
+			$store->put('controller.universal.homeAction', $ar, 60);
+		} else {
+			$this->data['pageData'] = $store->get('controller.universal.homeAction');
+		}
+
 		$this->setRequestResult($req, $res);
 
 		$this->render('public\main\pages\home.twig');

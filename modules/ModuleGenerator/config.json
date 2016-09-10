@@ -1,5 +1,7 @@
 {
-  "installed" : true,
-  "active" : true,
-  "only_auth" : true
+  "params":{
+    "installed" : true,
+    "active" : true,
+    "only_auth" : true
+  }
 }

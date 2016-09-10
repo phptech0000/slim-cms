@@ -51,20 +51,6 @@ class Module extends BaseModule
     public function beforeInitialization()
     {
         parent::beforeInitialization();
-
-        $path = str_replace("Modules\\", MODULE_PATH, static::class);
-        $path = str_replace("\\", DIRECTORY_SEPARATOR, $path);
-        $path = substr($path, 0, strrpos($path, parse_classname(get_class($this))['classname']));
-
-        $info = new \stdClass();
-        if (is_file($path . "info.json")) {
-            $info = FileWorker::getJsonDataFile($path . "info.json");
-        }
-        if (is_file($path . "config.json")) {
-            $info->config = FileWorker::getJsonDataFile($path . "config.json");
-        }
-
-        $this->setInfo($info);
     }
 
 
@@ -236,7 +222,7 @@ class Module extends BaseModule
         $installMicroModule = new SystemOptionsModule();
         $installMicroModule->uninstallModule();
 
-        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
+//        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
     }
 
     protected function initMicroModule($module){
