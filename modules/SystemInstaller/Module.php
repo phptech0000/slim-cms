@@ -9,14 +9,14 @@
 namespace Modules\SystemInstaller;
 
 use App\Helpers\FileWorker;
-use App\Source\ModuleLoader;
+use SlimCMS\Modules\ModuleLoader;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Helpers\RequestParams;
-use App\Source\AModule;
+use App\Source\BaseModule;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 
-class Module extends AModule
+class Module extends BaseModule
 {
     const MODULE_NAME = 'SystemInstaller';
     protected static $loaded = false;
@@ -181,6 +181,13 @@ class Module extends AModule
                 'auto_reload' => $arParams['debug'],
             ]
         ];
+	$arConfig['cache'] = array(
+            'cache.default' => 'files',
+            'cache.stores.files' => array(
+                'driver' => 'file',
+                'path' => CACHE_PATH.'slimcms'
+            )
+        );
 
         FileWorker::savePhpReturnFile(APP_PATH.'config/local/autoconfig.php', $arConfig);
 

@@ -3,6 +3,7 @@
 namespace SlimCMS\Contracts\Modules;
 
 use SlimCMS\Factory\AppFactory;
+use Illuminate\Support\Str;
 
 abstract class AModule implements IModule
 {
