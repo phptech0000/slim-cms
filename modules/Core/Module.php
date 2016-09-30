@@ -207,7 +207,7 @@ class Module extends BaseModule
         $installMicroModule = new CustomizerAdminPanelModule();
         $installMicroModule->installModule();
 
-        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
+        $this->saveConfigForModule(self::class, ["params" => ["installed"=>true, "active"=>true]]);
     }
 
     public function uninstallModule()
@@ -224,7 +224,7 @@ class Module extends BaseModule
         $installMicroModule = new SystemOptionsModule();
         $installMicroModule->uninstallModule();
 
-//        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
+        $this->saveConfigForModule(self::class, ["params" => ["installed"=>false, "active"=>false]]);
     }
 
     protected function initMicroModule($module){
