@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Helpers\SessionManager as Session;
 use App\Source\Factory\ModelsFactory;
 use App\Source\ModelFieldBuilder\BuildFields;
+use Illuminate\Pagination\UrlWindow;
 use \Psr\Http\Message\ServerRequestInterface as request;
 
 class OptionsController extends UniversalController
@@ -27,6 +28,8 @@ class OptionsController extends UniversalController
         }
 
         $this->data['items']->setPath($this->router->pathFor($this->data['all_e_link']));
+        $this->data['items']->pagenItems = UrlWindow::make($this->data['items']);
+
         $t = $model->getColumnsNames(['GroupName']);
         $this->data['fields'] = $this->getFields($t, ['id'], ['values', 'type', 'options_group_id', 'frozen']);
 

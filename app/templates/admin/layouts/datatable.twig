@@ -48,7 +48,7 @@
             <!-- /.table-responsive -->
             <table class="table">
                 <tr>
-                <td>{{ items.render()|raw }}</td>
+                <td>{% include 'admin/layouts/pagination.twig' with {'pagination': items} only %}</td>
                 <td class="text-right">
                     <form class="pagination ajax ajax-form">
                         <b>Count: </b>

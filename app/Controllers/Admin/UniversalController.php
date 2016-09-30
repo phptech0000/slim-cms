@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Helpers\SessionManager as Session;
 use \Illuminate\Database\Capsule\Manager as Schema;
+use Illuminate\Pagination\UrlWindow;
 use \Psr\Http\Message\ServerRequestInterface as request;
 use App\Source\Factory\ModelsFactory;
 use App\Source\ModelFieldBuilder\BuildFields;
@@ -18,6 +19,8 @@ class UniversalController extends BaseController
 		$this->data['items'] = $model->orderBy($this->pageOrderBy, $this->pageOrderType)->paginate($this->pagecount);
 
 		$this->data['items']->setPath($this->router->pathFor($this->data['all_e_link']));
+		$this->data['items']->pagenItems = UrlWindow::make($this->data['items']);
+
 		$this->data['fields'] = $this->getFields($model->getColumnsNames(), array('id'));
 
 		$userField = ModelsFactory::getModel('UserViewsSettings');

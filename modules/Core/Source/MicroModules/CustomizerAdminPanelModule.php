@@ -2,12 +2,12 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use Modules\Core\Source\Libs\Middleware\ItemPerPageMiddleware;
 use Modules\Core\Source\Libs\Middleware\LastPagePaginatorMiddleware;
 use Modules\Core\Source\Libs\Middleware\OrderTypeMiddleware;
 
-class CustomizerAdminPanelModule extends AModule
+class CustomizerAdminPanelModule extends BaseModule
 {
     const MODULE_NAME = 'customizer_admin_panel';
     protected static $loaded = false;

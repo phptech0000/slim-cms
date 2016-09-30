@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Source\MicroModules;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 use App\Source\Composite\Menu;
 
 use App\Source\RouteSystem\AdminResource;
@@ -10,7 +10,7 @@ use App\Source\RouteSystem\AdminRouteCollection;
 use App\Helpers\SessionManager as Session;
 use Modules\Core\Source\Libs\Middleware\AuthMiddleware;
 
-class AdminPanelModule extends AModule
+class AdminPanelModule extends BaseModule
 {
     const MODULE_NAME = 'admin_panel';
     protected static $loaded = false;

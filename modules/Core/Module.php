@@ -34,7 +34,9 @@ class Module extends BaseModule
         "CSRFModule",
         "FlashModule",
         "AuthModule",
-        "PublicModule"
+        "PublicModule",
+        "AdminPanelModule",
+        "CustomizerAdminPanelModule"
     ];
 
     /**
