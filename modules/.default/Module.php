@@ -2,9 +2,9 @@
 
 namespace Modules\%system_name%;
 
-use App\Source\AModule;
+use App\Source\BaseModule;
 
-class Module extends AModule
+class Module extends BaseModule
 {
     const MODULE_NAME = '%system_name%';
 

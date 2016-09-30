@@ -1,4 +1,6 @@
 {
-  "installed" : false,
-  "active" : false
+    "params": {
+        "installed": false,
+        "active": false
+    }
 }
