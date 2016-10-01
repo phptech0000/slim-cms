@@ -30,6 +30,7 @@ The fast creation of a new website(blog, news, ecommerce, etc).
 ### Installation:
 
       git clone https://github.com/andrey900/SlimCMS.git
+      cd SlimCMS
       php composer install
 or
 
