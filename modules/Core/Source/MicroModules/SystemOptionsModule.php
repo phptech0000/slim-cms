@@ -117,7 +117,7 @@ class SystemOptionsModule extends BaseModule
                 "name" => "Product Version",
                 "code" => "version",
                 "description" => "Version SlimCMS",
-                "value" => "0.0.8",
+                "value" => "0.2.0",
                 "frozen" => 0,
                 "type" => "string",
                 "values" => "",
