@@ -16,9 +16,6 @@ use App\Source\ModelFieldBuilder\UploadFile;
 class FieldFactory implements IFieldFactory
 {
 	public static function getField(\stdClass $obj){
-		if( !$obj->type )
-			return false;
-
 		switch ($obj->type) {
 			case 'file':
 				return new UploadFile($obj);

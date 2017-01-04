@@ -2,7 +2,6 @@
 
 namespace Modules\Core;
 
-use App\Helpers\FileWorker;
 use App\Source\BaseModule;
 use Modules\Core\Source\MicroModules\InstallerModule;
 use Slim\Flash\Messages;
@@ -12,10 +11,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 use SlimCMS\Modules\ModuleLoader;
-use App\Helpers\SessionManager as Session;
 use Modules\Core\Source\MicroModules\AuthModule;
 use Modules\Core\Source\MicroModules\PublicModule;
-use Modules\Core\Source\MicroModules\AdminPanelModule;
 use Modules\Core\Source\MicroModules\SystemOptionsModule;
 use Modules\Core\Source\MicroModules\CustomizerAdminPanelModule;
 

@@ -97,7 +97,18 @@ class BaseController
 	}
 
 	public function render($template){
-		$store = $this->c->cache->store();;
+		$this->beforeRender();
+
+		$obj = new \stdClass();
+		$obj->request = $this->request;
+		$obj->response = $this->result;
+		$obj->pageData = $this->data;
+
+		$event = new BaseContainerEvent($this->c, $obj);
+		$event = $this->c->dispatcher->dispatch('publiccontroller.render.before', $event);
+		$this->data = $event->getParams()->pageData;
+
+		/*$store = $this->c->cache->store();;
 		$cacheName = 'controller.universal.before.render'.md5($this->request->getUri());
 		if( !$store->has($cacheName) ){
 			$this->beforeRender();
@@ -114,7 +125,7 @@ class BaseController
 			$store->put($cacheName, $this->data, 60);
 		} else {
 			$this->data = $store->get($cacheName);
-		}
+		}*/
 
 		$this->view->render($this->result, $template, $this->data);
 

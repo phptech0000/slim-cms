@@ -49,6 +49,7 @@ class Module extends BaseModule
     public function installModule()
     {
         parent::installModule();
+
         $this->saveConfigForModule(self::class, ["params" => ["installed"=>true, "active"=>true]]);
     }
 

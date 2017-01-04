@@ -3,7 +3,7 @@
 namespace Modules\Core\Source\MicroModules;
 
 use App\Source\BaseModule;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Capsule\Manager as DB;
 use Modules\Core\Source\Libs\Logger\LoggerSystem;
 use Modules\Core\Source\Libs\Logger\SqliteMonologHandler;
 use Monolog\Handler\StreamHandler;
