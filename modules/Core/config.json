@@ -1,7 +1,6 @@
 {
     "params": {
-        "active": true,
-        "installed": true,
-        "microInit": ["all"]
+        "installed": false,
+        "active": false
     }
 }

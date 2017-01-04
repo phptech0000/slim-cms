@@ -52,12 +52,12 @@ class Module extends BaseModule
     public function installModule()
     {
         parent::installModule();
-        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
+        $this->saveConfigForModule(self::class, [ "params" => ["installed"=>true, "active"=>true]]);
     }
 
     public function uninstallModule()
     {
         parent::uninstallModule();
-        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
+        $this->saveConfigForModule(self::class, [ "params" => ["installed"=>false, "active"=>false]]);
     }
 }

@@ -2,8 +2,8 @@
     "dependeny": [
         "Sections"
     ],
-    "params":{
-        "installed": true,
+    "params": {
+        "installed": false,
         "active": false
     }
 }

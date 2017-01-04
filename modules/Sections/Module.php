@@ -228,7 +228,7 @@ class Module extends BaseModule
 
         FileWorker::addItemInModelsFillable('Pages', 'category_id');
 
-        $this->saveConfigForModule(self::class, ["installed"=>true, "active"=>true]);
+        $this->saveConfigForModule(self::class, ["params" => ["installed"=>true, "active"=>true]]);
     }
 
     public function uninstallModule()
@@ -265,6 +265,6 @@ class Module extends BaseModule
 
         FileWorker::removeItemInModelsFillable('Pages', 'category_id');
 
-        $this->saveConfigForModule(self::class, ["installed"=>false, "active"=>false]);
+        $this->saveConfigForModule(self::class, ["params" => ["installed"=>false, "active"=>false]]);
     }
 }

@@ -122,7 +122,7 @@ class Module extends BaseModule
                     try{
                         $capsule->schema()->hasTable("options");
                         $data = array('type' => 'success', 'msg' => "Step the next stage");
-                    }catch (\PDOException $e){
+                    }catch (\Exception $e){
                         $data = array('type' => 'error', 'msg' => "DB not exist");
                     }
                 }
