@@ -226,6 +226,39 @@ class Module extends BaseModule
 
         FileWorker::saveJsonFile($path, $pagesField);
 
+        $sectionFields = [
+        	[
+        		"name" => "active",
+				"type" => "checkbox",
+				"default" => "1",
+				"values" => ["0" => "0", "1" => "1"]
+        	],
+        	[
+        		"name" => "show_in_menu",
+				"type" => "checkbox"
+        	],
+        	[
+        		"name" => "detail_text",
+				"type" => "html",
+				"rows" => 10
+        	],
+        	[
+        		"name" => "parent_id",
+				"type" => "select"
+        	],
+        	[
+        		"name" => "path",
+				"type" => "hidden"
+        	],
+        	[
+        		"name" => "sort",
+				"type" => "string",
+				"default" => 100
+        	]
+        ];
+
+        FileWorker::saveJsonFile(RESOURCE_PATH.'models_field_info'.DIRECTORY_SEPARATOR.'sections.json', $sectionFields);
+
         FileWorker::addItemInModelsFillable('Pages', 'category_id');
 
         $this->saveConfigForModule(self::class, ["params" => ["installed"=>true, "active"=>true]]);

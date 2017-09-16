@@ -1,0 +1,19 @@
+[
+	{
+		"name": "email",
+		"type": "email",
+		"placeholder":"Enter email"
+	},
+	{
+		"name": "password",
+		"type": "password",
+		"placeholder":"Enter password",
+		"no_show_value": "true"
+	},
+	{
+		"name": "active",
+		"type": "checkbox",
+		"default": "1",
+		"values": {"0":"0", "1":"1"}
+	}
+]
