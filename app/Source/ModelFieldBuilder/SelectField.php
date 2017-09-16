@@ -6,7 +6,7 @@ class SelectField extends AField
 {
 	protected $allowTypes = ['select', 'multiselect'];
 	protected $defaultType = 'select';
-	public $values = ['0'=>"Выбирите значение"];
+	public $values = ['0'=>"Change..."];
 	public $size = 5;
 	public $multiple = false;
 	public $default = 0;
